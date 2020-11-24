@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EEC0ED61-1D8A-4160-A45A-00268172BEC9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Device</RootNamespace>
+    <AssemblyName>System.Device</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="libnodave.net, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>SimensPLC\libnodave.net.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interface\ExecuteInfo.cs" />
+    <Compile Include="Interface\IDevice.cs" />
+    <Compile Include="Interface\INetWork.cs" />
+    <Compile Include="Interface\ISerialPort.cs" />
+    <Compile Include="Interface\ITriggerModel.cs" />
+    <Compile Include="Interface\NetworkParam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\NetworkParam.Designer.cs">
+      <DependentUpon>NetworkParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\SerialPortParam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\SerialPortParam.Designer.cs">
+      <DependentUpon>SerialPortParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\UniversalFlags.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialPort\Comm.cs" />
+    <Compile Include="SerialPort\GT71A.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\DM100Q.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\Gryphon_GM4400.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\frmSerialPort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialPort\frmSerialPort.designer.cs">
+      <DependentUpon>frmSerialPort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\Gryphon_GFS4400.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\MT400A.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\HIOKI3561.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\DM50S.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\Panasonic.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\Panasonic.Designer.cs">
+      <DependentUpon>Panasonic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialPort\HoneyWell1900.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialPort\HoneyWell1900.Designer.cs">
+      <DependentUpon>HoneyWell1900.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interface\NetworkParam.resx">
+      <DependentUpon>NetworkParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\SerialPortParam.resx">
+      <DependentUpon>SerialPortParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialPort\frmSerialPort.resx">
+      <DependentUpon>frmSerialPort.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

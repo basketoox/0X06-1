@@ -1,0 +1,12 @@
+﻿系统依赖接口定义程序集
+-----------------------
+Because of that, we want to explain the features it addresses so you can take into account why its design is done following this specific way.
+1.- We wanted that the 'Mappings definition' from one type to other could be an independend element, a class easy to find 
+and use, with no direct dependency to any framework (like emitmapper or automapper). That feature was address by TypeMapConfigurationBase, 
+because deriving from it and implementing the BeforeMap, Map y AfterMap methods we'll be able to define tha mapping for each types pair.
+For quick mappings, like what it is done within Testing methods, we have TypeMapConfiguration which using delegates allows to stablish mappings in an easy way.
+2.- We wanted to favor working for different MODULES (usually one BOUNDED-CONTEXT can have several MODULES). 
+Like Eric.E states, MODULES' main purpose is 'code partition' and better organization, most of all.
+Therefore, each MODULE can have its mappings assembly in a independent manner from the rest of MODULES.
+In order to do so, RegisterTypeMap allows, in a simple way, to define a MODULE's mappings. 
+Every instance of that class will be injected automatically like a Service Collection, within TypeAdapter.

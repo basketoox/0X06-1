@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DB8C1E9-E03F-486D-AEDC-BB9E2ABB90B7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>desay</RootNamespace>
+    <AssemblyName>desay</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="bgapi2_genicam_dotnet, Version=2.9.22643.22969, Culture=neutral, PublicKeyToken=0551630d1b572f70, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>K:\德赛自动化 AA项目代码\0X04\20200709\desay\bin\Debug\bgapi2_genicam_dotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="CSkin, Version=16.1.14.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\cskin.16.1.14.3\lib\net40\CSkin.dll</HintPath>
+    </Reference>
+    <Reference Include="halcondotnet, Version=13.0.1.1, Culture=neutral, PublicKeyToken=4973bed59ddbf2b8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>K:\德赛自动化 AA项目代码\0X04\20200709\desay\bin\Debug\halcondotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="License, Version=7.8.15153.60000, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\License.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AAVision\Algorithm\Bitmap2HObject.cs" />
+    <Compile Include="AAVision\Algorithm\CenterLocate.cs" />
+    <Compile Include="AAVision\Algorithm\CreateModle.cs" />
+    <Compile Include="AAVision\Algorithm\DrawROI.cs" />
+    <Compile Include="AAVision\Algorithm\GlueCheck.cs" />
+    <Compile Include="AAVision\Algorithm\NeedleLocate.cs" />
+    <Compile Include="AAVision\Algorithm\SaveImage.cs" />
+    <Compile Include="AAVision\Algorithm\TempalteMatch.cs" />
+    <Compile Include="AAVision\Baumer\AcqToolEdit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AAVision\Baumer\AcqToolEdit.designer.cs">
+      <DependentUpon>AcqToolEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AAVision\Baumer\BamerCamera.cs" />
+    <Compile Include="AAVision\Baumer\BaumerCameraSystem.cs" />
+    <Compile Include="AAVision\Baumer\CamParmaProperty.cs" />
+    <Compile Include="AAVision\Baumer\ICameraTool.cs" />
+    <Compile Include="AAVision\Baumer\ImageFactory.cs" />
+    <Compile Include="AAVision\Baumer\IniOperation.cs" />
+    <Compile Include="AAVision\Baumer\PixtureIntactive.cs" />
+    <Compile Include="AAVision\CenterLocateParameter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AAVision\CenterLocateParameter.designer.cs">
+      <DependentUpon>CenterLocateParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AAVision\frmAAVision.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AAVision\frmAAVision.designer.cs">
+      <DependentUpon>frmAAVision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AAVision\frmGlueCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AAVision\frmGlueCheck.designer.cs">
+      <DependentUpon>frmGlueCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AAVision\frmNeedleLocParameter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AAVision\frmNeedleLocParameter.designer.cs">
+      <DependentUpon>frmNeedleLocParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CallAA\CallAA.cs" />
+    <Compile Include="CallAA\CallAAControl.cs" />
+    <Compile Include="CallAA\CallWb.cs" />
+    <Compile Include="Flow\MES.cs" />
+    <Compile Include="ProductData\AppConfig.cs" />
+    <Compile Include="ProductData\AxisParameter.cs" />
+    <Compile Include="ProductData\Config.cs" />
+    <Compile Include="ProductData\Delay.cs" />
+    <Compile Include="ProductData\Global.cs" />
+    <Compile Include="ProductData\IoPoints.cs" />
+    <Compile Include="ProductData\Marking.cs" />
+    <Compile Include="Flow\Carrier.cs" />
+    <Compile Include="Flow\GluePlateform.cs" />
+    <Compile Include="Flow\CleanPlateform.cs" />
+    <Compile Include="ProductData\MesData.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ProductData\Position.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\frmCommSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmCommSetting.Designer.cs">
+      <DependentUpon>frmCommSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmCylinderDelay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmCylinderDelay.Designer.cs">
+      <DependentUpon>frmCylinderDelay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmIOmonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmIOmonitor.Designer.cs">
+      <DependentUpon>frmIOmonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmLogin.designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmParameter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmParameter.Designer.cs">
+      <DependentUpon>frmParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmPasswordChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmPasswordChange.designer.cs">
+      <DependentUpon>frmPasswordChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmRecipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmRecipe.Designer.cs">
+      <DependentUpon>frmRecipe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmRunSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmRunSetting.Designer.cs">
+      <DependentUpon>frmRunSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmStarting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmStarting.designer.cs">
+      <DependentUpon>frmStarting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmStationDebug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmStationDebug.Designer.cs">
+      <DependentUpon>frmStationDebug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmTeach.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmTeach.designer.cs">
+      <DependentUpon>frmTeach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmWb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmWb.designer.cs">
+      <DependentUpon>frmWb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\WhiteBoardPower.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\WhiteBoardPower.Designer.cs">
+      <DependentUpon>WhiteBoardPower.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WhiteBorad\frmWhiteBorad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WhiteBorad\frmWhiteBorad.designer.cs">
+      <DependentUpon>frmWhiteBorad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WhiteBorad\util\DTCCM2_API.cs" />
+    <Compile Include="WhiteBorad\util\IniRW.cs" />
+    <Compile Include="WhiteBorad\util\WhiteBoardDetection.cs" />
+    <EmbeddedResource Include="AAVision\Baumer\AcqToolEdit.resx">
+      <DependentUpon>AcqToolEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AAVision\CenterLocateParameter.resx">
+      <DependentUpon>CenterLocateParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AAVision\frmAAVision.resx">
+      <DependentUpon>frmAAVision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AAVision\frmGlueCheck.resx">
+      <DependentUpon>frmGlueCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AAVision\frmNeedleLocParameter.resx">
+      <DependentUpon>frmNeedleLocParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmCommSetting.resx">
+      <DependentUpon>frmCommSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmCylinderDelay.resx">
+      <DependentUpon>frmCylinderDelay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmIOmonitor.resx">
+      <DependentUpon>frmIOmonitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmParameter.resx">
+      <DependentUpon>frmParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmPasswordChange.resx">
+      <DependentUpon>frmPasswordChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmRecipe.resx">
+      <DependentUpon>frmRecipe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmRunSetting.resx">
+      <DependentUpon>frmRunSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmStarting.resx">
+      <DependentUpon>frmStarting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmStationDebug.resx">
+      <DependentUpon>frmStationDebug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmTeach.resx">
+      <DependentUpon>frmTeach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmWb.resx">
+      <DependentUpon>frmWb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\WhiteBoardPower.resx">
+      <DependentUpon>WhiteBoardPower.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WhiteBorad\frmWhiteBorad.resx">
+      <DependentUpon>frmWhiteBorad.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="View\_system~.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\System.Crosscutting\System.Crosscutting.csproj">
+      <Project>{207c5b72-0e68-4bb5-8449-f8aabc3a5ae6}</Project>
+      <Name>System.Crosscutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Device\System.Device.csproj">
+      <Project>{EEC0ED61-1D8A-4160-A45A-00268172BEC9}</Project>
+      <Name>System.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\AdlinkAps\Motion.AdlinkAps.csproj">
+      <Project>{4e5618be-0ee1-4760-b939-893a31efdf8f}</Project>
+      <Name>Motion.AdlinkAps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\AdlinkDash\Motion.AdlinkDash.csproj">
+      <Project>{16d0b02c-7859-44aa-b07d-705bf8f22b8c}</Project>
+      <Name>Motion.AdlinkDash</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\Enginee\Motion.Enginee.csproj">
+      <Project>{bf2fb01d-3d28-42f1-907e-7de72433784f}</Project>
+      <Name>Motion.Enginee</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Motion\Interfaces\Motion.Interfaces.csproj">
+      <Project>{e87bbf52-f612-40bb-ad3d-d6a20fd635b1}</Project>
+      <Name>Motion.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_arrow_bottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_arrow_top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_balloon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_barcode_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_gmail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_manager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_mes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_paypal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_pin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_play2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_repeat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_repeat1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_playback_stop2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_plug.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_reload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_reload1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_save1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_user1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_action_users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yahe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.ico" />
+    <None Include="Resources\MB_WMP_64px_559727_easyicon.net.png" />
+    <None Include="Resources\MB_photo_64px_559754_easyicon.net.png" />
+    <None Include="Resources\EndTest_64px_164_easyicon.net.png" />
+    <None Include="Resources\LedYellow.jpg" />
+    <None Include="Resources\Cdec.png" />
+    <None Include="Resources\Cadd.png" />
+    <None Include="Resources\LedNone.jpg" />
+    <None Include="Resources\Zup.png" />
+    <None Include="Resources\Zdown.png" />
+    <None Include="Resources\Yrear.png" />
+    <None Include="Resources\Yfront.png" />
+    <None Include="Resources\XXright.png" />
+    <None Include="Resources\XXleft.png" />
+    <None Include="Resources\Xright.png" />
+    <None Include="Resources\Xleft.png" />
+    <None Include="Resources\Loading.png" />
+    <None Include="Resources\LedRed.jpg" />
+    <None Include="Resources\LedGreen.jpg" />
+    <None Include="Resources\logo.ico" />
+    <None Include="Resources\LedYellow.ico" />
+    <None Include="Resources\LedRed.ico" />
+    <None Include="Resources\LedNone.ico" />
+    <None Include="Resources\LedGreen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

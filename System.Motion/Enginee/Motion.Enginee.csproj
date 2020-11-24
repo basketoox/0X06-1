@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF2FB01D-3D28-42F1-907E-7DE72433784F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Motion.Enginee</RootNamespace>
+    <AssemblyName>Motion.Enginee</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Deployment\Output\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alarm\Alarm.cs" />
+    <Compile Include="Alarm\AlarmLevels.cs" />
+    <Compile Include="ArrayCal.cs" />
+    <Compile Include="AxisSpeed.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AxisSpeed.Designer.cs">
+      <DependentUpon>AxisSpeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axis\ApsAxis.cs" />
+    <Compile Include="Axis\Axis.cs" />
+    <Compile Include="Axis\AxisMoveMode.cs" />
+    <Compile Include="Axis\AxisOperate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Axis\AxisOperate.designer.cs">
+      <DependentUpon>AxisOperate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axis\MoveSelectVertical.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Axis\MoveSelectVertical.Designer.cs">
+      <DependentUpon>MoveSelectVertical.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axis\MoveSelectHorizontal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Axis\MoveSelectHorizontal.Designer.cs">
+      <DependentUpon>MoveSelectHorizontal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cylinder\SingleCylinder2.cs" />
+    <Compile Include="MachineControl\IStationInitialize.cs" />
+    <Compile Include="MachineControl\IStationOperate.cs" />
+    <Compile Include="MachineControl\MachineStatus.cs" />
+    <Compile Include="Cylinder\CylinderDelay.cs" />
+    <Compile Include="Cylinder\CylinderOperate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cylinder\CylinderOperate.Designer.cs">
+      <DependentUpon>CylinderOperate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cylinder\VacuoParameter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cylinder\VacuoParameter.Designer.cs">
+      <DependentUpon>VacuoParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cylinder\CylinderParameter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cylinder\CylinderParameter.Designer.cs">
+      <DependentUpon>CylinderParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cylinder\VacuoBrokenCylinder.cs" />
+    <Compile Include="Cylinder\DoubleCylinder.cs" />
+    <Compile Include="Cylinder\VacuoCylinder.cs" />
+    <Compile Include="Cylinder\SingleCylinder.cs" />
+    <Compile Include="Cylinder\CylinderCondition.cs" />
+    <Compile Include="Cylinder\VacuoDelay.cs" />
+    <Compile Include="External.cs" />
+    <Compile Include="Helpers\CancelTokenHelper.cs" />
+    <Compile Include="Button_Light\EventButton.cs" />
+    <Compile Include="Button_Light\LayerLight.cs" />
+    <Compile Include="MachineControl\ModelOperate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ModelOperate.Designer.cs">
+      <DependentUpon>ModelOperate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlatePoint3DView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlatePoint3DView.designer.cs">
+      <DependentUpon>PlatePoint3DView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlatePointView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlatePointView.designer.cs">
+      <DependentUpon>PlatePointView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PointView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PointView.designer.cs">
+      <DependentUpon>PointView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Point3DView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Point3DView.designer.cs">
+      <DependentUpon>Point3DView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RunStates.cs" />
+    <Compile Include="Axis\ServoAxis.cs" />
+    <Compile Include="Signal.cs" />
+    <Compile Include="Sensor.cs" />
+    <Compile Include="AnalogSignal.cs" />
+    <Compile Include="Helpers\EnumerableExtensions.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Judger.cs" />
+    <Compile Include="Helpers\JudgerHelper.cs" />
+    <Compile Include="Button_Light\LightButton.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Axis\StepAxis.cs" />
+    <Compile Include="MachineControl\MachineInitialize.cs" />
+    <Compile Include="MachineControl\MachineOperate.cs" />
+    <Compile Include="MachineControl\StationOperate.cs" />
+    <Compile Include="MachineControl\StationInitialize.cs" />
+    <Compile Include="StationPart.cs" />
+    <Compile Include="TreeNode.cs" />
+    <Compile Include="Vacuo.cs" />
+    <Compile Include="Helpers\WaitHandleHelper.cs" />
+    <Compile Include="Wheel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdlinkAps\Motion.AdlinkAps.csproj">
+      <Project>{4e5618be-0ee1-4760-b939-893a31efdf8f}</Project>
+      <Name>Motion.AdlinkAps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Motion.Interfaces.csproj">
+      <Project>{e87bbf52-f612-40bb-ad3d-d6a20fd635b1}</Project>
+      <Name>Motion.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AxisSpeed.resx">
+      <DependentUpon>AxisSpeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Axis\AxisOperate.resx">
+      <DependentUpon>AxisOperate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Axis\MoveSelectVertical.resx">
+      <DependentUpon>MoveSelectVertical.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Axis\MoveSelectHorizontal.resx">
+      <DependentUpon>MoveSelectHorizontal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cylinder\CylinderOperate.resx">
+      <DependentUpon>CylinderOperate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cylinder\VacuoParameter.resx">
+      <DependentUpon>VacuoParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cylinder\CylinderParameter.resx">
+      <DependentUpon>CylinderParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ModelOperate.resx">
+      <DependentUpon>ModelOperate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlatePoint3DView.resx">
+      <DependentUpon>PlatePoint3DView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlatePointView.resx">
+      <DependentUpon>PlatePointView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PointView.resx">
+      <DependentUpon>PointView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Point3DView.resx">
+      <DependentUpon>Point3DView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LedGreen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LedNone.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LedRed.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

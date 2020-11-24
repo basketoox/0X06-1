@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E87BBF52-F612-40BB-AD3D-D6A20FD635B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Motion.Interfaces</RootNamespace>
+    <AssemblyName>Motion.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Deployment\Output\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\Deployment\Output\Motion.Interfaces.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\Deployment\Output\Motion.Interfaces.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdjustInfo.cs" />
+    <Compile Include="Automatic.cs" />
+    <Compile Include="Base\IDevice.cs" />
+    <Compile Include="Base\INetWork.cs" />
+    <Compile Include="Base\ISerialPort.cs" />
+    <Compile Include="IAlarmsResult.cs" />
+    <Compile Include="IO\Cylinder.cs" />
+    <Compile Include="IAutomatic.cs" />
+    <Compile Include="Axis\IAxis.cs" />
+    <Compile Include="Axis\IAxisController.cs" />
+    <Compile Include="IMotionController.cs" />
+    <Compile Include="IO\ICylinderStatusJugger.cs" />
+    <Compile Include="IO\IAlarmReset.cs" />
+    <Compile Include="IO\IExternal.cs" />
+    <Compile Include="IO\IoModes.cs" />
+    <Compile Include="IO\IoPoint.cs" />
+    <Compile Include="IO\ISwitchController.cs" />
+    <Compile Include="INeedClean.cs" />
+    <Compile Include="INeedInitialization.cs" />
+    <Compile Include="IO\IResponser.cs" />
+    <Compile Include="IO\ISensor.cs" />
+    <Compile Include="IO\ISignal.cs" />
+    <Compile Include="IRefreshing.cs" />
+    <Compile Include="ISupportTest.cs" />
+    <Compile Include="IThreadPart.cs" />
+    <Compile Include="IVacuo.cs" />
+    <Compile Include="IWheel.cs" />
+    <Compile Include="Axis\MotionPath.cs" />
+    <Compile Include="Axis\MotionTypes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunningModes.cs" />
+    <Compile Include="Axis\VelocityCurve.cs" />
+    <Compile Include="Axis\CurveTypes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\System.Toolkit\System.Toolkit.csproj">
+      <Project>{c4277b2a-a208-43d2-b6c8-66510b3eb016}</Project>
+      <Name>System.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
