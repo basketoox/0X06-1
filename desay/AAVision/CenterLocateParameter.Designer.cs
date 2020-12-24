@@ -103,7 +103,6 @@ namespace desay
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(195, 199);
             this.panel1.TabIndex = 1;
-            this.panel1.Visible = false;
             // 
             // button3
             // 
@@ -199,7 +198,6 @@ namespace desay
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(398, 157);
             this.panel2.TabIndex = 2;
-            this.panel2.Visible = false;
             // 
             // button5
             // 
@@ -353,7 +351,6 @@ namespace desay
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(398, 105);
             this.panel3.TabIndex = 27;
-            this.panel3.Visible = false;
             // 
             // panel4
             // 

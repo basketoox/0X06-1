@@ -19,11 +19,7 @@ namespace desay.ProductData
         public static Stopwatch GlueSinglewatch = new Stopwatch();
         public static Stopwatch Totalwatch = new Stopwatch();
 
-        #region 工作信号
-        /// <summary>
-        /// Feer工位进出料信号
-        /// </summary>  
-
+        #region 工作信号 
         /// <summary>
         /// 请求出料
         /// </summary>
@@ -197,7 +193,7 @@ namespace desay.ProductData
         /// </summary>
         public static bool CCDShield;       
         /// <summary>
-        /// 点胶功能是否打开
+        /// 点胶功能关闭
         /// </summary>
         public static bool GlueRun;           
         /// <summary>

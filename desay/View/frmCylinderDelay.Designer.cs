@@ -37,25 +37,29 @@
             // flpCylinder
             // 
             this.flpCylinder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpCylinder.Location = new System.Drawing.Point(3, 21);
+            this.flpCylinder.Location = new System.Drawing.Point(2, 16);
+            this.flpCylinder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.flpCylinder.Name = "flpCylinder";
-            this.flpCylinder.Size = new System.Drawing.Size(783, 402);
+            this.flpCylinder.Size = new System.Drawing.Size(615, 323);
             this.flpCylinder.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.flpCylinder);
-            this.groupBox1.Location = new System.Drawing.Point(12, 3);
+            this.groupBox1.Location = new System.Drawing.Point(9, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(789, 426);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Size = new System.Drawing.Size(619, 341);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(715, 443);
+            this.btnSave.Location = new System.Drawing.Point(536, 354);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(83, 43);
+            this.btnSave.Size = new System.Drawing.Size(62, 34);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "保存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -63,11 +67,12 @@
             // 
             // frmCylinderDelay
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(813, 498);
+            this.ClientSize = new System.Drawing.Size(639, 398);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmCylinderDelay";
             this.Text = "气缸延时设置";
             this.Load += new System.EventHandler(this.frmCylinderDelay_Load);

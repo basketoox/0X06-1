@@ -19,6 +19,7 @@ namespace desay
         private CylinderParameter CarrierStopParameter;
         private CylinderParameter CarrierClampParameter;
         private CylinderParameter CarrierUpParameter;
+        private CylinderParameter CarrierPressParameter;   //20201101  XiaoW 增
         private CylinderParameter CarrierMoveParameter;
 
         private CylinderParameter CleanStopParameter;
@@ -43,6 +44,7 @@ namespace desay
             Delay.Instance.moveCylinderDelay = CarrierMoveParameter.Save;
             Delay.Instance.carrierUpCylinderDelay = CarrierUpParameter.Save;
             Delay.Instance.carrierClampCylinderDelay = CarrierClampParameter.Save;
+            Delay.Instance.carrierPressCylinderDelay = CarrierPressParameter.Save;   //20201110  XiaoW 增
             Delay.Instance.carrierStopCylinderDelay = CarrierStopParameter.Save;
 
             Delay.Instance.cleanStopCylinderDelay = CleanStopParameter.Save;
@@ -64,6 +66,7 @@ namespace desay
             CarrierMoveParameter = new CylinderParameter(Delay.Instance.moveCylinderDelay) { Name = "接驳台平移气缸" };
             CarrierUpParameter = new CylinderParameter(Delay.Instance.carrierUpCylinderDelay) { Name = "接驳台顶升气缸" };
             CarrierClampParameter = new CylinderParameter(Delay.Instance.carrierClampCylinderDelay) { Name = "接驳台开夹气缸" };
+            CarrierPressParameter = new CylinderParameter(Delay.Instance.carrierPressCylinderDelay) { Name = "产品下压气缸" };   //20201110  XiaoW 增
             CarrierStopParameter = new CylinderParameter(Delay.Instance.carrierStopCylinderDelay) { Name = "回流线阻挡气缸" };
 
             CleanStopParameter = new CylinderParameter(Delay.Instance.cleanStopCylinderDelay) { Name = "清洗阻挡气缸" };
@@ -79,6 +82,7 @@ namespace desay
             flpCylinder.Controls.Add(CarrierMoveParameter);
             flpCylinder.Controls.Add(CarrierUpParameter);
             flpCylinder.Controls.Add(CarrierClampParameter);
+            flpCylinder.Controls.Add(CarrierPressParameter);   //20201110 XiaoW 增
             flpCylinder.Controls.Add(CarrierStopParameter);
             flpCylinder.Controls.Add(CleanStopParameter);
             flpCylinder.Controls.Add(CleanUpParameter);

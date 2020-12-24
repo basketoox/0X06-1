@@ -112,10 +112,10 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(469, 326);
+            this.btnSave.Location = new System.Drawing.Point(713, 418);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(58, 30);
+            this.btnSave.Size = new System.Drawing.Size(85, 30);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "保存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -123,10 +123,10 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(469, 435);
+            this.btnCancel.Location = new System.Drawing.Point(713, 449);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(58, 30);
+            this.btnCancel.Size = new System.Drawing.Size(85, 30);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "退出";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -359,31 +359,31 @@
             // 
             this.button1.Location = new System.Drawing.Point(404, 289);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(58, 23);
+            this.button1.Size = new System.Drawing.Size(85, 23);
             this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
+            this.button1.Text = "打开测高";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(533, 289);
+            this.button2.Location = new System.Drawing.Point(404, 318);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(58, 23);
+            this.button2.Size = new System.Drawing.Size(85, 23);
             this.button2.TabIndex = 6;
-            this.button2.Text = "button2";
+            this.button2.Text = "测高测试";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(402, 318);
+            this.button3.Location = new System.Drawing.Point(404, 347);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(58, 23);
+            this.button3.Size = new System.Drawing.Size(85, 23);
             this.button3.TabIndex = 5;
-            this.button3.Text = "button1";
+            this.button3.Text = "FN扫码";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 

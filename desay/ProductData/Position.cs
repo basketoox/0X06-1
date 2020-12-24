@@ -133,9 +133,8 @@ namespace desay.ProductData
         /// 点胶基准高度
         /// </summary>
         public double GlueBaseHeight;
-
         /// <summary>
-        /// 胶针从安全距离到点胶基准高度的偏差值
+        /// 测高值-点胶基准高度
         /// </summary>
         public double DetectHeight2BaseHeight;
         /// <summary>
@@ -174,6 +173,14 @@ namespace desay.ProductData
         /// </summary>
         public Point3D<double> CleanConeThirdPositon;
         /// <summary>
+        /// 清洗镜筒轨迹第四点位置
+        /// </summary>
+        public Point3D<double> CleanConeForthPosition;
+        /// <summary>
+        /// 清洗镜筒轨迹第五点位置
+        /// </summary>
+        public Point3D<double> CleanConeFifthPosition;
+        /// <summary>
         /// 清洗镜筒轨迹第一点机械位置
         /// </summary>
         public Point<float> CleanConeFirstPositionReal;
@@ -185,6 +192,14 @@ namespace desay.ProductData
         /// 清洗镜筒轨迹第三点机械位置
         /// </summary>
         public Point<float> CleanConeThirdPositonReal;
+        /// <summary>
+        /// 清洗镜筒轨迹第四点机械位置
+        /// </summary>
+        public Point<float> CleanConeForthPositionReal;
+        /// <summary>
+        /// 清洗镜筒轨迹第五点机械位置
+        /// </summary>
+        public Point<float> CleanConeFifthPositionReal;
         /// <summary>
         /// 清洗镜筒轨迹圆心机械位置
         /// </summary>
@@ -202,6 +217,14 @@ namespace desay.ProductData
         /// </summary>
         public Point3D<double> CleanLensThirdPositon;
         /// <summary>
+        /// 清洗镜片轨迹第四点位置
+        /// </summary>
+        public Point3D<double> CleanLensForthPosition;
+        /// <summary>
+        /// 清洗镜片轨迹第五点位置
+        /// </summary>
+        public Point3D<double> CleanLensFifthPosition;
+        /// <summary>
         /// 清洗镜片轨迹第一点机械位置
         /// </summary>
         public Point<float> CleanLensFirstPositionReal;
@@ -213,6 +236,14 @@ namespace desay.ProductData
         /// 清洗镜片轨迹第三点机械位置
         /// </summary>
         public Point<float> CleanLensThirdPositonReal;
+        /// <summary>
+        /// 清洗镜片轨迹第四点机械位置
+        /// </summary>
+        public Point<float> CleanLensForthPositionReal;
+        /// <summary>
+        /// 清洗镜片轨迹第五点机械位置
+        /// </summary>
+        public Point<float> CleanLensFifthPositionReal;
         /// <summary>
         /// 清洗镜片轨迹圆心机械位置
         /// </summary>
@@ -296,7 +327,7 @@ namespace desay.ProductData
         /// </summary>
         public Point3D<double> CCD2NeedleOffset;
         /// <summary>
-        /// 记录产品圆圈中心到CCD的偏差值，Z轴暂不用
+        /// 产品圆心到相机视野中心的偏差值，Z轴暂不用
         /// </summary>
         public Point3D<double> PCB2CCDOffset;
 
@@ -387,5 +418,25 @@ namespace desay.ProductData
         /// 启用矩形点胶
         /// </summary>
         public bool UseRectGlue = false;
+
+
+        /// <summary>
+        /// 白板光源气缸 不动作0，动作1
+        /// </summary>
+        public int WbLightCylinder = 0;
+        /// <summary>
+        /// 清洗上下气缸 不动作0，动作1
+        /// </summary>
+        public int CleanUpDownCylinder = 0;
+        /// <summary>
+        /// 胶水外边缘溢胶/少胶的距离
+        /// </summary>
+        public double OutsideDistance = 0;
+        /// <summary>
+        /// 胶水内边缘溢胶/少胶的距离
+        /// </summary>
+        public double insideDistance = 0;
+
+
     }
 }

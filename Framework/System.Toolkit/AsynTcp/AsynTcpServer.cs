@@ -34,8 +34,14 @@ namespace System.Toolkit
             thread.Start();
         }
         public   bool _status = false;
+        /// <summary>
+        /// AA通知消息
+        /// </summary>
         public string strResultTCP;      
         Byte[] bytes = new Byte[4096];
+        /// <summary>
+        /// 获取到TCP消息标志
+        /// </summary>
         public bool IsResultTCP;
 
         public bool Flag;
@@ -67,7 +73,6 @@ namespace System.Toolkit
         {
             while (true)
             {
-
                 StartListening();
                 AsynRecive();
             }
@@ -93,6 +98,7 @@ namespace System.Toolkit
                     MsgShow = strResultTCP;
                     Flag = true;
                     LogHelper.Debug(strResultTCP);
+                    Thread.Sleep(500);
                 }
             }
             catch (Exception ex)

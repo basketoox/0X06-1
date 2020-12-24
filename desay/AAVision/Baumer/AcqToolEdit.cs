@@ -9,15 +9,22 @@ using System.Windows.Forms;
 using desay.ProductData;
 using log4net;
 using HalconDotNet;
+using NationalInstruments.Vision;
+using Vision_Assistant;
+using System.IO;
+
 namespace desay
 {
+
     public partial class AcqToolEdit : UserControl
     {
         static ILog log = LogManager.GetLogger(typeof(AcqToolEdit));
-
-
+        public static double offset_x;
+        public static double offset_y;
         private TabPage[] tabpage;
         Bitmap bmp;
+        VisionImage VI;
+        VisionImage LastVI;
 
         private BaumerCamera _Subject;
         public BaumerCamera Subject
@@ -84,13 +91,20 @@ namespace desay
                 //Log.WriteLog(logType.ltError, "SetPictureBoxImg error:" + ex.ToString());
             }
         }
+
+        public void bmpToVisionImage(Bitmap bmp)
+        {
+            bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+            VI = new VisionImage(ImageType.Rgb32);
+            VI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+        }
+
+
         void _Subject_Ran(ImageData imageData)
         {
-
             try
             {
                 bmp = ImageFactory.CreateBitmap(_Subject.OutputImageData);
-
             }
             catch
             {
@@ -99,49 +113,146 @@ namespace desay
 
             try
             {
-               
-
                 if (Marking.NeedleLocateTest)
                 {
+                    bmpToVisionImage(bmp);
                     try
                     {
                         Marking.NeedleLocateTest = false;
-                        NeedleLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Position.Instance.GlueAdjustPinPosition, Position.Instance.GlueCameraCalibPosition, frmAAVision.acq.SaveImage);
-                        Marking.NeedleLocateTestSucceed = true;
+                        //NeedleLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Position.Instance.GlueAdjustPinPosition, Position.Instance.GlueCameraCalibPosition, frmAAVision.acq.SaveImage);
+
+                        FindNeedleLoc.ProcessImage(VI);
+                        if (FindNeedleLoc.vaCircularEdgeReport.CircleFound)
+                        {
+                            double[] data = new double[2];
+                            double[] offset = new double[2];
+                            data[0] = FindNeedleLoc.vaCircularEdgeReport.Center.X;
+                            data[1] = FindNeedleLoc.vaCircularEdgeReport.Center.Y;
+                            offset[0] = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
+                            offset[1] = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
+                            Position.Instance.CCD2NeedleOffset.X = Position.Instance.GlueCameraCalibPosition.X - Position.Instance.GlueAdjustPinPosition.X - offset[0];
+                            Position.Instance.CCD2NeedleOffset.Y = Position.Instance.GlueCameraCalibPosition.Y - Position.Instance.GlueAdjustPinPosition.Y + offset[1];
+                            NeedleLocate.FindNeedleLoc(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, data, offset);
+                            Marking.NeedleLocateTestSucceed = true;
+                        }
+                        else
+                        {
+                            Marking.NeedleLocateTestSucceed = false;
+                        }
                     }
                     catch (Exception ex)
                     {
                         log.Debug("图像识别异常111！" + ex.Message + ex.StackTrace);
 
                     }
-
+                    VI.Dispose();
                 }
                 else if (Marking.CenterLocateTest)
                 {
+                    bmpToVisionImage(bmp);
                     try
                     {
                         Marking.CenterLocateTest = false;
-                        CenterLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
-                        //
+                        if (Position.Instance.UseRectGlue)
+                        {
+                            try
+                            {
+                                Image_Processing.ProcessImage(VI);
+                                if (Image_Processing.gpm2Results.Count == 1)
+                                {
+                                    double ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X-457;
+                                    double ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y-414;
+                                    offset_x = ICCenter_X - VI.Width / 2;
+                                    offset_y = ICCenter_Y - VI.Height / 2;
+                                    double[] offset_x_pix = { -630, 575, 655, 655, -630, -630 };
+                                    double[] offset_y_pix = { -650, -650, -558, 650, 650, -650 };
+                                    for (int i = 0; i < offset_x_pix.Length; i++)
+                                    {
+                                        Config.Instance.RectX[i] = Position.Instance.GlueCameraPosition.X - Position.Instance.CCD2NeedleOffset.X + Position.Instance.GlueOffsetX - (offset_x_pix[i] - offset_x) / 96;
+                                        Config.Instance.RectY[i] = Position.Instance.GlueCameraPosition.Y - Position.Instance.CCD2NeedleOffset.Y + Position.Instance.GlueOffsetY + (offset_y_pix[i] - offset_y) / 96;
+                                    }
+                                    //string str = Config.Instance.RectX[0].ToString("f3") + "," + Config.Instance.RectY[0].ToString("f3")+"\r\n";
+                                    //System.IO.File.AppendAllText(@"C:\Users\Administrator\Desktop\123.txt", str);
+                                    Marking.CenterLocateTestSucceed = true;
+                                }
+                                else
+                                {
+                                    Marking.CenterLocateTestSucceed = false;
+                                }
+                                CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1);
+                            }
+                            catch
+                            {
+                                Marking.CenterLocateTestSucceed = false;
+                            }
+                        }
+                        else
+                        {
+                            //CenterLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+
+                            FindCircularCenter.ProcessImage(VI);
+                            if (FindCircularCenter.vaCircularEdgeReport.CircleFound)
+                            {
+                                double[] data = new double[2];
+                                data[0] = FindCircularCenter.vaCircularEdgeReport.Center.X;
+                                data[1] = FindCircularCenter.vaCircularEdgeReport.Center.Y;
+                                Position.Instance.PCB2CCDOffset.X = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
+                                Position.Instance.PCB2CCDOffset.Y = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
+                                Marking.CenterLocateTestSucceed = true;
+                            }
+                            else
+                            {
+                                Marking.CenterLocateTestSucceed = false;
+                            }
+                            if (frmAAVision.acq.SaveImage)
+                            {
+                                SaveImage.Save(frmAAVision.acq.hWindowControl1.HalconWindow);
+                            }
+                            CenterLocate.CircularMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, FindCircularCenter.vaCircularEdgeReport.CircleFound);
+                        }
+                        
                     }
                     catch (Exception ex)
                     {
                         log.Debug("图像识别异常222！" + ex.Message + ex.StackTrace);
                     }
+                    VI.Dispose();
                 }
                 else if (Marking.GlueCheckTest)
                 {
-                    try {
+                    try
+                    {
                         Marking.GlueCheckTest = false;
-
-                        GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                        if (Position.Instance.UseRectGlue)
+                        {
+                            
+                        }
+                        else
+                        {
+                            //GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                            double[] distance;
+                            LastVI = new VisionImage(ImageType.Rgb32);
+                            LastVI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+                            bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+                            GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}",out distance);
+                            if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.OutsideDistance)
+                            {
+                                Marking.GlueResult = true;
+                            }
+                            else
+                            {
+                                Marking.GlueResult = false;
+                            }
+                            GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult, distance);
+                            LastVI.Dispose();
+                        } 
                         Marking.GlueCheckTestSucceed = true;
                     }
                     catch (Exception ex)
                     {
                         log.Debug("图像识别异常333！" + ex.Message + ex.StackTrace);
                     }
-
+                    VI.Dispose();
                 }
             }
             catch (Exception ex)

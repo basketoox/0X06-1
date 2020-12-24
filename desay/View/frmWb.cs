@@ -39,8 +39,11 @@ namespace desay
         }
         private void frmWb_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Visible = false;
-            e.Cancel = true;
+            if (e.CloseReason == CloseReason.FormOwnerClosing || e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

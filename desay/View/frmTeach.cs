@@ -28,10 +28,8 @@ namespace desay
         CleanPlateform m_CleanPlateform;
         Carrier m_Carrier;
         #region 气缸
-        private CylinderOperate CleanRotateOperate, CleanClampOperate,CleanUpDownOperate;
-
+        private CylinderOperate CleanRotateOperate, CleanClampOperate, CleanUpDownOperate;
         private CylinderOperate LightUpDownOperate, LightingTestOperate;
-
         private CylinderOperate CleanStopOperate, CleanUpOperate;
         private CylinderOperate GlueStopOperate, GlueUpOperate;
         private CylinderOperate MoveOperate, CarrierUpOperate, CarrierClampOperate, CarrierPressOperate, CarrierStopOperate;
@@ -54,17 +52,33 @@ namespace desay
         }
         private void frmTeach_Load(object sender, EventArgs e)
         {
-            cbRuseRect.Checked = Position.Instance.UseRectGlue;
-            nudTimeDelay.Value= Config.Instance.GlueRectNOoneDelayTime ;
-            nudRectX1.Value=(decimal) Config.Instance.RectX[0];
-            nudRectX2.Value= (decimal)Config.Instance.RectX[1] ;
-            nudRectX3.Value= (decimal)Config.Instance.RectX[2] ;
-            nudRectX4.Value= (decimal)Config.Instance.RectX[3];
-            nudRectY1.Value= (decimal)Config.Instance.RectY[0] ;
-            nudRectY2.Value= (decimal)Config.Instance.RectY[1];
-            nudRectY3.Value= (decimal)Config.Instance.RectY[2];
-            nudRectY4.Value= (decimal)Config.Instance.RectY[3];
-            nudRectZ.Value= (decimal)Config.Instance.RectZ ;
+            #region 加载页面参数           
+            if (Position.Instance.UseRectGlue)
+            {
+                btnRect.Enabled = true;
+                btnVIRect.Enabled = true;
+                btnArcMove.Enabled = false;
+                btnCamGlue.Enabled = false;
+            }
+            else
+            {
+                btnRect.Enabled = false;
+                btnVIRect.Enabled = false;
+                btnArcMove.Enabled = true;
+                btnCamGlue.Enabled = true;
+            }
+            nudTimeDelay.Value = Config.Instance.GlueRectNOoneDelayTime;
+            nudRectX1.Value = (decimal)Config.Instance.RectX[0];
+            nudRectX2.Value = (decimal)Config.Instance.RectX[1];
+            nudRectX3.Value = (decimal)Config.Instance.RectX[2];
+            nudRectX4.Value = (decimal)Config.Instance.RectX[3];
+            nudRectX5.Value = (decimal)Config.Instance.RectX[4];
+            nudRectY1.Value = (decimal)Config.Instance.RectY[0];
+            nudRectY2.Value = (decimal)Config.Instance.RectY[1];
+            nudRectY3.Value = (decimal)Config.Instance.RectY[2];
+            nudRectY4.Value = (decimal)Config.Instance.RectY[3];
+            nudRectY5.Value = (decimal)Config.Instance.RectY[4];
+            nudRectZ.Value = (decimal)Config.Instance.RectZ;
             InitdgvCleanPositionRows();
             InitdgvGluePositionRows();
             lblJogSpeed.Text = "点动速度:" + tbrJogSpeed.Value.ToString("0.00") + "mm/s";
@@ -103,20 +117,21 @@ namespace desay
             flpCylinder.Controls.Add(CarrierClampOperate);
             flpCylinder.Controls.Add(CarrierPressOperate);
             flpCylinder.Controls.Add(CarrierStopOperate);
-
+            #endregion
 
             timer1.Enabled = true;
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
-            #region 气缸状态
+
+            #region 气缸状态刷新
             //清洗平台
             CleanStopOperate.InOrigin = m_CleanPlateform.CleanStopCylinder.OutOriginStatus;
             CleanStopOperate.InMove = m_CleanPlateform.CleanStopCylinder.OutMoveStatus;
             CleanStopOperate.OutMove = m_CleanPlateform.CleanStopCylinder.IsOutMove;
             CleanUpOperate.InOrigin = m_CleanPlateform.CleanUpCylinder.OutOriginStatus;
-            CleanUpOperate.InMove = m_CleanPlateform.CleanUpCylinder.OutMoveStatus;         
+            CleanUpOperate.InMove = m_CleanPlateform.CleanUpCylinder.OutMoveStatus;
             CleanUpOperate.OutMove = m_CleanPlateform.CleanUpCylinder.IsOutMove;
             CleanClampOperate.InOrigin = m_CleanPlateform.CleanClampCylinder.OutOriginStatus;
             CleanClampOperate.InMove = m_CleanPlateform.CleanClampCylinder.OutMoveStatus;
@@ -161,7 +176,7 @@ namespace desay
 
             #endregion
 
-            #region 轴状态
+            #region 轴状态刷新
             chxLX.Checked = m_CleanPlateform.Xaxis.IsServon;
             chxLY.Checked = m_CleanPlateform.Yaxis.IsServon;
             chxLZ.Checked = m_CleanPlateform.Zaxis.IsServon;
@@ -183,19 +198,17 @@ namespace desay
             lblRYCurrentSpeed.Text = m_GluePlateform.Yaxis.CurrentSpeed.ToString("0.000");
             lblRZCurrentSpeed.Text = m_GluePlateform.Zaxis.CurrentSpeed.ToString("0.000");
             #endregion
-            #region 气缸界面显示刷新
-            #endregion
-            //if (load1) { load1 = false; }
 
             timer1.Enabled = true;
         }
 
-
+        #region JOG速度刷新
         private void tbrJogSpeed_Scroll(object sender, EventArgs e)
         {
             if (Global.IsLocating) return;
             lblJogSpeed.Text = "点动速度:" + tbrJogSpeed.Value.ToString("0.00") + "mm/s";
         }
+        #endregion
 
         #region 数据表格初始化
         /// <summary>
@@ -260,6 +273,24 @@ namespace desay
                     "GotoZero"
                 });
             dgvCleanPosition.Rows.Add(new object[] {
+                    "清洗镜筒轨迹第四点位置",
+                    Position.Instance.CleanConeForthPosition.X.ToString("0.000"),
+                    Position.Instance.CleanConeForthPosition.Y.ToString("0.000"),
+                    Position.Instance.CleanConeForthPosition.Z.ToString("0.000"),
+                    "Save",
+                    "GotoZ",
+                    "GotoZero"
+                });
+            dgvCleanPosition.Rows.Add(new object[] {
+                    "清洗镜筒轨迹第五点位置",
+                    Position.Instance.CleanConeFifthPosition.X.ToString("0.000"),
+                    Position.Instance.CleanConeFifthPosition.Y.ToString("0.000"),
+                    Position.Instance.CleanConeFifthPosition.Z.ToString("0.000"),
+                    "Save",
+                    "GotoZ",
+                    "GotoZero"
+                });
+            dgvCleanPosition.Rows.Add(new object[] {
                     "清洗镜片轨迹第一点位置",
                     Position.Instance.CleanLensFirstPosition.X.ToString("0.000"),
                     Position.Instance.CleanLensFirstPosition.Y.ToString("0.000"),
@@ -282,6 +313,24 @@ namespace desay
                     Position.Instance.CleanLensThirdPositon.X.ToString("0.000"),
                     Position.Instance.CleanLensThirdPositon.Y.ToString("0.000"),
                     Position.Instance.CleanLensThirdPositon.Z.ToString("0.000"),
+                    "Save",
+                    "GotoZ",
+                    "GotoZero"
+                });
+            dgvCleanPosition.Rows.Add(new object[] {
+                    "清洗镜片轨迹第四点位置",
+                    Position.Instance.CleanLensForthPosition.X.ToString("0.000"),
+                    Position.Instance.CleanLensForthPosition.Y.ToString("0.000"),
+                    Position.Instance.CleanLensForthPosition.Z.ToString("0.000"),
+                    "Save",
+                    "GotoZ",
+                    "GotoZero"
+                });
+            dgvCleanPosition.Rows.Add(new object[] {
+                    "清洗镜片轨迹第五点位置",
+                    Position.Instance.CleanLensFifthPosition.X.ToString("0.000"),
+                    Position.Instance.CleanLensFifthPosition.Y.ToString("0.000"),
+                    Position.Instance.CleanLensFifthPosition.Z.ToString("0.000"),
                     "Save",
                     "GotoZ",
                     "GotoZero"
@@ -469,6 +518,28 @@ namespace desay
                     break;
                 case 6:
                     dgvCleanPosition.Rows[i].SetValues(new object[] {
+                        "清洗镜筒轨迹第四点位置",
+                        Position.Instance.CleanConeForthPosition.X.ToString("0.000"),
+                        Position.Instance.CleanConeForthPosition.Y.ToString("0.000"),
+                        Position.Instance.CleanConeForthPosition.Z.ToString("0.000"),
+                        "Save",
+                        "GotoZ",
+                        "GotoZero"
+                    });
+                    break;
+                case 7:
+                    dgvCleanPosition.Rows[i].SetValues(new object[] {
+                        "清洗镜筒轨迹第五点位置",
+                        Position.Instance.CleanConeFifthPosition.X.ToString("0.000"),
+                        Position.Instance.CleanConeFifthPosition.Y.ToString("0.000"),
+                        Position.Instance.CleanConeFifthPosition.Z.ToString("0.000"),
+                        "Save",
+                        "GotoZ",
+                        "GotoZero"
+                    });
+                    break;
+                case 8:
+                    dgvCleanPosition.Rows[i].SetValues(new object[] {
                         "清洗镜片轨迹第一点位置",
                         Position.Instance.CleanLensFirstPosition.X.ToString("0.000"),
                         Position.Instance.CleanLensFirstPosition.Y.ToString("0.000"),
@@ -478,7 +549,7 @@ namespace desay
                         "GotoZero"
                     });
                     break;
-                case 7:
+                case 9:
                     dgvCleanPosition.Rows[i].SetValues(new object[] {
                         "清洗镜片轨迹第二点位置",
                         Position.Instance.CleanLensSecondPosition.X.ToString("0.000"),
@@ -489,12 +560,34 @@ namespace desay
                         "GotoZero"
                     });
                     break;
-                case 8:
+                case 10:
                     dgvCleanPosition.Rows[i].SetValues(new object[] {
                         "清洗镜片轨迹第三点位置",
                         Position.Instance.CleanLensThirdPositon.X.ToString("0.000"),
                         Position.Instance.CleanLensThirdPositon.Y.ToString("0.000"),
                         Position.Instance.CleanLensThirdPositon.Z.ToString("0.000"),
+                        "Save",
+                        "GotoZ",
+                        "GotoZero"
+                    });
+                    break;
+                case 11:
+                    dgvCleanPosition.Rows[i].SetValues(new object[] {
+                        "清洗镜片轨迹第四点位置",
+                        Position.Instance.CleanLensForthPosition.X.ToString("0.000"),
+                        Position.Instance.CleanLensForthPosition.Y.ToString("0.000"),
+                        Position.Instance.CleanLensForthPosition.Z.ToString("0.000"),
+                        "Save",
+                        "GotoZ",
+                        "GotoZero"
+                    });
+                    break;
+                case 12:
+                    dgvCleanPosition.Rows[i].SetValues(new object[] {
+                        "清洗镜片轨迹第五点位置",
+                        Position.Instance.CleanLensFifthPosition.X.ToString("0.000"),
+                        Position.Instance.CleanLensFifthPosition.Y.ToString("0.000"),
+                        Position.Instance.CleanLensFifthPosition.Z.ToString("0.000"),
                         "Save",
                         "GotoZ",
                         "GotoZero"
@@ -638,14 +731,15 @@ namespace desay
         {
             if (Global.IsLocating) return;
             var JogSpeed = (double)tbrJogSpeed.Value;
-            Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
-            Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
-            Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+            Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
+            Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
+            Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
             switch (e.ColumnIndex)
             {
                 case 4:
                     if (MessageBox.Show($"是否保存{dgvCleanPosition.Rows[e.RowIndex].Cells[0].Value}的数据",
-                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvCleanPosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "Save")
                     {
                         switch (e.RowIndex)
@@ -681,21 +775,41 @@ namespace desay
                                 Position.Instance.CleanConeThirdPositon.Z = m_CleanPlateform.Zaxis.CurrentPos;
                                 CalculateConeCenter();
                                 break;
-                            case 6://清洗镜片第一位置
+                            case 6://清洗镜筒第四位置
+                                Position.Instance.CleanConeForthPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
+                                Position.Instance.CleanConeForthPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
+                                Position.Instance.CleanConeForthPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
+                                break;
+                            case 7://清洗镜筒第五位置
+                                Position.Instance.CleanConeFifthPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
+                                Position.Instance.CleanConeFifthPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
+                                Position.Instance.CleanConeFifthPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
+                                break;
+                            case 8://清洗镜片第一位置
                                 Position.Instance.CleanLensFirstPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
                                 Position.Instance.CleanLensFirstPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
                                 Position.Instance.CleanLensFirstPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
                                 break;
-                            case 7://清洗镜片第二位置
+                            case 9://清洗镜片第二位置
                                 Position.Instance.CleanLensSecondPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
                                 Position.Instance.CleanLensSecondPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
                                 Position.Instance.CleanLensSecondPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
                                 break;
-                            case 8://清洗镜片第三位置
+                            case 10://清洗镜片第三位置
                                 Position.Instance.CleanLensThirdPositon.X = m_CleanPlateform.Xaxis.CurrentPos;
                                 Position.Instance.CleanLensThirdPositon.Y = m_CleanPlateform.Yaxis.CurrentPos;
                                 Position.Instance.CleanLensThirdPositon.Z = m_CleanPlateform.Zaxis.CurrentPos;
                                 CalculateLensCenter();
+                                break;
+                            case 11://清洗镜片第四位置
+                                Position.Instance.CleanLensForthPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
+                                Position.Instance.CleanLensForthPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
+                                Position.Instance.CleanLensForthPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
+                                break;
+                            case 12://清洗镜片第五位置
+                                Position.Instance.CleanLensFifthPosition.X = m_CleanPlateform.Xaxis.CurrentPos;
+                                Position.Instance.CleanLensFifthPosition.Y = m_CleanPlateform.Yaxis.CurrentPos;
+                                Position.Instance.CleanLensFifthPosition.Z = m_CleanPlateform.Zaxis.CurrentPos;
                                 break;
                             default: break;
                         }
@@ -706,7 +820,8 @@ namespace desay
                     break;
                 case 5:
                     if (MessageBox.Show($"是否定位到{dgvCleanPosition.Rows[e.RowIndex].Cells[0].Value},Z位置",
-                        "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvCleanPosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "GotoZ")
                     {
                         var ret = 0;
@@ -716,7 +831,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanSafePosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanSafePosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanSafePosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -735,7 +851,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.AdjustLightPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.AdjustLightPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.AdjustLightPosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -744,7 +861,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFirstPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeFirstPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanConeFirstPosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -753,7 +871,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeSecondPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeSecondPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanConeSecondPosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -762,34 +881,78 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeThirdPositon.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeThirdPositon.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanConeThirdPositon.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 6://清洗镜片轨迹第一点位置
+                            case 6://清洗镜筒轨迹第四点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeForthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanConeForthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, Position.Instance.CleanConeForthPosition.Z, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 7://清洗镜筒轨迹第五点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFifthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanConeFifthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, Position.Instance.CleanConeFifthPosition.Z, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 8://清洗镜片轨迹第一点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFirstPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensFirstPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanLensFirstPosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 7://清洗镜片轨迹第二点位置
+                            case 9://清洗镜片轨迹第二点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensSecondPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensSecondPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanLensSecondPosition.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 8://清洗镜片轨迹第三点位置
+                            case 10://清洗镜片轨迹第三点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensThirdPositon.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensThirdPositon.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, Position.Instance.CleanLensThirdPositon.Z, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 11://清洗镜片轨迹第四点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensForthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanLensForthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, Position.Instance.CleanLensForthPosition.Z, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 12://清洗镜片轨迹第五点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFifthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanLensFifthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, Position.Instance.CleanLensFifthPosition.Z, Global.LZmanualSpeed,
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -812,7 +975,8 @@ namespace desay
                     break;
                 case 6:
                     if (MessageBox.Show($"是否定位到{dgvCleanPosition.Rows[e.RowIndex].Cells[0].Value},Z=0.5位置",
-                        "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvCleanPosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "GotoZero")
                     {
                         var ret = 0;
@@ -822,7 +986,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanSafePosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanSafePosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -841,7 +1006,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.AdjustLightPosition.X, Global.RXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.AdjustLightPosition.Y, Global.RYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -850,7 +1016,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFirstPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeFirstPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -859,7 +1026,8 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeSecondPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeSecondPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -868,34 +1036,78 @@ namespace desay
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeThirdPositon.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanConeThirdPositon.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 6://清洗镜片轨迹第一点位置
+                            case 6://清洗镜筒轨迹第四点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeForthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanConeForthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 7://清洗镜筒轨迹第五点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFifthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanConeFifthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 8://清洗镜片轨迹第一点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFirstPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensFirstPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 7://清洗镜片轨迹第二点位置
+                            case 9://清洗镜片轨迹第二点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensSecondPosition.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensSecondPosition.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 8://清洗镜片轨迹第三点位置
+                            case 10://清洗镜片轨迹第三点位置
                                 ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensThirdPositon.X, Global.LXmanualSpeed,
                                     m_CleanPlateform.Yaxis, Position.Instance.CleanLensThirdPositon.Y, Global.LYmanualSpeed,
                                     m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 11://清洗镜片轨迹第四点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensForthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanLensForthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
+                                    });
+                                break;
+                            case 12://清洗镜片轨迹第五点位置
+                                ret = MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFifthPosition.X, Global.LXmanualSpeed,
+                                    m_CleanPlateform.Yaxis, Position.Instance.CleanLensFifthPosition.Y, Global.LYmanualSpeed,
+                                    m_CleanPlateform.Zaxis, 0.5, Global.LZmanualSpeed,
+                                    () =>
+                                    {
                                         return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
                                                  | m_CleanPlateform.stationInitialize.InitializeDone;
                                     });
@@ -923,14 +1135,15 @@ namespace desay
         {
             if (Global.IsLocating) return;
             var JogSpeed = (double)tbrJogSpeed.Value;
-            Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
-            Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
-            Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+            Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
+            Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
+            Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
             switch (e.ColumnIndex)
             {
                 case 4:
                     if (MessageBox.Show($"是否保存{dgvGluePosition.Rows[e.RowIndex].Cells[0].Value}的数据",
-                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvGluePosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "Save")
                     {
                         switch (e.RowIndex)
@@ -1014,7 +1227,8 @@ namespace desay
                     break;
                 case 5:
                     if (MessageBox.Show($"是否定位到{dgvGluePosition.Rows[e.RowIndex].Cells[0].Value},Z位置",
-                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "定位", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvGluePosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "GotoZ")
                     {
                         var ret = 0;
@@ -1024,7 +1238,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueSafePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueSafePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1033,7 +1248,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueCameraCalibPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueCameraCalibPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueCameraCalibPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1042,7 +1258,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueCameraPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueCameraPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueCameraPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1051,7 +1268,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueAdjustPinPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueAdjustPinPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueAdjustPinPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1060,7 +1278,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1069,7 +1288,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.CutGlueEndPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1078,7 +1298,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueStartPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1087,7 +1308,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueSecondPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueSecondPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueSecondPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1096,7 +1318,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueThirdPositon.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueThirdPositon.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueThirdPositon.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1105,7 +1328,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.WeightGluePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.WeightGluePosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1114,7 +1338,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueHeightPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueHeightPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.GlueHeightPosition.Z, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1137,7 +1362,8 @@ namespace desay
                     break;
                 case 6:
                     if (MessageBox.Show($"是否定位到{dgvGluePosition.Rows[e.RowIndex].Cells[0].Value},Z=0.5位置",
-                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel) break;
+                        "保存", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        break;
                     if (dgvGluePosition.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "GotoZero")
                     {
                         var ret = 0;
@@ -1147,7 +1373,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueSafePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueSafePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1156,7 +1383,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueCameraCalibPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueCameraCalibPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1165,7 +1393,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueCameraPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueCameraPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1174,7 +1403,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueAdjustPinPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueAdjustPinPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1183,7 +1413,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1192,7 +1423,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1201,7 +1433,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1210,7 +1443,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1219,7 +1453,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueThirdPositon.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueThirdPositon.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1228,7 +1463,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.WeightGluePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1237,7 +1473,8 @@ namespace desay
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueHeightPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.GlueHeightPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
-                                    () => {
+                                    () =>
+                                    {
                                         return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
@@ -1273,12 +1510,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                   m_CleanPlateform.Xaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Xaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Xaxis.Negative();
                 }
                 else
                 {
-                    Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Xaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.LXmanualSpeed);
                 }
             }
@@ -1293,12 +1530,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_CleanPlateform.Xaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Xaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Xaxis.Postive();
                 }
                 else
                 {
-                    Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Xaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.LXmanualSpeed);
                 }
             }
@@ -1326,12 +1563,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_CleanPlateform.Yaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Yaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Yaxis.Negative();
                 }
                 else
                 {
-                    Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Yaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.LYmanualSpeed);
                 }
             }
@@ -1346,12 +1583,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_CleanPlateform.Yaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Yaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Yaxis.Postive();
                 }
                 else
                 {
-                    Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Yaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.LYmanualSpeed);
                 }
             }
@@ -1380,12 +1617,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_CleanPlateform.Zaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Zaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Zaxis.Negative();
                 }
                 else
                 {
-                    Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Zaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.LZmanualSpeed);
                 }
             }
@@ -1400,12 +1637,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_CleanPlateform.Zaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_CleanPlateform.Zaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Zaxis.Postive();
                 }
                 else
                 {
-                    Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.LZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_CleanPlateform.Zaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.LZmanualSpeed);
                 }
             }
@@ -1436,12 +1673,12 @@ namespace desay
                     var JogSpeed = (double)tbrJogSpeed.Value;
                     if (moveSelectHorizontal1.MoveMode.Continue)
                     {
-                        m_GluePlateform.Xaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                        m_GluePlateform.Xaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Xaxis.Postive();
                     }
                     else
                     {
-                        Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                        Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Xaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.RXmanualSpeed);
                     }
                 }
@@ -1450,9 +1687,9 @@ namespace desay
         }
         private void BtnRXadd_MouseDown(object sender, MouseEventArgs e)
         {
-         
 
-           
+
+
             picRXadd.BackColor = Color.YellowGreen;
             if (Global.IsLocating) return;
             try
@@ -1460,16 +1697,16 @@ namespace desay
                 if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z) || cb_pinmove.Checked)
                 {
                     var JogSpeed = (double)tbrJogSpeed.Value;
-                if (moveSelectHorizontal1.MoveMode.Continue)
-                {
-                    m_GluePlateform.Xaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
-                    m_GluePlateform.Xaxis.Negative();
-                }
-                else
-                {
-                    Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
-                    m_GluePlateform.Xaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.RXmanualSpeed);
-                }
+                    if (moveSelectHorizontal1.MoveMode.Continue)
+                    {
+                        m_GluePlateform.Xaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
+                        m_GluePlateform.Xaxis.Negative();
+                    }
+                    else
+                    {
+                        Global.RXmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
+                        m_GluePlateform.Xaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.RXmanualSpeed);
+                    }
                 }
             }
             catch (Exception ex) { }
@@ -1499,12 +1736,12 @@ namespace desay
                     var JogSpeed = (double)tbrJogSpeed.Value;
                     if (moveSelectHorizontal1.MoveMode.Continue)
                     {
-                        m_GluePlateform.Yaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                        m_GluePlateform.Yaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Yaxis.Negative();
                     }
                     else
                     {
-                        Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                        Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Yaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.RYmanualSpeed);
                     }
                 }
@@ -1522,12 +1759,12 @@ namespace desay
                     var JogSpeed = (double)tbrJogSpeed.Value;
                     if (moveSelectHorizontal1.MoveMode.Continue)
                     {
-                        m_GluePlateform.Yaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                        m_GluePlateform.Yaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Yaxis.Postive();
                     }
                     else
                     {
-                        Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                        Global.RYmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                         m_GluePlateform.Yaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.RYmanualSpeed);
                     }
                 }
@@ -1557,12 +1794,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_GluePlateform.Zaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_GluePlateform.Zaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_GluePlateform.Zaxis.Negative();
                 }
                 else
                 {
-                    Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_GluePlateform.Zaxis.MoveDelta(-1 * moveSelectHorizontal1.MoveMode.Distance, Global.RZmanualSpeed);
                 }
             }
@@ -1578,12 +1815,12 @@ namespace desay
                 var JogSpeed = (double)tbrJogSpeed.Value;
                 if (moveSelectHorizontal1.MoveMode.Continue)
                 {
-                    m_GluePlateform.Zaxis.Speed = JogSpeed == 0 ? 10 : JogSpeed;
+                    m_GluePlateform.Zaxis.Speed = JogSpeed == 0 ? 25 : JogSpeed;
                     m_GluePlateform.Zaxis.Postive();
                 }
                 else
                 {
-                    Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 10 : JogSpeed;
+                    Global.RZmanualSpeed.Maxvel = JogSpeed == 0 ? 25 : JogSpeed;
                     m_GluePlateform.Zaxis.MoveDelta(1 * moveSelectHorizontal1.MoveMode.Distance, Global.RZmanualSpeed);
                 }
             }
@@ -1639,7 +1876,7 @@ namespace desay
         #region 单按钮操作
         private void btnCleanOpen_Click(object sender, EventArgs e)
         {
-            if(!IoPoints.IDO16.Value)
+            if (!IoPoints.IDO16.Value)
             {
                 IoPoints.IDO16.Value = true;
                 btnCleanOpen.Text = "清洁已打开";
@@ -1653,121 +1890,273 @@ namespace desay
 
         private void btnCleanCone_Click(object sender, EventArgs e)
         {
-            //if (!m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
-            //    && !m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y)
-            //    && !m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Z))
-            //{
-            //    MessageBox.Show("未在镜筒清洗起始位！");
-            //    return;
-            //}
-            Int32 Dimension = 2;
-            Int32[] Axis_ID_Array_For_2Axes_ArcMove = new Int32[2] { m_CleanPlateform.Xaxis.NoId, m_CleanPlateform.Yaxis.NoId };
-            // Int32[] Center_Pos_Array = new Int32[2] { 10000, 10000 };
-            Int32[] Center_Pos_Array = new Int32[2] { Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.X/ AxisParameter.Instance.LXTransParams.PulseEquivalent),
-                Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.Y  / AxisParameter.Instance.LYTransParams.PulseEquivalent) };//去掉了除以脉冲当量的计算
-            Int32 Max_Arc_Speed = 5000;
-            Int32 Angle = 360;
-            //IoPoints.m_ApsController.MoveArc2Absolute(m_CleanPlateform.Xaxis.NoId, m_CleanPlateform.Yaxis.NoId,
-            //    Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.X / AxisParameter.Instance.LXTransParams.PulseEquivalent),
-            //    Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.Y / AxisParameter.Instance.LYTransParams.PulseEquivalent),
-            //    360, new VelocityCurve() { Maxvel = 5000 });
-            //APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
-            var step = 0;
-            bool itrue = true;
-            while (itrue)
+            if (DialogResult.No == MessageBox.Show("是否进行产品清洗？", "提示", MessageBoxButtons.YesNo)) return;
+            if (Position.Instance.UseRectGlue)
             {
-                switch (step)
+                #region 矩形清洗
+                var step = 0;
+                bool itrue = true;
+                while (itrue)
                 {
-                    case 0:
-                        MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFirstPosition.X, Global.RXmanualSpeed,
-                                    m_CleanPlateform.Yaxis, Position.Instance.CleanConeFirstPosition.Y, Global.RYmanualSpeed,
-                                    m_CleanPlateform.Zaxis, Position.Instance.CleanConeFirstPosition.Z, Global.RZmanualSpeed,
-                                    () =>
-                                    {
-                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
-                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
-                                    });
-                        step = 10;
-                        break;
-                    case 10:
-                        if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
-                            && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y)
-                            && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Z))
-                        {
-                            IoPoints.IDO7.Value = true;
-                            APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
-                            Thread.Sleep(200);
-                            step = 20;
-                        }
-                        break;
-                    case 20:
-                        if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
-                        {
-                            IoPoints.IDO7.Value = false;
-                            itrue = false;
-                            step = 30;
-                        }
-                        break;
+                    switch (step)
+                    {
+                        case 0: //移动到矩形清洗第一位置
+                            MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFirstPosition.X, Global.LXmanualSpeed,
+                                        m_CleanPlateform.Yaxis, Position.Instance.CleanConeFirstPosition.Y, Global.LYmanualSpeed,
+                                        m_CleanPlateform.Zaxis, Position.Instance.CleanConeFirstPosition.Z, Global.LZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                     | m_CleanPlateform.stationInitialize.InitializeDone;
+                                        });
+                            step = 10;
+                            break;
+                        case 10://矩形插补移动
+                            if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
+                               && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y)
+                               && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Z))
+                            {
+                                m_CleanPlateform.InitBufferMode(3, (int)AxisParameter.Instance.CleanPathSpeed.Maxvel);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanConeSecondPosition.X, Position.Instance.CleanConeSecondPosition.Y, Position.Instance.CleanConeSecondPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanConeThirdPositon.X, Position.Instance.CleanConeThirdPositon.Y, Position.Instance.CleanConeThirdPositon.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanConeForthPosition.X, Position.Instance.CleanConeForthPosition.Y, Position.Instance.CleanConeForthPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z);
+                                //清洗启动
+                                m_CleanPlateform.APSptStart();
+                                step = 20;
+                            }
+                            break;
+                        case 20://回清洗安全位置
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone && m_CleanPlateform.Zaxis.IsDone)
+                            {
+                                MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanSafePosition.X, Global.LXmanualSpeed,
+                                            m_CleanPlateform.Yaxis, Position.Instance.CleanSafePosition.Y, Global.LYmanualSpeed,
+                                            m_CleanPlateform.Zaxis, Position.Instance.CleanSafePosition.Z, Global.LZmanualSpeed,
+                                         () =>
+                                         {
+                                             return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                      | m_CleanPlateform.stationInitialize.InitializeDone;
+                                         });
+                                step = 30;
+                            }
+                            break;
+                        case 30://结束流程
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone && m_CleanPlateform.Zaxis.IsDone)
+                            {
+                                itrue = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                #endregion
             }
+            else
+            {
+                #region  圆形镜筒清洗
+                //计算镜筒圆心位置
+                CalculateConeCenter();
+                //镜筒尺寸
+                Int32 Dimension = 2;
+                Int32[] Axis_ID_Array_For_2Axes_ArcMove = new Int32[2] { m_CleanPlateform.Xaxis.NoId, m_CleanPlateform.Yaxis.NoId };
+                Int32[] Center_Pos_Array = new Int32[2] { Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.X/ AxisParameter.Instance.LXTransParams.PulseEquivalent),
+                Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.Y  / AxisParameter.Instance.LYTransParams.PulseEquivalent) };//去掉了除以脉冲当量的计算
+                Int32 Max_Arc_Speed = 5000;
+                Int32 Angle = 360;
+                var step = 0;
+                bool itrue = true;
+                while (itrue)
+                {
+                    switch (step)
+                    {
+                        case 0://移到镜筒清洗第一位置
+                            MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanConeFirstPosition.X, Global.LXmanualSpeed,
+                                        m_CleanPlateform.Yaxis, Position.Instance.CleanConeFirstPosition.Y, Global.LYmanualSpeed,
+                                        m_CleanPlateform.Zaxis, Position.Instance.CleanConeFirstPosition.Z, Global.LZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                     | m_CleanPlateform.stationInitialize.InitializeDone;
+                                        });
+                            step = 10;
+                            break;
+                        case 10://清洗一圈
+                            if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
+                                && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y)
+                                && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Z))
+                            {
+                                IoPoints.IDO7.Value = true;
+                                APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
+                                Thread.Sleep(200);
+                                step = 20;
+                            }
+                            break;
+                        case 20://Z轴回清洗安全位置
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
+                            {
+                                IoPoints.IDO7.Value = false;
+                                m_CleanPlateform.Zaxis.MoveTo(Position.Instance.CleanSafePosition.Z, AxisParameter.Instance.LZspeed);
+                                step = 30;
+                            }
+                            break;
+                        case 30://XY轴回清洗安全位置
+                            if (m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
+                            {
+                                m_CleanPlateform.Xaxis.MoveTo(Position.Instance.CleanSafePosition.X, AxisParameter.Instance.LXspeed);
+                                m_CleanPlateform.Yaxis.MoveTo(Position.Instance.CleanSafePosition.Y, AxisParameter.Instance.LYspeed);
+                                step = 40;
+                            }
+                            break;
+                        case 40://结束流程
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
+                            {
+                                itrue = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                #endregion
+            }
+
+
         }
 
         private void btnCleanLens_Click(object sender, EventArgs e)
         {
-            //if (!m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X)
-            //    && !m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y)
-            //    && !m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Z))
-            //{
-            //    MessageBox.Show("未在镜片清洗起始位！");
-            //    return;
-            //}
-            //CalculateConeCenter();
-            Int32 Dimension = 2;
-            Int32[] Axis_ID_Array_For_2Axes_ArcMove = new Int32[2] { m_CleanPlateform.Xaxis.NoId, m_CleanPlateform.Yaxis.NoId };
-            // Int32[] Center_Pos_Array = new Int32[2] { 10000, 10000 };
-            Int32[] Center_Pos_Array = new Int32[2] { Convert.ToInt32(Position.Instance.CleanLensCenterPositionReal.X/ AxisParameter.Instance.LXTransParams.PulseEquivalent),
-                Convert.ToInt32(Position.Instance.CleanLensCenterPositionReal.Y/ AxisParameter.Instance.LYTransParams.PulseEquivalent) };//去掉了除以脉冲当量的计算
-            Int32 Max_Arc_Speed = 5000;
-            Int32 Angle = 360;
-            //APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
-
-            var step = 0;
-            bool itrue = true;
-            while (itrue)
+            if (DialogResult.No == MessageBox.Show("是否进行产品清洗？", "提示", MessageBoxButtons.YesNo)) return;
+            if (Position.Instance.UseRectGlue)
             {
-                switch (step)
+                #region 矩形清洗
+                var step = 0;
+                bool itrue = true;
+                while (itrue)
                 {
-                    case 0:
-                        MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFirstPosition.X, Global.LXmanualSpeed,
-                                    m_CleanPlateform.Yaxis, Position.Instance.CleanLensFirstPosition.Y, Global.LYmanualSpeed,
-                                    m_CleanPlateform.Zaxis, Position.Instance.CleanLensFirstPosition.Z, Global.LZmanualSpeed,
-                                    () =>
-                                    {
-                                        return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
-                                                 | m_CleanPlateform.stationInitialize.InitializeDone;
-                                    });
-                        step = 10;
-                        break;
-                    case 10:
-                        if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X)
-                            && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y)
-                            && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Z))
-                        {
-                            IoPoints.IDO7.Value = true;
-                            APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
-                            Thread.Sleep(200);
-                            step = 20;
-                        }
-                        break;
-                    case 20:
-                        if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
-                        {
-                            IoPoints.IDO7.Value = false;
-                            itrue = false;
-                            step = 30;
-                        }
-                        break;
+                    switch (step)
+                    {
+                        case 0: //移动到矩形清洗第一位置
+                            MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFirstPosition.X, Global.LXmanualSpeed,
+                                        m_CleanPlateform.Yaxis, Position.Instance.CleanLensFirstPosition.Y, Global.LYmanualSpeed,
+                                        m_CleanPlateform.Zaxis, Position.Instance.CleanLensFirstPosition.Z, Global.LZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                     | m_CleanPlateform.stationInitialize.InitializeDone;
+                                        });
+                            step = 10;
+                            break;
+                        case 10://矩形插补移动
+                            if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X)
+                             && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y)
+                             && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Z))
+                            {
+                                m_CleanPlateform.InitBufferMode(3, (int)AxisParameter.Instance.CleanPathSpeed.Maxvel);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanLensSecondPosition.X, Position.Instance.CleanLensSecondPosition.Y, Position.Instance.CleanLensSecondPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanLensThirdPositon.X, Position.Instance.CleanLensThirdPositon.Y, Position.Instance.CleanLensThirdPositon.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanLensForthPosition.X, Position.Instance.CleanLensForthPosition.Y, Position.Instance.CleanLensForthPosition.Z);
+                                m_CleanPlateform.DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z);
+                                //清洗启动
+                                m_CleanPlateform.APSptStart();
+                                step = 20;
+                            }
+                            break;
+                        case 20://回清洗安全位置
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone && m_CleanPlateform.Zaxis.IsDone)
+                            {
+                                MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanSafePosition.X, Global.LXmanualSpeed,
+                                            m_CleanPlateform.Yaxis, Position.Instance.CleanSafePosition.Y, Global.LYmanualSpeed,
+                                            m_CleanPlateform.Zaxis, Position.Instance.CleanSafePosition.Z, Global.LZmanualSpeed,
+                                         () =>
+                                         {
+                                             return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                      | m_CleanPlateform.stationInitialize.InitializeDone;
+                                         });
+                                step = 30;
+                            }
+                            break;
+                        case 30://结束流程
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone && m_CleanPlateform.Zaxis.IsDone)
+                            {
+                                itrue = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                #endregion
+            }
+            else
+            {
+                #region 圆形清洗
+                //计算镜片圆心位置
+                CalculateLensCenter();
+                //镜片尺寸
+                Int32 Dimension = 2;
+                Int32[] Axis_ID_Array_For_2Axes_ArcMove = new Int32[2] { m_CleanPlateform.Xaxis.NoId, m_CleanPlateform.Yaxis.NoId };
+                Int32[] Center_Pos_Array = new Int32[2] { Convert.ToInt32(Position.Instance.CleanLensCenterPositionReal.X/ AxisParameter.Instance.LXTransParams.PulseEquivalent),
+                Convert.ToInt32(Position.Instance.CleanLensCenterPositionReal.Y/ AxisParameter.Instance.LYTransParams.PulseEquivalent) };//去掉了除以脉冲当量的计算
+                Int32 Max_Arc_Speed = 5000;
+                Int32 Angle = 360;
+                var step = 0;
+                bool itrue = true;
+                while (itrue)
+                {
+                    switch (step)
+                    {
+                        case 0://移到镜筒清洗第一位置
+                            MoveToPoint(m_CleanPlateform.Xaxis, Position.Instance.CleanLensFirstPosition.X, Global.LXmanualSpeed,
+                                        m_CleanPlateform.Yaxis, Position.Instance.CleanLensFirstPosition.Y, Global.LYmanualSpeed,
+                                        m_CleanPlateform.Zaxis, Position.Instance.CleanLensFirstPosition.Z, Global.LZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_CleanPlateform.stationInitialize.Running | !m_CleanPlateform.stationOperate.Running
+                                                     | m_CleanPlateform.stationInitialize.InitializeDone;
+                                        });
+                            step = 10;
+                            break;
+                        case 10://清洗一圈
+                            if (m_CleanPlateform.Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X)
+                             && m_CleanPlateform.Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y)
+                             && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Z))
+                            {
+                                IoPoints.IDO7.Value = true;
+                                APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
+                                Thread.Sleep(200);
+                                step = 20;
+                            }
+                            break;
+                        case 20://Z轴回清洗安全位置
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
+                            {
+                                IoPoints.IDO7.Value = false;
+                                m_CleanPlateform.Zaxis.MoveTo(Position.Instance.CleanSafePosition.Z, AxisParameter.Instance.LZspeed);
+                                step = 30;
+                            }
+                            break;
+                        case 30://XY轴回清洗安全位置
+                            if (m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
+                            {
+                                m_CleanPlateform.Xaxis.MoveTo(Position.Instance.CleanSafePosition.X, AxisParameter.Instance.LXspeed);
+                                m_CleanPlateform.Yaxis.MoveTo(Position.Instance.CleanSafePosition.Y, AxisParameter.Instance.LYspeed);
+                                step = 40;
+                            }
+                            break;
+                        case 40://结束流程
+                            if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
+                            {
+                                itrue = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                #endregion
             }
         }
 
@@ -1787,8 +2176,10 @@ namespace desay
 
         private void btnArcMove_Click(object sender, EventArgs e)
         {
-            if (DialogResult.No == MessageBox.Show("是否进行圆弧点胶", "", MessageBoxButtons.YesNo)) return;
-            //CalculateGlueCenter();
+            #region 圆弧点胶
+            if (DialogResult.No == MessageBox.Show("是否进行圆弧点胶？", "提示", MessageBoxButtons.YesNo)) return;
+            //计算圆弧圆心位置
+            CalculateGlueCenter();
             Task.Factory.StartNew(() =>
             {
                 try
@@ -1819,37 +2210,46 @@ namespace desay
                                     && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueStartPosition.Y)
                                     && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueStartPosition.Z))
                                 {
+                                    //先打开点胶电磁阀
+                                    if (isUseGlue)
+                                    {
+                                        IoPoints.IDO19.Value = true;
+                                        Thread.Sleep((int)Position.Instance.StartGlueDelay);
+                                    }
+                                    else
+                                    {
+                                        IoPoints.IDO19.Value = false;
+                                    }
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
                                 { (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                          (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                  (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                   (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.StartGlueAngle);
-                                    Thread.Sleep(1);
+                                    Thread.Sleep(10);
                                     step = 70;
                                 }
                                 break;
-                            case 70://点胶第一圈
+                            case 70://再点胶一圈
                                 if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
                                     && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                    (int)Position.Instance.GluePathSpeed * 1000, 360);
-                                    IoPoints.IDO19.Value = true;
-                                    //Thread.Sleep(1);
+                                {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                   (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                   (int)Position.Instance.GluePathSpeed * 1000, 360);
+
                                     step = 80;
                                 }
                                 break;
-                            case 80://点胶第二圈
+                            case 80://点胶补胶
                                 if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
                                     && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                    (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
+                                    { (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                      (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                      (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
                                     Thread.Sleep((int)Position.Instance.StopGlueDelay);
                                     step = 90;
                                 }
@@ -1859,13 +2259,14 @@ namespace desay
                                     && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
+                                    //关闭点胶电磁阀
                                     IoPoints.IDO19.Value = false;
                                     APS168.APS_absolute_move(m_GluePlateform.Zaxis.NoId, (int)((m_GluePlateform.Zaxis.CurrentPos - Position.Instance.DragGlueHeight) / AxisParameter.Instance.RYTransParams.PulseEquivalent),
                                         1000);
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                    (int)Position.Instance.DragGlueSpeed * 1000, Position.Instance.DragGlueAngle);
+                                    { (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                      (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                      (int)Position.Instance.DragGlueSpeed * 1000, Position.Instance.DragGlueAngle);
                                     Thread.Sleep(1);
                                     step = 100;
                                 }
@@ -1876,6 +2277,7 @@ namespace desay
                                     && m_GluePlateform.Yaxis.CurrentSpeed == 0 && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     IoPoints.IDO19.Value = false;
+                                    m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
                                     itrue = false;
                                     step = 0;
                                 }
@@ -1891,16 +2293,7 @@ namespace desay
                     LogHelper.Error(ex.ToString());
                 }
             }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
-        }
-
-        private void btnConfirmNeedle_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show($"是否更新对针数据", "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
-                return;
-            Position.Instance.NeedleOffset.X = m_GluePlateform.Xaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.X;
-            Position.Instance.NeedleOffset.Y = m_GluePlateform.Yaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.Y;
-
-            SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
+            #endregion
         }
 
         private void btnAirOpen_Click(object sender, EventArgs e)
@@ -1915,6 +2308,17 @@ namespace desay
                 IoPoints.IDO10.Value = false;
                 btnAirOpen.Text = "通气打开";
             }
+        }
+
+        #region 未引用（对针标定和胶重检查）
+        private void btnConfirmNeedle_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show($"是否更新对针数据", "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                return;
+            Position.Instance.NeedleOffset.X = m_GluePlateform.Xaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.X;
+            Position.Instance.NeedleOffset.Y = m_GluePlateform.Yaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.Y;
+
+            SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
         }
 
         private void btnGlueWeight_Click(object sender, EventArgs e)
@@ -2008,195 +2412,6 @@ namespace desay
 
                 }
             }
-        }
-
-        private void btnTapping_Click(object sender, EventArgs e)
-        {
-            var step = 0;
-            bool itrue = true;
-            while (itrue)
-            {
-                switch (step)
-                {
-                    case 0://移至胶重点检位
-                        MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
-                                    m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
-                                    m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
-                                    () =>
-                                    {
-                                        return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
-                                                 | m_GluePlateform.stationInitialize.InitializeDone;
-                                    });
-                        step = 5;
-                        break;
-                    case 5://起始空胶
-                        if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.CutGlueStartPosition.X)
-                            && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Y)
-                            && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Z))
-                        {
-                            m_GluePlateform.Xaxis.MoveTo(Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed);
-                            m_GluePlateform.Yaxis.MoveTo(Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed);
-                            Thread.Sleep(1);
-                            step = 10;
-                        }
-                        break;
-                    case 10:
-                        if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
-                        {
-                            itrue = false;
-                            step = 30;
-                        }
-                        break;
-                }
-            }
-        }
-
-        private void btnCleanXHome_Click(object sender, EventArgs e)
-        {
-            if (IoPoints.m_ApsController.CheckHomeDone(m_CleanPlateform.Zaxis.NoId, 0.2) != 0)
-            { MessageBox.Show("清洗Z轴请先回零！");return; }
-            if(m_CleanPlateform.Zaxis.CurrentPos>Position.Instance.CleanSafePosition.Z) { MessageBox.Show("清洗Z轴不在安全位！"); return; }
-            if (m_CleanPlateform.Xaxis.IsServon)
-                m_CleanPlateform.Xaxis.BackHome();
-        }
-
-        private void btnCleanXStop_Click(object sender, EventArgs e)
-        {
-            if (m_CleanPlateform.Xaxis.IsServon)
-                m_CleanPlateform.Xaxis.Stop();
-        }
-
-        private void btnCleanYHome_Click(object sender, EventArgs e)
-        {
-            if (IoPoints.m_ApsController.CheckHomeDone(m_CleanPlateform.Zaxis.NoId, 0.2) != 0)
-            { MessageBox.Show("清洗Z轴请先回零！"); return; }
-            if (m_CleanPlateform.Zaxis.CurrentPos > Position.Instance.CleanSafePosition.Z) { MessageBox.Show("清洗Z轴不在安全位！"); return; }
-            if (m_CleanPlateform.Yaxis.IsServon)
-                m_CleanPlateform.Yaxis.BackHome();
-        }
-
-        private void btnCleanYStop_Click(object sender, EventArgs e)
-        {
-            if (m_CleanPlateform.Yaxis.IsServon)
-                m_CleanPlateform.Yaxis.Stop();
-        }
-
-        private void btnCleanZHome_Click(object sender, EventArgs e)
-        {
-            if (m_CleanPlateform.Zaxis.IsServon)
-                m_CleanPlateform.Zaxis.BackHome();
-        }
-
-        private void btnCleanZStop_Click(object sender, EventArgs e)
-        {
-            if (m_CleanPlateform.Zaxis.IsServon)
-                m_CleanPlateform.Zaxis.Stop();
-        }
-
-        private void btnGlueXHome_Click(object sender, EventArgs e)
-        {
-            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 0.2) != 0)
-            { MessageBox.Show("点胶Z轴请先回零！"); return; }
-            if (m_GluePlateform.Zaxis.CurrentPos > Position.Instance.GlueSafePosition.Z) { MessageBox.Show("点胶Z轴不在安全位！"); return; }
-            if (m_GluePlateform.Xaxis.IsServon)
-                  m_GluePlateform.Xaxis.BackHome();
-        }
-
-        private void btnGlueXStop_Click(object sender, EventArgs e)
-        {
-            if (m_GluePlateform.Xaxis.IsServon)
-                m_GluePlateform.Xaxis.Stop();
-        }
-
-        private void btnGlueYHome_Click(object sender, EventArgs e)
-        {
-            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 0.2) != 0)
-            { MessageBox.Show("点胶Z轴请先回零！"); return; }
-            if (m_GluePlateform.Zaxis.CurrentPos > Position.Instance.GlueSafePosition.Z) { MessageBox.Show("点胶Z轴不在安全位！"); return; }
-            if (m_GluePlateform.Yaxis.IsServon)
-                m_GluePlateform.Yaxis.BackHome();
-        }
-
-        private void btnGlueYStop_Click(object sender, EventArgs e)
-        {
-            if (m_GluePlateform.Yaxis.IsServon)
-                m_GluePlateform.Yaxis.Stop();
-        }
-
-        private void btnGlueZHome_Click(object sender, EventArgs e)
-        {
-            if (m_GluePlateform.Zaxis.IsServon)
-                m_GluePlateform.Zaxis.BackHome();
-        }
-
-        private void btnGlueRStop_Click(object sender, EventArgs e)
-        {
-            if (m_GluePlateform.Zaxis.IsServon)
-                m_GluePlateform.Zaxis.Stop();
-        }
-
-        #endregion
-
-        private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve, ApsAxis Zaxis, double Z, VelocityCurve ZvelocityCurve, Func<bool> Condition = null)
-        {
-            if (!Xaxis.IsServon || !Zaxis.IsServon) return -3;
-            if (!Condition()) return -4;
-            Global.IsLocating = true;
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {            //判断Z轴是否在零点
-                    if (!Zaxis.IsInPosition(0.5))
-                        Zaxis.MoveTo(0.5, ZvelocityCurve);
-                    while (true)
-                    {
-                        Thread.Sleep(10);
-                        if (Zaxis.IsInPosition(0.5)) break;
-                        if (ServoAxisIsReady(Zaxis) || ServoAxisIsReady(Zaxis))
-                        {
-                            Zaxis.Stop();
-                            Global.IsLocating = false;
-                            return -2;
-                        }
-                    }
-                    //将X、Y移动到指定位置
-                    if (!Xaxis.IsInPosition(X)) Xaxis.MoveTo(X, XvelocityCurve);
-                    while (true)
-                    {
-                        Thread.Sleep(10);
-                        if (Xaxis.IsInPosition(X)) break;
-                        if (ServoAxisIsReady(Xaxis))
-                        {
-                            Xaxis.Stop();
-                            Global.IsLocating = false;
-                            return -2;
-                        }
-                    }
-                    //将Z轴移动到指定位置
-                    Zaxis.MoveTo(Z, ZvelocityCurve);
-                    while (true)
-                    {
-                        Thread.Sleep(10);
-                        if (Zaxis.IsInPosition(Z)) break;
-                        if (ServoAxisIsReady(Zaxis))
-                        {
-                            Zaxis.Stop();
-                            Global.IsLocating = false;
-                            return -2;
-                        }
-                    }
-                    Global.IsLocating = false;
-                    return 0;
-                }
-                catch (Exception ex)
-                {
-                    Global.IsLocating = false;
-                    //log.Fatal("设备驱动程序异常", ex);
-                    return -2;
-                }
-            }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
-            Global.IsLocating = false;
-            return 0;
         }
 
         private void btnNeedleCalib_Click(object sender, EventArgs e)
@@ -2312,46 +2527,183 @@ namespace desay
             }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
         }
 
+        private void btnTapping_Click(object sender, EventArgs e)
+        {
+            var step = 0;
+            bool itrue = true;
+            while (itrue)
+            {
+                switch (step)
+                {
+                    case 0://移至胶重点检位
+                        MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
+                                    m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
+                                    m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
+                                    () =>
+                                    {
+                                        return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
+                                                 | m_GluePlateform.stationInitialize.InitializeDone;
+                                    });
+                        step = 5;
+                        break;
+                    case 5://起始空胶
+                        if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.CutGlueStartPosition.X)
+                            && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Y)
+                            && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Z))
+                        {
+                            m_GluePlateform.Xaxis.MoveTo(Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed);
+                            m_GluePlateform.Yaxis.MoveTo(Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed);
+                            Thread.Sleep(1);
+                            step = 10;
+                        }
+                        break;
+                    case 10:
+                        if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
+                        {
+                            itrue = false;
+                            step = 30;
+                        }
+                        break;
+                }
+            }
+        }
+        #endregion
+
+        private void btnCleanXHome_Click(object sender, EventArgs e)
+        {
+            if (IoPoints.m_ApsController.CheckHomeDone(m_CleanPlateform.Zaxis.NoId, 0.2) != 0)
+            { MessageBox.Show("清洗Z轴请先回零！"); return; }
+            if (m_CleanPlateform.Zaxis.CurrentPos > Position.Instance.CleanSafePosition.Z) { MessageBox.Show("清洗Z轴不在安全位！"); return; }
+            if (m_CleanPlateform.Xaxis.IsServon)
+                m_CleanPlateform.Xaxis.BackHome();
+        }
+
+        private void btnCleanXStop_Click(object sender, EventArgs e)
+        {
+            if (m_CleanPlateform.Xaxis.IsServon)
+                m_CleanPlateform.Xaxis.Stop();
+        }
+
+        private void btnCleanYHome_Click(object sender, EventArgs e)
+        {
+            if (IoPoints.m_ApsController.CheckHomeDone(m_CleanPlateform.Zaxis.NoId, 0.2) != 0)
+            { MessageBox.Show("清洗Z轴请先回零！"); return; }
+            if (m_CleanPlateform.Zaxis.CurrentPos > Position.Instance.CleanSafePosition.Z) { MessageBox.Show("清洗Z轴不在安全位！"); return; }
+            if (m_CleanPlateform.Yaxis.IsServon)
+                m_CleanPlateform.Yaxis.BackHome();
+        }
+
+        private void btnCleanYStop_Click(object sender, EventArgs e)
+        {
+            if (m_CleanPlateform.Yaxis.IsServon)
+                m_CleanPlateform.Yaxis.Stop();
+        }
+
+        private void btnCleanZHome_Click(object sender, EventArgs e)
+        {
+            if (m_CleanPlateform.Zaxis.IsServon)
+                m_CleanPlateform.Zaxis.BackHome();
+        }
+
+        private void btnCleanZStop_Click(object sender, EventArgs e)
+        {
+            if (m_CleanPlateform.Zaxis.IsServon)
+                m_CleanPlateform.Zaxis.Stop();
+        }
+
+        private void btnGlueXHome_Click(object sender, EventArgs e)
+        {
+            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 0.2) != 0)
+            { MessageBox.Show("点胶Z轴请先回零！"); return; }
+            if (m_GluePlateform.Zaxis.CurrentPos > Position.Instance.GlueSafePosition.Z) { MessageBox.Show("点胶Z轴不在安全位！"); return; }
+            if (m_GluePlateform.Xaxis.IsServon)
+                m_GluePlateform.Xaxis.BackHome();
+        }
+
+        private void btnGlueXStop_Click(object sender, EventArgs e)
+        {
+            if (m_GluePlateform.Xaxis.IsServon)
+                m_GluePlateform.Xaxis.Stop();
+        }
+
+        private void btnGlueYHome_Click(object sender, EventArgs e)
+        {
+            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 0.2) != 0)
+            { MessageBox.Show("点胶Z轴请先回零！"); return; }
+            if (m_GluePlateform.Zaxis.CurrentPos > Position.Instance.GlueSafePosition.Z) { MessageBox.Show("点胶Z轴不在安全位！"); return; }
+            if (m_GluePlateform.Yaxis.IsServon)
+                m_GluePlateform.Yaxis.BackHome();
+        }
+
+        private void btnGlueYStop_Click(object sender, EventArgs e)
+        {
+            if (m_GluePlateform.Yaxis.IsServon)
+                m_GluePlateform.Yaxis.Stop();
+        }
+
+        private void btnGlueZHome_Click(object sender, EventArgs e)
+        {
+            if (m_GluePlateform.Zaxis.IsServon)
+                m_GluePlateform.Zaxis.BackHome();
+        }
+
+        private void btnGlueRStop_Click(object sender, EventArgs e)
+        {
+            if (m_GluePlateform.Zaxis.IsServon)
+                m_GluePlateform.Zaxis.Stop();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 测高
+        /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
             frmMain.main.m_Mes.HeightDectector.WriteDetectHeightCommand();
         }
 
+        /// <summary>
+        /// 保存矩形点胶位置和出胶延时
+        /// </summary>
         private void btnSaveRect_Click(object sender, EventArgs e)
         {
             Config.Instance.RectX[0] = (double)nudRectX1.Value;
             Config.Instance.RectX[1] = (double)nudRectX2.Value;
             Config.Instance.RectX[2] = (double)nudRectX3.Value;
             Config.Instance.RectX[3] = (double)nudRectX4.Value;
+            Config.Instance.RectX[4] = (double)nudRectX5.Value;
             Config.Instance.RectY[0] = (double)nudRectY1.Value;
             Config.Instance.RectY[1] = (double)nudRectY2.Value;
             Config.Instance.RectY[2] = (double)nudRectY3.Value;
             Config.Instance.RectY[3] = (double)nudRectY4.Value;
+            Config.Instance.RectY[4] = (double)nudRectY5.Value;
             Config.Instance.RectZ = (double)nudRectZ.Value;
             Config.Instance.GlueRectNOoneDelayTime = (int)nudTimeDelay.Value;
-            Position.Instance.UseRectGlue = cbRuseRect.Checked;
             SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
             SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
             MessageBox.Show("参数保存成功");
         }
 
+        /// <summary>
+        /// 自动拍照定位，并进行圆形点胶
+        /// </summary>
         private void btnCamGlue_Click(object sender, EventArgs e)
         {
-            if (DialogResult.No == MessageBox.Show("是否进行视觉圆弧点胶", "", MessageBoxButtons.YesNo)) return;
+            if (DialogResult.No == MessageBox.Show("是否进行视觉圆弧点胶？", "提示", MessageBoxButtons.YesNo)) return;
 
             AutoGlue();
         }
 
         /// <summary>
-        /// 自动拍照位 定位并点胶
+        /// 拍照定位和圆形点胶流程
         /// </summary>
         private void AutoGlue()
         {
             Point3D<double> GlueCenterPosition, GlueStartPosition, GlueSecondPosition, GlueThirdPositon;
             var _watch = new Stopwatch();
             _watch.Start();
-           
-            double glueHeightOffset = 0.0;//new add
+            double glueHeightOffset = 0.0;//高度差值
             Task.Factory.StartNew(() =>
             {
                 try
@@ -2360,79 +2712,81 @@ namespace desay
                     bool itrue = true;
                     while (itrue)
                     {
-                    Thread.Sleep(1);
-                    switch (step)
+                        Thread.Sleep(10);
+                        switch (step)
                         {
                             case 0:
                                 step = 10;
                                 break;
                             case 10://Z先回安全位
                                 m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
-                            Thread.Sleep(10);
-                            step = 20;
+                                Thread.Sleep(10);
+                                step = 20;
                                 break;
                             case 20://检测Z轴是否在安全位，XY轴移至测高位置
                                 if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
                                     m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, Global.RXmanualSpeed);
                                     m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, Global.RXmanualSpeed);
-                                    step =30;
-                                Thread.Sleep(10);
-                            }
+                                    step = 30;
+                                    Thread.Sleep(10);
+                                }
                                 break;
                             case 30://Z轴移至测高位置
                                 if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueHeightPosition.X)
-                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueHeightPosition.Y))
+                                 && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueHeightPosition.Y))
                                 {
                                     m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueHeightPosition.Z, Global.RXmanualSpeed);
-                                    step =40;
+                                    step = 40;
                                 }
                                 break;
                             case 40://发送测高指令
                                 if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueHeightPosition.Z))
                                 {
                                     Marking.RequestHeightFlg = true;
-                                    Thread.Sleep(1000);//测高模块需要等待一会数据稳定
+                                    Thread.Sleep(1500);//测高模块需要等待一会数据稳定
                                     SendRequest(1);
                                     _watch.Restart();
                                     step = 50;
-                                Thread.Sleep(100);
-                            }
+                                    Thread.Sleep(100);
+                                }
                                 break;
-                            case 50://读取测高结果
-                           
-                            if (Marking.GetHeightFlg)
+                            case 50://读取测高结果                           
+                                if (Marking.GetHeightFlg)
                                 {
                                     if (Marking.RequestHeightError)
                                     {
+                                        MessageBox.Show("测高报警!", "异常提示", MessageBoxButtons.OK);
                                         step = 0;
                                         itrue = false;
                                     }
                                     else
                                     {
-                                        glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;//new add
+                                        glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
                                         Marking.GetHeightFlg = false;
                                         step = 60;
-
                                     }
                                 }
-                                //_watch.Stop();
-                                if (_watch.ElapsedMilliseconds /1000.0>25)
+                                else
                                 {
-                                    _watch.Restart();
-                                    step = 0;
-                                    itrue = false;
+                                    if (_watch.ElapsedMilliseconds / 1000.0 > 35)
+                                    {
+                                        _watch.Restart();
+                                        step = 0;
+                                        itrue = false;
+                                    }
                                 }
-                            Thread.Sleep(10);
-                            break;
+                                Thread.Sleep(10);
+                                break;
                             case 60:// Z轴返回安全位
                                 m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                step = 70;
                                 if (glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown)
                                 {
+                                    MessageBox.Show("测高偏差过大!", "异常提示", MessageBoxButtons.OK);
                                     step = 0;
                                     itrue = false;
                                 }
+                                step = 70;
                                 break;
                             case 70:// XY轴前往拍照位置
                                 if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
@@ -2457,29 +2811,24 @@ namespace desay
                                 {
                                     //稳定后触发拍照信号 
                                     Thread.Sleep(500);
-                                    
                                     Marking.CenterLocateTestFinish = false;
                                     Marking.CenterLocateTestSucceed = false;
                                     frmAAVision.acq.CenterLocateTestAcquire();
                                     step = 160;
                                 }
                                 break;
-                            case 160:
-                                //触发相机拍照
+                            case 160://获取CCD结果
                                 if (Marking.CenterLocateTestFinish)
                                 {
                                     Marking.CenterLocateTestFinish = false;
                                     if (Marking.CenterLocateTestSucceed)
                                     {
-                                       
                                         step = 170;
                                     }
                                     else
                                     {
-
-
-                                        //step = 80;
                                         m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
+                                        MessageBox.Show("CCD识别失败!", "异常提示", MessageBoxButtons.OK);
                                         step = 0;
                                         itrue = false;
                                     }
@@ -2494,11 +2843,10 @@ namespace desay
                                 Position.Instance.GlueSecondPosition.Y = Position.Instance.GlueCenterPosition.Y - Position.Instance.GlueRadius;
                                 Position.Instance.GlueThirdPositon.X = Position.Instance.GlueCenterPosition.X + Position.Instance.GlueRadius;
                                 Position.Instance.GlueThirdPositon.Y = Position.Instance.GlueCenterPosition.Y;
-                          
                                 step = 180;
                                 break;
                             case 180:
-                                if (isUseGlueZero == false) { step = 190;break; }
+                                if (isUseGlueZero == false) { step = 190; break; }
                                 MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueStartPosition.X, Global.RXmanualSpeed,
                                             m_GluePlateform.Yaxis, Position.Instance.GlueStartPosition.Y, Global.RYmanualSpeed,
                                             m_GluePlateform.Zaxis, Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed,
@@ -2527,11 +2875,20 @@ namespace desay
                                     && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueStartPosition.Y)
                                     && m_GluePlateform.Zaxis.IsInPosition(glueHeightOffset + Position.Instance.GlueHeight))
                                 {
+                                    if (isUseGlue)
+                                    {
+                                        IoPoints.IDO19.Value = true;
+                                        Thread.Sleep((int)Position.Instance.StartGlueDelay);
+                                    }
+                                    else
+                                    {
+                                        IoPoints.IDO19.Value = false;
+                                    }
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
                                 { (int)(( Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                          (int)(( Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                  (int)(( Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                   (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.StartGlueAngle);
-                                    Thread.Sleep(1);
+                                    Thread.Sleep(10);
                                     step = 210;
                                 }
                                 break;
@@ -2541,25 +2898,22 @@ namespace desay
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)(( Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)(( Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                 {  (int)(( Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                    (int)(( Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                     (int)Position.Instance.GluePathSpeed * 1000, 360);
-                                    if (isUseGlue) IoPoints.IDO19.Value = true;
-                                    else IoPoints.IDO19.Value = false;
-                                    Thread.Sleep(1);
                                     step = 220;
                                 }
                                 break;
-                            case 220://点胶第二圈
+                            case 220://补胶
                                 if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
                                     && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                 {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                    (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                     (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
-                                    Thread.Sleep((int)Position.Instance.StopGlueDelay);
+                                    Thread.Sleep((int)Position.Instance.StopGlueDelay);//断胶延时
                                     step = 230;
                                 }
                                 break;
@@ -2568,52 +2922,57 @@ namespace desay
                                     && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
                                     && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
-                                    IoPoints.IDO19.Value = false;
+                                    IoPoints.IDO19.Value = false;//关闭胶阀
                                     APS168.APS_absolute_move(m_GluePlateform.Zaxis.NoId, (int)((m_GluePlateform.Zaxis.CurrentPos - Position.Instance.DragGlueHeight) / AxisParameter.Instance.RYTransParams.PulseEquivalent),
-                                        1000);
+                                        (int)Position.Instance.DragGlueSpeed * 1000);
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                 {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                    (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                     (int)Position.Instance.DragGlueSpeed * 1000, Position.Instance.DragGlueAngle);
-                                    Thread.Sleep(1);
+                                    Thread.Sleep(10);
                                     step = 240;
                                 }
                                 break;
-                            case 240://点胶结束
+                            case 240://点胶结束，Z轴回点胶安全位置
                                 if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone &&
-                                    m_GluePlateform.Xaxis.CurrentSpeed == 0
-                                    && m_GluePlateform.Yaxis.CurrentSpeed == 0 && m_GluePlateform.Zaxis.CurrentSpeed == 0)
+                                    m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0 && m_GluePlateform.Zaxis.CurrentSpeed == 0)
                                 {
                                     IoPoints.IDO19.Value = false;
-
+                                    m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
                                     step = 250;
                                 }
                                 break;
-                            case 250://Z先回安全位
-                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
-                                step = 260;
-                                break;
-                            case 260:
+                            case 250://XY轴回点胶安全位置
                                 if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-
+                                    m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueSafePosition.X, Global.RXmanualSpeed);
+                                    m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueSafePosition.Y, Global.RYmanualSpeed);
+                                    step = 260;
+                                }
+                                break;
+                            case 260://流程结束
+                                if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone)
+                                {
                                     itrue = false;
                                     step = 0;
                                 }
                                 break;
-
                             default:
                                 step = 0;
                                 return;
                         }
                     }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(ex.ToString());
-            }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error(ex.ToString());
+                }
             }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
         }
+
+        /// <summary>
+        /// 出胶
+        /// </summary>
         bool isUseGlue = false;
         private void cbUseGlue_CheckedChanged(object sender, EventArgs e)
         {
@@ -2624,6 +2983,8 @@ namespace desay
             else
                 isUseGlue = false;
         }
+
+
         bool isUseGlueZero = false;
         private void cbZero_CheckedChanged(object sender, EventArgs e)
         {
@@ -2635,175 +2996,28 @@ namespace desay
                 isUseGlueZero = false;
         }
 
+        #region 移动到矩形四个角
         private void btnGoToRect1_Click(object sender, EventArgs e)
         {
             if (DialogResult.No == MessageBox.Show($"是否矩形第一点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
             //Task a = new Task(() =>
             //{
-                m_GluePlateform.Zaxis.MoveTo(0, Global.RYmanualSpeed);
-                while (true)
+            m_GluePlateform.Zaxis.MoveTo(0, Global.RZmanualSpeed);
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Zaxis.IsInPosition(0)
+                   )
                 {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Zaxis.IsInPosition(0)
-                       )
-                    {
 
-                        break;
-                    }
-
-
+                    break;
                 }
-                m_GluePlateform.Xaxis.MoveTo((double)nudRectX1.Value, Global.RXmanualSpeed);
-                m_GluePlateform.Yaxis.MoveTo((double)nudRectY1.Value, Global.RYmanualSpeed);
-
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX1.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY1.Value)
-                       )
-                    {
-
-                        break;
-                    }
 
 
-                }
-                m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RYmanualSpeed);
-            //});
-        }
-
-        private void btnGoToRect2_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.No == MessageBox.Show($"是否矩形第二点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
-            //Task a = new Task(() =>
-            //{
-                m_GluePlateform.Zaxis.MoveTo(0, Global.RYmanualSpeed);
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Zaxis.IsInPosition(0)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Xaxis.MoveTo((double)nudRectX2.Value, Global.RXmanualSpeed);
-                m_GluePlateform.Yaxis.MoveTo((double)nudRectY2.Value, Global.RYmanualSpeed);
-
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX2.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY2.Value)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RYmanualSpeed);
-            //});
-        }
-
-        private void btnGoToRect3_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.No == MessageBox.Show($"是否矩形第三点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
-            //Task a = new Task(() =>
-            //{
-                m_GluePlateform.Zaxis.MoveTo(0, Global.RYmanualSpeed);
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Zaxis.IsInPosition(0)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Xaxis.MoveTo((double)nudRectX3.Value, Global.RXmanualSpeed);
-                m_GluePlateform.Yaxis.MoveTo((double)nudRectY3.Value, Global.RYmanualSpeed);
-
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX3.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY3.Value)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RYmanualSpeed);
-            //});
-        }
-
-        private void btnGoTorect4_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.No == MessageBox.Show($"是否矩形第四点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
-            //Task a = new Task(() =>
-            //{
-                m_GluePlateform.Zaxis.MoveTo(0, Global.RYmanualSpeed);
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Zaxis.IsInPosition(0)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Xaxis.MoveTo((double)nudRectX4.Value, Global.RXmanualSpeed);
-                m_GluePlateform.Yaxis.MoveTo((double)nudRectY4.Value, Global.RYmanualSpeed);
-
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX4.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY4.Value)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RYmanualSpeed);
-            //});
-        }
-
-        private void btnRect_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.No == MessageBox.Show("是否进行矩形点胶", "", MessageBoxButtons.YesNo)) return;
-
-            //Task a = new Task(() =>
-            //{
-                m_GluePlateform.Zaxis.MoveTo(0, Global.RYmanualSpeed);
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    if (m_GluePlateform.Zaxis.IsInPosition(0)
-                       )
-                    {
-
-                        break;
-                    }
-
-
-                }
-                m_GluePlateform.Xaxis.MoveTo((double)nudRectX1.Value, Global.RXmanualSpeed);
+            }
+            m_GluePlateform.Xaxis.MoveTo((double)nudRectX1.Value, Global.RXmanualSpeed);
             m_GluePlateform.Yaxis.MoveTo((double)nudRectY1.Value, Global.RYmanualSpeed);
+
             while (true)
             {
                 Thread.Sleep(10);
@@ -2816,39 +3030,108 @@ namespace desay
 
 
             }
-            
-            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RYmanualSpeed);
-            //Thread.Sleep(500);
-           
+            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
+            //});
+        }
 
-            while (true)
-                {
-                    Thread.Sleep(10);
-                if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX1.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY1.Value)
-                    && m_GluePlateform.Zaxis.IsInPosition((double)nudRectZ.Value))
-                {
-         
-                    break;
-                }
-                    
-
-                }
-          
-            m_GluePlateform.InitBufferMode((int)nudAxisNum.Value, (int)AxisParameter.Instance.GluePathSpeed.Maxvel);
-            m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX1.Value, (double)nudRectY1.Value, (double)nudRectZ.Value);
-            m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX2.Value, (double)nudRectY2.Value, (double)nudRectZ.Value);
-            m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX3.Value, (double)nudRectY3.Value, (double)nudRectZ.Value);
-            m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX4.Value, (double)nudRectY4.Value, (double)nudRectZ.Value);
-            m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX1.Value+1, (double)nudRectY1.Value, (double)nudRectZ.Value);
-
-
-
-            m_GluePlateform.APSptStart((int)nudTimeDelay.Value, cbUseGlue.Checked);
-            m_GluePlateform.Xaxis.MoveTo((double)nudRectX4.Value, Global.RXmanualSpeed);
-            m_GluePlateform.Yaxis.MoveTo((double)nudRectY4.Value, Global.RYmanualSpeed);
+        private void btnGoToRect2_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show($"是否矩形第二点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
+            //Task a = new Task(() =>
+            //{
+            m_GluePlateform.Zaxis.MoveTo(0, Global.RZmanualSpeed);
             while (true)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(10);
+                if (m_GluePlateform.Zaxis.IsInPosition(0)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Xaxis.MoveTo((double)nudRectX2.Value, Global.RXmanualSpeed);
+            m_GluePlateform.Yaxis.MoveTo((double)nudRectY2.Value, Global.RYmanualSpeed);
+
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX2.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY2.Value)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
+            //});
+        }
+
+        private void btnGoToRect3_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show($"是否矩形第三点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
+            //Task a = new Task(() =>
+            //{
+            m_GluePlateform.Zaxis.MoveTo(0, Global.RZmanualSpeed);
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Zaxis.IsInPosition(0)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Xaxis.MoveTo((double)nudRectX3.Value, Global.RXmanualSpeed);
+            m_GluePlateform.Yaxis.MoveTo((double)nudRectY3.Value, Global.RYmanualSpeed);
+
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX3.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY3.Value)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
+            //});
+        }
+
+        private void btnGoTorect4_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show($"是否矩形第四点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
+            //Task a = new Task(() =>
+            //{
+            m_GluePlateform.Zaxis.MoveTo(0, Global.RZmanualSpeed);
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Zaxis.IsInPosition(0)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Xaxis.MoveTo((double)nudRectX4.Value, Global.RXmanualSpeed);
+            m_GluePlateform.Yaxis.MoveTo((double)nudRectY4.Value, Global.RYmanualSpeed);
+
+            while (true)
+            {
+                Thread.Sleep(10);
                 if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX4.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY4.Value)
                    )
                 {
@@ -2858,95 +3141,407 @@ namespace desay
 
 
             }
+            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
+            //});
+        }
+        #endregion
 
-            m_GluePlateform.Zaxis.MoveTo(0, Global.RXmanualSpeed);
+        /// <summary>
+        /// 矩形点胶
+        /// </summary>
+        private void btnRect_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show("是否进行矩形点胶", "", MessageBoxButtons.YesNo)) return;
+
+            try
+            {
+                int step = 0;
+                bool iTrue = true;
+                while (iTrue)
+                {
+                    Thread.Sleep(10);
+                    switch (step)
+                    {
+                        case 0://Z轴移到点胶安全位置
+                            m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                            step = 10;
+                            break;
+                        case 10://XY轴移到矩形第一个点
+                            if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                            {
+                                m_GluePlateform.Xaxis.MoveTo((double)nudRectX1.Value, Global.RXmanualSpeed);
+                                m_GluePlateform.Yaxis.MoveTo((double)nudRectY1.Value, Global.RYmanualSpeed);
+                                step = 20;
+                            }
+                            break;
+                        case 20://Z轴移到点胶位置
+                            if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX1.Value)
+                                && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY1.Value))
+                            {
+                                m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
+                                step = 30;
+                            }
+                            break;
+                        case 30://开始矩形插补运动
+                            if (m_GluePlateform.Zaxis.IsInPosition((double)nudRectZ.Value))
+                            {
+                                m_GluePlateform.InitBufferMode((int)nudAxisNum.Value, (int)AxisParameter.Instance.GluePathSpeed.Maxvel);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX1.Value, (double)nudRectY1.Value, (double)nudRectZ.Value);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX2.Value, (double)nudRectY2.Value, (double)nudRectZ.Value);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX3.Value, (double)nudRectY3.Value, (double)nudRectZ.Value);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX4.Value, (double)nudRectY4.Value, (double)nudRectZ.Value);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX5.Value, (double)nudRectY5.Value, (double)nudRectZ.Value);
+                                m_GluePlateform.DoRect((int)nudAxisNum.Value, (double)nudRectX1.Value, (double)nudRectY1.Value, (double)nudRectZ.Value);
+                                //根据胶水情况，确定延时时间
+                                m_GluePlateform.APSptStart((int)nudTimeDelay.Value, cbUseGlue.Checked);
+                                //拖胶
+                                m_GluePlateform.Xaxis.MoveTo((double)nudRectX4.Value, Global.RXmanualSpeed);
+                                m_GluePlateform.Yaxis.MoveTo((double)nudRectY4.Value, Global.RYmanualSpeed);
+                                //
+
+                                step = 40;
+                            }
+                            break;
+                        case 40://拖胶结束，Z轴回安全位置
+                            if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX4.Value)
+                                && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY4.Value))
+                            {
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                step = 50;
+                            }
+                            break;
+                        case 50://XY轴回安全位置
+                            if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                            {
+                                m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueSafePosition.X, Global.RXmanualSpeed);
+                                m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueSafePosition.Y, Global.RYmanualSpeed);
+                                step = 60;
+                            }
+                            break;
+                        case 60://结束流程
+                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueSafePosition.X)
+                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueSafePosition.Y))
+                            {
+                                iTrue = false;
+                                step = 0;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.ToString());
+            }
+        }
+
+        private void btnVIRect_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("是否进行矩形视觉点胶？", "提示", MessageBoxButtons.YesNo))
+            {
+                #region 矩形视觉点胶
+                var _watch = new Stopwatch();
+                _watch.Start();
+                double glueHeightOffset = 0.0;//高度差值
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        var step = 0;
+                        bool itrue = true;
+                        while (itrue)
+                        {
+                            Thread.Sleep(10);
+                            switch (step)
+                            {
+                                case 0:
+                                    step = 10;
+                                    break;
+                                case 10://Z先回安全位
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                    Thread.Sleep(10);
+                                    step = 20;
+                                    break;
+                                case 20://检测Z轴是否在安全位，XY轴移至测高位置
+                                if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                                    {
+                                        m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, Global.RXmanualSpeed);
+                                        m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, Global.RYmanualSpeed);
+                                        step = 30;
+                                      //step = 70;
+                                    Thread.Sleep(10);
+                                    }
+                                    break;
+                                case 30://Z轴移至测高位置
+                                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueHeightPosition.X)
+                                 && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueHeightPosition.Y))
+                                    {
+                                        m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueHeightPosition.Z, Global.RXmanualSpeed);
+                                        step = 40;
+                                    }
+                                    break;
+                                case 40://发送测高指令
+                                if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueHeightPosition.Z))
+                                    {
+                                        Marking.RequestHeightFlg = true;
+                                        Thread.Sleep(1500);//测高模块需要等待一会数据稳定
+                                    SendRequest(1);
+                                        _watch.Restart();
+                                        step = 50;
+                                    }
+                                    break;
+                                case 50://读取测高结果                           
+                                if (Marking.GetHeightFlg)
+                                    {
+                                        if (Marking.RequestHeightError)
+                                        {
+                                            MessageBox.Show("测高报警!", "异常提示", MessageBoxButtons.OK);
+                                            step = 0;
+                                            itrue = false;
+                                        }
+                                        else
+                                        {
+                                            glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
+                                            Marking.GetHeightFlg = false;
+                                            step = 60;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (_watch.ElapsedMilliseconds / 1000.0 >35)
+                                        {
+                                            _watch.Restart();
+                                            step = 0;
+                                            itrue = false;
+                                        }
+                                    }
+                                    Thread.Sleep(10);
+                                    break;
+                                case 60:// Z轴返回安全位
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                    if (glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown)
+                                    {
+                                        MessageBox.Show("测高偏差过大!", "异常提示", MessageBoxButtons.OK);
+                                        step = 0;
+                                        itrue = false;
+                                    }
+                                    step = 70;
+                                    break;
+                                case 70:// XY轴前往拍照位置
+                                if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                                    {
+                                        m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, Global.RXmanualSpeed);
+                                        m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, Global.RYmanualSpeed);
+                                        step = 130;
+                                    }
+                                    break;
+                                case 130:// Z轴前往拍照位置
+                                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueCameraPosition.X)
+                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueCameraPosition.Y))
+                                    {
+                                        m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, Global.RZmanualSpeed);
+                                        step = 140;
+                                    }
+                                    break;
+                                case 140://CCD拍照检测  定位位置
+                                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueCameraPosition.X)
+                                    && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueCameraPosition.Y)
+                                     && (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueCameraPosition.Z)))
+                                    {
+                                    //稳定后触发拍照信号 
+                                    Thread.Sleep(500);
+                                        Marking.CenterLocateTestFinish = false;
+                                        Marking.CenterLocateTestSucceed = false;
+                                        frmAAVision.acq.CenterLocateTestAcquire();
+                                        step = 160;
+                                    }
+                                    break;
+                                case 160://获取CCD结果
+                                if (Marking.CenterLocateTestFinish)
+                                    {
+                                        Marking.CenterLocateTestFinish = false;
+                                        if (Marking.CenterLocateTestSucceed)
+                                        {
+                                            step = 170;
+                                        }
+                                        else
+                                        {
+                                            m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                            MessageBox.Show("CCD识别失败!", "异常提示", MessageBoxButtons.OK);
+                                            step = 0;
+                                            itrue = false;
+                                        }
+                                    }
+                                    break;
+                                case 170://接收数据  计算
+
+                                    step = 180;
+                                    break;
+                                case 180://Z轴移到点胶安全位置
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                    step = 190;
+                                    break;
+                                case 190://XY轴移到矩形第一个点
+                                if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                                    {
+                                        m_GluePlateform.Xaxis.MoveTo(Config.Instance.RectX[0], Global.RXmanualSpeed);
+                                        m_GluePlateform.Yaxis.MoveTo(Config.Instance.RectY[0], Global.RYmanualSpeed);
+                                        step = 200;
+                                    }
+                                    break;
+                                case 200://Z轴移到第一点胶位置
+                                if (m_GluePlateform.Xaxis.IsInPosition(Config.Instance.RectX[0]) && m_GluePlateform.Yaxis.IsInPosition(Config.Instance.RectY[0]))
+                                    {
+                                        Config.Instance.RectZ = glueHeightOffset + Position.Instance.GlueHeight;
+                                        m_GluePlateform.Zaxis.MoveTo(Config.Instance.RectZ, Global.RZmanualSpeed);
+                                        Thread.Sleep(10);
+                                        step = 210;
+                                    }
+                                    break;
+                                case 210://点胶，拖胶
+                                if (m_GluePlateform.Zaxis.IsInPosition(Config.Instance.RectZ))
+                                    {
+                                        m_GluePlateform.InitBufferMode(3, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[1], Config.Instance.RectY[1], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[2], Config.Instance.RectY[2], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[3], Config.Instance.RectY[3], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[4], Config.Instance.RectY[4], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.APSptStart((int)nudTimeDelay.Value, cbUseGlue.Checked);
+                                        //m_GluePlateform.Zaxis.MoveTo(Position.Instance.DragGlueHeight, Global.RZmanualSpeed);
+                                        //Thread.Sleep(200);
+                                        m_GluePlateform.Xaxis.MoveTo(Config.Instance.RectX[4], Global.RXmanualSpeed);
+                                        m_GluePlateform.Yaxis.MoveTo(Config.Instance.RectY[4], Global.RYmanualSpeed);
+                                        step = 220;
+                                    }
+                                    break;
+                                case 220://点胶结束，Z轴回点胶安全位置
+                                if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone)
+                                    {
+                                        IoPoints.IDO19.Value = false;
+                                        m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                        step = 230;
+                                    }
+                                    break;
+                                case 230://流程结束
+                                if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone)
+                                    {
+                                        itrue = false;
+                                        step = 0;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error(ex.ToString());
+                    }
+                }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
+
+                #endregion
+            }
+
+        }
+
+        private void btnGoTorect5_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.No == MessageBox.Show($"是否矩形第五点Z轴高度为{(double)nudRectZ.Value}", "", MessageBoxButtons.YesNo)) return;
+            //Task a = new Task(() =>
+            //{
+            m_GluePlateform.Zaxis.MoveTo(0, Global.RZmanualSpeed);
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Zaxis.IsInPosition(0)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Xaxis.MoveTo((double)nudRectX5.Value, Global.RXmanualSpeed);
+            m_GluePlateform.Yaxis.MoveTo((double)nudRectY5.Value, Global.RYmanualSpeed);
+
+            while (true)
+            {
+                Thread.Sleep(10);
+                if (m_GluePlateform.Xaxis.IsInPosition((double)nudRectX5.Value) && m_GluePlateform.Yaxis.IsInPosition((double)nudRectY5.Value)
+                   )
+                {
+
+                    break;
+                }
+
+
+            }
+            m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
             //});
         }
 
-
-
-
+        #region MoveToPoint的重载
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,
-            ApsAxis Yaxis, double Y, VelocityCurve YvelocityCurve,
-            ApsAxis Zaxis = null, double Z = 0, VelocityCurve ZvelocityCurve = null,
-            Func<bool> Condition = null)
+                                ApsAxis Zaxis, double Z, VelocityCurve ZvelocityCurve,
+                                Func<bool> Condition = null)
         {
-            if (!Xaxis.IsServon || !Yaxis.IsServon || !Zaxis.IsServon) return -3;
+            if (!Xaxis.IsServon || !Zaxis.IsServon) return -3;
             if (!Condition()) return -4;
             Global.IsLocating = true;
-
             Task.Factory.StartNew(() =>
             {
                 try
                 {            //判断Z轴是否在零点
-                    if (Zaxis != null)
+                    if (!Zaxis.IsInPosition(0.5))
+                        Zaxis.MoveTo(0.5, ZvelocityCurve);
+                    while (true)
                     {
-                        if (!Zaxis.IsInPosition(0.5))
-                            Zaxis.MoveTo(0.5, ZvelocityCurve ?? new VelocityCurve()
-                            {
-                                Strvel = 0,
-                                Maxvel = Zaxis.Speed ?? 10,
-                                Tacc = 0.1,
-                                Tdec = 0.1,
-                                VelocityCurveType = CurveTypes.T
-                            });
-                        while (true)
+                        Thread.Sleep(10);
+                        if (Zaxis.IsInPosition(0.5)) break;
+                        if (ServoAxisIsReady(Zaxis) || ServoAxisIsReady(Zaxis))
                         {
-                            Thread.Sleep(10);
-                            if (Zaxis.IsInPosition(0.5)) break;
-                            if (ServoAxisIsReady(Zaxis))
-                            {
-                                Zaxis.Stop();
-                                Global.IsLocating = false;
-                                return -2;
-                            }
+                            Zaxis.Stop();
+                            Global.IsLocating = false;
+                            return -2;
                         }
                     }
                     //将X、Y移动到指定位置
                     if (!Xaxis.IsInPosition(X)) Xaxis.MoveTo(X, XvelocityCurve);
-                    if (!Yaxis.IsInPosition(Y)) Yaxis.MoveTo(Y, YvelocityCurve);
                     while (true)
                     {
                         Thread.Sleep(10);
-                        if (Xaxis.IsInPosition(X) && Yaxis.IsInPosition(Y)) break;
-                        if (ServoAxisIsReady(Xaxis) || ServoAxisIsReady(Yaxis))
+                        if (Xaxis.IsInPosition(X)) break;
+                        if (ServoAxisIsReady(Xaxis))
                         {
                             Xaxis.Stop();
-                            Yaxis.Stop();
                             Global.IsLocating = false;
                             return -2;
                         }
                     }
                     //将Z轴移动到指定位置
-                    if (Zaxis != null)
+                    Zaxis.MoveTo(Z, ZvelocityCurve);
+                    while (true)
                     {
-                        Zaxis.MoveTo(Z, ZvelocityCurve ?? new VelocityCurve()
+                        Thread.Sleep(10);
+                        if (Zaxis.IsInPosition(Z)) break;
+                        if (ServoAxisIsReady(Zaxis))
                         {
-                            Strvel = 0,
-                            Maxvel = Zaxis.Speed ?? 10,
-                            Tacc = 0.1,
-                            Tdec = 0.1,
-                            VelocityCurveType = CurveTypes.T
-                        });
-                        while (true)
-                        {
-                            Thread.Sleep(10);
-                            if (Zaxis.IsInPosition(Z)) break;
-                            if (ServoAxisIsReady(Zaxis))
-                            {
-                                Zaxis.Stop();
-                                Global.IsLocating = false;
-                                return -2;
-                            }
+                            Zaxis.Stop();
+                            Global.IsLocating = false;
+                            return -2;
                         }
-                        Global.IsLocating = false;
                     }
+                    Global.IsLocating = false;
                     return 0;
                 }
                 catch (Exception ex)
                 {
                     Global.IsLocating = false;
-                    log.Fatal("设备驱动程序异常", ex);
+                    //log.Fatal("设备驱动程序异常", ex);
                     return -2;
                 }
             }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
@@ -2955,7 +3550,8 @@ namespace desay
         }
 
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,
-            Func<bool> Condition = null, ApsAxis Yaxis = null, double Y = 0, VelocityCurve YvelocityCurve = null)
+                                Func<bool> Condition = null,
+                                ApsAxis Yaxis = null, double Y = 0, VelocityCurve YvelocityCurve = null)
         {
             if (!Xaxis.IsServon || !Yaxis.IsServon) return -3;
             if (!Condition()) return -4;
@@ -2964,7 +3560,7 @@ namespace desay
             Task.Factory.StartNew(() =>
             {
                 try
-                {            //判断Z轴是否在零点
+                {
                     if (Yaxis != null)
                     {
                         //将X、Y移动到指定位置
@@ -3011,14 +3607,104 @@ namespace desay
             Global.IsLocating = false;
             return 0;
         }
+
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,
-            ApsAxis IXaxis, double IX, VelocityCurve IXvelocityCurve,
-            ApsAxis Yaxis, double Y, VelocityCurve YvelocityCurve,
-            ApsAxis Zaxis = null, double Z = 0, VelocityCurve ZvelocityCurve = null,
-            Func<bool> Condition = null)
+                                ApsAxis Yaxis, double Y, VelocityCurve YvelocityCurve,
+                                ApsAxis Zaxis = null, double Z = 0, VelocityCurve ZvelocityCurve = null,
+                                Func<bool> Condition = null)
+        {
+            if (!Xaxis.IsServon || !Yaxis.IsServon || !Zaxis.IsServon) return -3;
+            if (!Condition()) return -4;
+            Global.IsLocating = true;
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {            //判断Z轴是否在零点
+                    if (Zaxis != null)
+                    {
+                        if (!Zaxis.IsInPosition(0.5))
+                            Zaxis.MoveTo(0.5, ZvelocityCurve ?? new VelocityCurve()
+                            {
+                                Strvel = 0,
+                                Maxvel = Zaxis.Speed ?? 25,
+                                Tacc = 0.1,
+                                Tdec = 0.1,
+                                VelocityCurveType = CurveTypes.T
+                            });
+                        while (true)
+                        {
+                            Thread.Sleep(10);
+                            if (Zaxis.IsInPosition(0.5)) break;
+                            if (ServoAxisIsReady(Zaxis))
+                            {
+                                Zaxis.Stop();
+                                Global.IsLocating = false;
+                                return -2;
+                            }
+                        }
+                    }
+                    //将X、Y移动到指定位置
+                    if (!Xaxis.IsInPosition(X)) Xaxis.MoveTo(X, XvelocityCurve);
+                    if (!Yaxis.IsInPosition(Y)) Yaxis.MoveTo(Y, YvelocityCurve);
+                    while (true)
+                    {
+                        Thread.Sleep(10);
+                        if (Xaxis.IsInPosition(X) && Yaxis.IsInPosition(Y)) break;
+                        if (ServoAxisIsReady(Xaxis) || ServoAxisIsReady(Yaxis))
+                        {
+                            Xaxis.Stop();
+                            Yaxis.Stop();
+                            Global.IsLocating = false;
+                            return -2;
+                        }
+                    }
+                    //将Z轴移动到指定位置
+                    if (Zaxis != null)
+                    {
+                        Zaxis.MoveTo(Z, ZvelocityCurve ?? new VelocityCurve()
+                        {
+                            Strvel = 0,
+                            Maxvel = Zaxis.Speed ?? 25,
+                            Tacc = 0.1,
+                            Tdec = 0.1,
+                            VelocityCurveType = CurveTypes.T
+                        });
+                        while (true)
+                        {
+                            Thread.Sleep(10);
+                            if (Zaxis.IsInPosition(Z)) break;
+                            if (ServoAxisIsReady(Zaxis))
+                            {
+                                Zaxis.Stop();
+                                Global.IsLocating = false;
+                                return -2;
+                            }
+                        }
+                        Global.IsLocating = false;
+                    }
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    Global.IsLocating = false;
+                    log.Fatal("设备驱动程序异常", ex);
+                    return -2;
+                }
+            }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
+            Global.IsLocating = false;
+            return 0;
+        }
+
+        private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,
+                                ApsAxis IXaxis, double IX, VelocityCurve IXvelocityCurve,
+                                ApsAxis Yaxis, double Y, VelocityCurve YvelocityCurve,
+                                ApsAxis Zaxis = null, double Z = 0, VelocityCurve ZvelocityCurve = null,
+                                Func<bool> Condition = null)
         {
             if (!Xaxis.IsServon || !IXaxis.IsServon ||
-                !Yaxis.IsServon || !Zaxis.IsServon) return -3;
+                !Yaxis.IsServon || !Zaxis.IsServon)
+                return -3;
             if (!Condition()) return -4;
             Global.IsLocating = true;
 
@@ -3032,7 +3718,7 @@ namespace desay
                             Zaxis.MoveTo(0, ZvelocityCurve ?? new VelocityCurve()
                             {
                                 Strvel = 0,
-                                Maxvel = Zaxis.Speed ?? 10,
+                                Maxvel = Zaxis.Speed ?? 25,
                                 Tacc = 0.1,
                                 Tdec = 0.1,
                                 VelocityCurveType = CurveTypes.T
@@ -3072,7 +3758,7 @@ namespace desay
                         Zaxis.MoveTo(Z, ZvelocityCurve ?? new VelocityCurve()
                         {
                             Strvel = 0,
-                            Maxvel = Zaxis.Speed ?? 10,
+                            Maxvel = Zaxis.Speed ?? 25,
                             Tacc = 0.1,
                             Tdec = 0.1,
                             VelocityCurveType = CurveTypes.T
@@ -3102,6 +3788,9 @@ namespace desay
             Global.IsLocating = false;
             return 0;
         }
+
+        #endregion
+
         private bool ServoAxisIsReady(ApsAxis axis) => !axis.IsServon | axis.IsAlarmed | axis.IsEmg | axis.IsMEL | axis.IsPEL;
 
         /// <summary>
@@ -3122,7 +3811,7 @@ namespace desay
                 AreaCalculate(Position.Instance.CleanConeFirstPositionReal, Position.Instance.CleanConeSecondPositionReal,
                     Position.Instance.CleanConeThirdPositonReal, ref Position.Instance.CleanConeCenterPositionReal);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error(e.Message);
             }
@@ -3146,7 +3835,7 @@ namespace desay
                 AreaCalculate(Position.Instance.CleanLensFirstPositionReal, Position.Instance.CleanLensSecondPositionReal,
                     Position.Instance.CleanLensThirdPositonReal, ref Position.Instance.CleanLensCenterPositionReal);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error(e.Message);
             }

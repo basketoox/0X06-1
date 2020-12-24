@@ -318,6 +318,105 @@ namespace desay
                 return null;
             } 
         }
+
+        public static void RectangleMatch(Bitmap bmp, HWindow window,bool ok)
+        {
+            try
+            {
+                HObject image, img_old;
+                HOperatorSet.GenEmptyObj(out image);
+                HOperatorSet.GenEmptyObj(out img_old);
+                img_old.Dispose();
+                Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
+
+                HTuple htuple;
+                HOperatorSet.CountChannels(img_old, out htuple);
+                image.Dispose();
+                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
+                else image = img_old.Clone();
+
+                HTuple width, height;
+                HOperatorSet.GetImageSize(image, out width, out height);
+                HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                HOperatorSet.DispObj(image, window);
+                HOperatorSet.SetLineWidth(window, 3);
+                if (ok)
+                {
+                    HOperatorSet.DispText(window, "矩形X方向偏差：" + System.Math.Round(AcqToolEdit.offset_x / 96, 4) + " mm",
+                     "window", 30, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(window, "矩形Y方向偏差：" + System.Math.Round(AcqToolEdit.offset_y / 96, 4) + " mm",
+                        "window", 50, 7, "black", new HTuple(), new HTuple());
+                    Marking.CenterLocateTestSucceed = true;
+                    SetString(window, "OK", "green", 100);
+                }
+                else
+                {
+                    SetString(window, "NG", "red", 100);
+                }
+                
+            }
+            catch
+            {
+                try
+                {
+                    SetString(window, "NG", "red", 100);
+                }
+                catch { }
+                Marking.CenterLocateTestSucceed = false;
+            }
+         }
+
+        public static void CircularMatch(Bitmap bmp, HWindow window, bool ok)
+        {
+            try
+            {
+                HObject image, img_old;
+                HOperatorSet.GenEmptyObj(out image);
+                HOperatorSet.GenEmptyObj(out img_old);
+                img_old.Dispose();
+                Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
+
+                HTuple htuple;
+                HOperatorSet.CountChannels(img_old, out htuple);
+                image.Dispose();
+                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
+                else image = img_old.Clone();
+
+                HTuple width, height;
+                HOperatorSet.GetImageSize(image, out width, out height);
+                HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                HOperatorSet.DispObj(image, window);
+                HOperatorSet.SetLineWidth(window, 3);
+                HOperatorSet.SetColor(window, "red");
+                if (ok)
+                {
+                    //LastCenterLocateBMP = bmp;
+
+                    HOperatorSet.DispText(window, "圆心X方向偏差：" + System.Math.Round(Position.Instance.PCB2CCDOffset.X / 96, 4) + " mm",
+                     "window", 30, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(window, "圆心Y方向偏差：" + System.Math.Round(Position.Instance.PCB2CCDOffset.Y / 96, 4) + " mm",
+                        "window", 60, 7, "black", new HTuple(), new HTuple());
+                    Marking.CenterLocateTestSucceed = true;
+                    SetString(window, "OK", "green", 100);
+                }
+                else
+                {
+                    SetString(window, "NG", "red", 100);
+                    Marking.CenterLocateTestSucceed = false;
+                }
+
+            }
+            catch
+            {
+                try
+                {
+                    SetString(window, "NG", "red", 100);
+                }
+                catch { }
+                Marking.CenterLocateTestSucceed = false;
+            }
+        }
+
         public static void SetString(HWindow window, HTuple str, HTuple color, HTuple size)
         {
             HOperatorSet.SetColor(window, color);
@@ -457,11 +556,9 @@ namespace desay
 
                 LastCenterLocateBMP = bmp;
                 //double[] Res = action(bmp, hWindow);
-                double[] Res = CenterMatch(bmp, hWindow);
-
-
-                Position.Instance.PCB2CCDOffset.X = Res[0];
-                Position.Instance.PCB2CCDOffset.Y = Res[1];
+                CenterMatch(bmp, hWindow);
+                //Position.Instance.PCB2CCDOffset.X = Res[0];
+                //Position.Instance.PCB2CCDOffset.Y = Res[1];
                 if (save)
                 {
                     SaveImage.Save(hWindow);

@@ -1082,7 +1082,7 @@
             this.chkCCDShiled.AutoSize = true;
             this.chkCCDShiled.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chkCCDShiled.ForeColor = System.Drawing.Color.Black;
-            this.chkCCDShiled.Location = new System.Drawing.Point(14, 89);
+            this.chkCCDShiled.Location = new System.Drawing.Point(14, 86);
             this.chkCCDShiled.Name = "chkCCDShiled";
             this.chkCCDShiled.Size = new System.Drawing.Size(66, 16);
             this.chkCCDShiled.TabIndex = 83;
@@ -1104,7 +1104,7 @@
             this.chkGlueRun.AutoSize = true;
             this.chkGlueRun.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chkGlueRun.ForeColor = System.Drawing.Color.Black;
-            this.chkGlueRun.Location = new System.Drawing.Point(14, 59);
+            this.chkGlueRun.Location = new System.Drawing.Point(14, 57);
             this.chkGlueRun.Name = "chkGlueRun";
             this.chkGlueRun.Size = new System.Drawing.Size(72, 16);
             this.chkGlueRun.TabIndex = 84;
@@ -2845,7 +2845,7 @@
             this.KeyPreview = true;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AA组装设备控制系统 - V20.08.27.05_0X06Glue";
+            this.Text = "AA组装设备控制系统 -0X06Glue";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);

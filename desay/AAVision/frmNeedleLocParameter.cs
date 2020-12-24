@@ -20,6 +20,7 @@ namespace desay.AAVision
         public frmNeedleLocParameter(Bitmap bmpin)
         {
             InitializeComponent();
+            this.Text = "对针参数设定";
             bmp = bmpin;
             Algorithm.Bitmap2HObject.Bitmap2HObj(bmpin, out image);
             HOperatorSet.GetImageSize(image, out width, out height);

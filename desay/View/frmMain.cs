@@ -31,7 +31,8 @@ namespace desay
         private GluePlateform m_GluePlateform;
         private CleanPlateform m_CleanPlateform;
         private Carrier m_Carrier;
-
+        public frmWb Wb;
+        public frmTeach frmt;
         private frmAAVision m_AAVision;
         //private frmWhiteBorad m_WB;
         public MES m_Mes;
@@ -64,11 +65,11 @@ namespace desay
         public bool AutoNeedleStatusRun;//自动对针状态忆
         public int NeedleStep;
         IntPtr DlgHandle_wb;
-       public frmAAVision aa;
-        //   public frmWhiteBorad wb1;
+        public frmAAVision aa;
+        //public frmWhiteBorad wb1;
 
         #endregion
-        public frmWb Wb;
+        
         #region Constructor
 
         public frmMain()
@@ -166,7 +167,7 @@ namespace desay
             Wb.ShowWb(this, null);
             MessageBox.Show($"已重新加载白板请注意白板界面是否显示正常,若新增型号请配置白板路径，若不正常请关闭软件并重开");
         }
-        //    frm_wb fb1;
+       
         private void frmMain_Load(object sender, EventArgs e)
         {
             UserLevelChangeEvent += UserLevelChange;
@@ -513,8 +514,7 @@ namespace desay
                 return MachineIsAlarm.IsAlarm | CarrierIsAlarm.IsAlarm | LplateformIsAlarm.IsAlarm | RplateformIsAlarm.IsAlarm | MesIsAlarm.IsAlarm;
             });
             #endregion
-            m_CleanPlateform.WbINItrans(Config.Instance.CurrentProductType);//加载白板模板 写入
-            AppendText($"写入白板参数类型名:{Config.Instance.CurrentProductType}");
+           
             #region 故障代码建立
             AddAlarms();
             int faultCode = 0;
@@ -571,6 +571,11 @@ namespace desay
             MachineOperation.EstopButton2 = EstopButton2;
             #endregion
 
+            #region 加载白板模板
+            m_CleanPlateform.WbINItrans(Config.Instance.CurrentProductType);
+            AppendText($"写入白板参数类型名:{Config.Instance.CurrentProductType}");
+            #endregion
+
             #region 加载子窗体
             LoadingMessage("加载子窗体资源");
             AddSubForm();
@@ -589,15 +594,13 @@ namespace desay
             timer1.Enabled = true;
             AppendText("数据加载完成");
             //timer2.Enabled = true;
-           
-         //   Thread.Sleep(500);
+            //Thread.Sleep(500);
         }
         private void ShowWb(object sender, EventArgs e)
         {
             CallWb.ShowAAImageDlg();
             DlgHandle_wb = CallWb.GetAAImageDlgHwnd();
             // IntPtr 
-
             CallWb.SetWindowPos(DlgHandle_wb, 0, 20, 50, 500, 700, 0);
             CallWb.ShowWindow(DlgHandle_wb, 1);//1为显示，0为隐藏
         }
@@ -866,10 +869,16 @@ namespace desay
 
         private void btnTeach_Click(object sender, EventArgs e)
         {
-            frmTeach frmt= new frmTeach(m_GluePlateform, m_CleanPlateform, m_Carrier);
-
-            frmt.SendRequest += new Action<int>(m_Mes.SendRequestMsg);
-            frmt.Show();
+            if (frmt == null || frmt.IsDisposed)
+            {
+                frmt = new frmTeach(m_GluePlateform, m_CleanPlateform, m_Carrier);
+                frmt.SendRequest += new Action<int>(m_Mes.SendRequestMsg);
+                frmt.Show();
+            }
+            if (frmt.WindowState != FormWindowState.Normal)
+            {
+                frmt.WindowState = FormWindowState.Normal;
+            }            
         }
 
         private void btnShowWindows_Click(object sender, EventArgs e)
@@ -952,11 +961,6 @@ namespace desay
         private void AddSubForm()
         {
             GenerateForm(new frmIOmonitor(), tpgIOmonitor);
-
-
-            // wb1 = new frmWhiteBorad();
-            // wb1.Visible = true;
-
             Wb = new frmWb();
             Wb.frmWb_Load(this, null);
             Wb.Visible = true;
@@ -965,6 +969,7 @@ namespace desay
             aa = new frmAAVision();
             aa.frmAAVision_Load(this, null);
             aa.Visible = true;
+            aa.WindowState = FormWindowState.Minimized;
         }
 
         /// <summary>
@@ -1296,7 +1301,6 @@ namespace desay
                 #endregion
             }
         }
-
         private void AlarmCheck()
         {
             while (true)
@@ -1309,7 +1313,6 @@ namespace desay
                 MachineIsAlarm = AlarmCheck(MachineAlarms);
             }
         }
-
         private void StatusCheck()
         {
             var list = new List<ICylinderStatusJugger>();
@@ -1327,7 +1330,6 @@ namespace desay
                     lst.StatusJugger();
             }
         }
-
         private void LicenseCheck()
         {
             while (true)
@@ -1482,14 +1484,16 @@ namespace desay
             }
             #endregion
 
-            #region 通讯信息显示
+            #region 通讯测高信息显示
             RefreshCommMsg();
             #endregion
+
             if (Marking.CarrierWorking && IoPoints.IDI18.Value)
             {
                 IoPoints.IDO8.Value = false;
             }
             SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
+
             timer1.Enabled = true;
         }
 
@@ -2414,12 +2418,17 @@ namespace desay
 
         private void btnAAImage_Click(object sender, EventArgs e)
         {
-            //tbcMain.SelectedTab = tpgAAImage;
-            //wb.Show();
-            //frmWhiteBorad.wb.Visible = true;
-
-            //    wb1.Visible = true;
-            Wb.Visible = true;
+            if (Wb == null || Wb.IsDisposed)
+            {
+                Wb = new frmWb();
+                Wb.frmWb_Load(this, null);
+                Wb.Visible = true;
+                Wb.ShowWb(this, null);
+            }
+            else
+            {
+                Wb.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -2442,8 +2451,16 @@ namespace desay
 
         private void btnAAVision_Click(object sender, EventArgs e)
         {
-          
-           aa.Visible = true;
+            if (aa == null || aa.IsDisposed)
+            {
+                aa = new frmAAVision();
+                aa.frmAAVision_Load(this, null);
+                aa.Show();
+            }
+            else
+            {
+                aa.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void btnIsExitWorking_Click(object sender, EventArgs e)

@@ -30,36 +30,47 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTeach));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnVIRect = new System.Windows.Forms.Button();
+            this.label20 = new System.Windows.Forms.Label();
             this.nudTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.btnSaveRect = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.nudRectY5 = new System.Windows.Forms.NumericUpDown();
             this.nudRectY4 = new System.Windows.Forms.NumericUpDown();
             this.nudRectY3 = new System.Windows.Forms.NumericUpDown();
-            this.cbRuseRect = new System.Windows.Forms.CheckBox();
             this.nudRectY2 = new System.Windows.Forms.NumericUpDown();
             this.nudRectY1 = new System.Windows.Forms.NumericUpDown();
             this.nudAxisNum = new System.Windows.Forms.NumericUpDown();
             this.nudRectZ = new System.Windows.Forms.NumericUpDown();
+            this.nudRectX5 = new System.Windows.Forms.NumericUpDown();
             this.nudRectX4 = new System.Windows.Forms.NumericUpDown();
             this.nudRectX3 = new System.Windows.Forms.NumericUpDown();
             this.nudRectX2 = new System.Windows.Forms.NumericUpDown();
             this.nudRectX1 = new System.Windows.Forms.NumericUpDown();
+            this.btnGoTorect5 = new System.Windows.Forms.Button();
             this.btnGoTorect4 = new System.Windows.Forms.Button();
             this.btnGoToRect3 = new System.Windows.Forms.Button();
             this.btnGoToRect2 = new System.Windows.Forms.Button();
@@ -181,16 +192,17 @@
             this.cbZero = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.flpCylinder = new System.Windows.Forms.FlowLayoutPanel();
-            this.label20 = new System.Windows.Forms.Label();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeDelay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRectY5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudAxisNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRectX5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX2)).BeginInit();
@@ -242,7 +254,7 @@
             this.groupBox3.Controls.Add(this.moveSelectHorizontal1);
             this.groupBox3.Controls.Add(this.groupBox16);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox3.Location = new System.Drawing.Point(841, 0);
+            this.groupBox3.Location = new System.Drawing.Point(842, 0);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(365, 741);
             this.groupBox3.TabIndex = 38;
@@ -251,6 +263,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnVIRect);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.nudTimeDelay);
             this.groupBox1.Controls.Add(this.btnSaveRect);
@@ -258,36 +271,58 @@
             this.groupBox1.Controls.Add(this.label19);
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.nudRectY5);
             this.groupBox1.Controls.Add(this.nudRectY4);
             this.groupBox1.Controls.Add(this.nudRectY3);
-            this.groupBox1.Controls.Add(this.cbRuseRect);
             this.groupBox1.Controls.Add(this.nudRectY2);
             this.groupBox1.Controls.Add(this.nudRectY1);
             this.groupBox1.Controls.Add(this.nudAxisNum);
             this.groupBox1.Controls.Add(this.nudRectZ);
+            this.groupBox1.Controls.Add(this.nudRectX5);
             this.groupBox1.Controls.Add(this.nudRectX4);
             this.groupBox1.Controls.Add(this.nudRectX3);
             this.groupBox1.Controls.Add(this.nudRectX2);
             this.groupBox1.Controls.Add(this.nudRectX1);
+            this.groupBox1.Controls.Add(this.btnGoTorect5);
             this.groupBox1.Controls.Add(this.btnGoTorect4);
             this.groupBox1.Controls.Add(this.btnGoToRect3);
             this.groupBox1.Controls.Add(this.btnGoToRect2);
             this.groupBox1.Controls.Add(this.btnGoToRect1);
             this.groupBox1.Controls.Add(this.btnRect);
-            this.groupBox1.Location = new System.Drawing.Point(6, 520);
+            this.groupBox1.Location = new System.Drawing.Point(6, 516);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(347, 217);
+            this.groupBox1.Size = new System.Drawing.Size(347, 221);
             this.groupBox1.TabIndex = 42;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "矩形点胶测试";
             // 
+            // btnVIRect
+            // 
+            this.btnVIRect.Location = new System.Drawing.Point(22, 176);
+            this.btnVIRect.Name = "btnVIRect";
+            this.btnVIRect.Size = new System.Drawing.Size(107, 37);
+            this.btnVIRect.TabIndex = 48;
+            this.btnVIRect.Text = "矩形视觉点胶";
+            this.btnVIRect.UseVisualStyleBackColor = true;
+            this.btnVIRect.Click += new System.EventHandler(this.btnVIRect_Click);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(22, 104);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(65, 12);
+            this.label20.TabIndex = 47;
+            this.label20.Text = "出胶延时ms";
+            // 
             // nudTimeDelay
             // 
-            this.nudTimeDelay.Location = new System.Drawing.Point(50, 106);
+            this.nudTimeDelay.Location = new System.Drawing.Point(22, 119);
             this.nudTimeDelay.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -299,9 +334,9 @@
             // 
             // btnSaveRect
             // 
-            this.btnSaveRect.Location = new System.Drawing.Point(166, 171);
+            this.btnSaveRect.Location = new System.Drawing.Point(262, 176);
             this.btnSaveRect.Name = "btnSaveRect";
-            this.btnSaveRect.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveRect.Size = new System.Drawing.Size(76, 37);
             this.btnSaveRect.TabIndex = 45;
             this.btnSaveRect.Text = "保存参数";
             this.btnSaveRect.UseVisualStyleBackColor = true;
@@ -310,7 +345,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(296, 14);
+            this.label14.Location = new System.Drawing.Point(296, 11);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(11, 12);
             this.label14.TabIndex = 44;
@@ -319,7 +354,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(0, 53);
+            this.label19.Location = new System.Drawing.Point(22, 23);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(47, 12);
             this.label19.TabIndex = 44;
@@ -328,7 +363,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(11, 77);
+            this.label18.Location = new System.Drawing.Point(22, 62);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(11, 12);
             this.label18.TabIndex = 44;
@@ -343,10 +378,19 @@
             this.label13.TabIndex = 44;
             this.label13.Text = "X";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(167, 131);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(11, 12);
+            this.label21.TabIndex = 44;
+            this.label21.Text = "5";
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(153, 133);
+            this.label17.Location = new System.Drawing.Point(167, 106);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(11, 12);
             this.label17.TabIndex = 44;
@@ -355,7 +399,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(153, 97);
+            this.label16.Location = new System.Drawing.Point(167, 81);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(11, 12);
             this.label16.TabIndex = 44;
@@ -364,7 +408,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(153, 63);
+            this.label15.Location = new System.Drawing.Point(167, 56);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(11, 12);
             this.label15.TabIndex = 44;
@@ -373,16 +417,29 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(153, 31);
+            this.label11.Location = new System.Drawing.Point(167, 31);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(11, 12);
             this.label11.TabIndex = 44;
             this.label11.Text = "1";
             // 
+            // nudRectY5
+            // 
+            this.nudRectY5.DecimalPlaces = 3;
+            this.nudRectY5.Location = new System.Drawing.Point(262, 127);
+            this.nudRectY5.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudRectY5.Name = "nudRectY5";
+            this.nudRectY5.Size = new System.Drawing.Size(76, 21);
+            this.nudRectY5.TabIndex = 43;
+            // 
             // nudRectY4
             // 
             this.nudRectY4.DecimalPlaces = 3;
-            this.nudRectY4.Location = new System.Drawing.Point(253, 128);
+            this.nudRectY4.Location = new System.Drawing.Point(262, 102);
             this.nudRectY4.Minimum = new decimal(new int[] {
             100,
             0,
@@ -395,7 +452,7 @@
             // nudRectY3
             // 
             this.nudRectY3.DecimalPlaces = 3;
-            this.nudRectY3.Location = new System.Drawing.Point(253, 92);
+            this.nudRectY3.Location = new System.Drawing.Point(262, 77);
             this.nudRectY3.Minimum = new decimal(new int[] {
             100,
             0,
@@ -410,21 +467,10 @@
             0,
             0});
             // 
-            // cbRuseRect
-            // 
-            this.cbRuseRect.AutoSize = true;
-            this.cbRuseRect.Location = new System.Drawing.Point(257, 176);
-            this.cbRuseRect.Name = "cbRuseRect";
-            this.cbRuseRect.Size = new System.Drawing.Size(120, 16);
-            this.cbRuseRect.TabIndex = 42;
-            this.cbRuseRect.Text = "自动启用矩形点胶";
-            this.cbRuseRect.UseVisualStyleBackColor = true;
-            this.cbRuseRect.CheckedChanged += new System.EventHandler(this.cbUseGlue_CheckedChanged);
-            // 
             // nudRectY2
             // 
             this.nudRectY2.DecimalPlaces = 3;
-            this.nudRectY2.Location = new System.Drawing.Point(253, 58);
+            this.nudRectY2.Location = new System.Drawing.Point(262, 52);
             this.nudRectY2.Minimum = new decimal(new int[] {
             100,
             0,
@@ -442,7 +488,7 @@
             // nudRectY1
             // 
             this.nudRectY1.DecimalPlaces = 3;
-            this.nudRectY1.Location = new System.Drawing.Point(253, 26);
+            this.nudRectY1.Location = new System.Drawing.Point(262, 27);
             this.nudRectY1.Minimum = new decimal(new int[] {
             100,
             0,
@@ -454,7 +500,7 @@
             // 
             // nudAxisNum
             // 
-            this.nudAxisNum.Location = new System.Drawing.Point(50, 49);
+            this.nudAxisNum.Location = new System.Drawing.Point(22, 37);
             this.nudAxisNum.Name = "nudAxisNum";
             this.nudAxisNum.Size = new System.Drawing.Size(59, 21);
             this.nudAxisNum.TabIndex = 43;
@@ -467,15 +513,33 @@
             // nudRectZ
             // 
             this.nudRectZ.DecimalPlaces = 3;
-            this.nudRectZ.Location = new System.Drawing.Point(50, 75);
+            this.nudRectZ.Location = new System.Drawing.Point(22, 77);
             this.nudRectZ.Name = "nudRectZ";
             this.nudRectZ.Size = new System.Drawing.Size(59, 21);
             this.nudRectZ.TabIndex = 43;
             // 
+            // nudRectX5
+            // 
+            this.nudRectX5.DecimalPlaces = 3;
+            this.nudRectX5.Location = new System.Drawing.Point(182, 127);
+            this.nudRectX5.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudRectX5.Name = "nudRectX5";
+            this.nudRectX5.Size = new System.Drawing.Size(76, 21);
+            this.nudRectX5.TabIndex = 43;
+            this.nudRectX5.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
             // nudRectX4
             // 
             this.nudRectX4.DecimalPlaces = 3;
-            this.nudRectX4.Location = new System.Drawing.Point(182, 128);
+            this.nudRectX4.Location = new System.Drawing.Point(182, 102);
             this.nudRectX4.Minimum = new decimal(new int[] {
             100,
             0,
@@ -493,7 +557,7 @@
             // nudRectX3
             // 
             this.nudRectX3.DecimalPlaces = 3;
-            this.nudRectX3.Location = new System.Drawing.Point(182, 92);
+            this.nudRectX3.Location = new System.Drawing.Point(182, 77);
             this.nudRectX3.Minimum = new decimal(new int[] {
             100,
             0,
@@ -511,7 +575,7 @@
             // nudRectX2
             // 
             this.nudRectX2.DecimalPlaces = 3;
-            this.nudRectX2.Location = new System.Drawing.Point(182, 58);
+            this.nudRectX2.Location = new System.Drawing.Point(182, 52);
             this.nudRectX2.Minimum = new decimal(new int[] {
             100,
             0,
@@ -524,7 +588,7 @@
             // nudRectX1
             // 
             this.nudRectX1.DecimalPlaces = 3;
-            this.nudRectX1.Location = new System.Drawing.Point(182, 26);
+            this.nudRectX1.Location = new System.Drawing.Point(182, 27);
             this.nudRectX1.Minimum = new decimal(new int[] {
             100,
             0,
@@ -534,9 +598,19 @@
             this.nudRectX1.Size = new System.Drawing.Size(76, 21);
             this.nudRectX1.TabIndex = 43;
             // 
+            // btnGoTorect5
+            // 
+            this.btnGoTorect5.Location = new System.Drawing.Point(112, 125);
+            this.btnGoTorect5.Name = "btnGoTorect5";
+            this.btnGoTorect5.Size = new System.Drawing.Size(39, 24);
+            this.btnGoTorect5.TabIndex = 41;
+            this.btnGoTorect5.Text = "GoTo";
+            this.btnGoTorect5.UseVisualStyleBackColor = true;
+            this.btnGoTorect5.Click += new System.EventHandler(this.btnGoTorect5_Click);
+            // 
             // btnGoTorect4
             // 
-            this.btnGoTorect4.Location = new System.Drawing.Point(112, 125);
+            this.btnGoTorect4.Location = new System.Drawing.Point(112, 100);
             this.btnGoTorect4.Name = "btnGoTorect4";
             this.btnGoTorect4.Size = new System.Drawing.Size(39, 24);
             this.btnGoTorect4.TabIndex = 41;
@@ -546,7 +620,7 @@
             // 
             // btnGoToRect3
             // 
-            this.btnGoToRect3.Location = new System.Drawing.Point(112, 91);
+            this.btnGoToRect3.Location = new System.Drawing.Point(112, 75);
             this.btnGoToRect3.Name = "btnGoToRect3";
             this.btnGoToRect3.Size = new System.Drawing.Size(39, 24);
             this.btnGoToRect3.TabIndex = 41;
@@ -556,7 +630,7 @@
             // 
             // btnGoToRect2
             // 
-            this.btnGoToRect2.Location = new System.Drawing.Point(111, 58);
+            this.btnGoToRect2.Location = new System.Drawing.Point(112, 50);
             this.btnGoToRect2.Name = "btnGoToRect2";
             this.btnGoToRect2.Size = new System.Drawing.Size(39, 24);
             this.btnGoToRect2.TabIndex = 41;
@@ -566,7 +640,7 @@
             // 
             // btnGoToRect1
             // 
-            this.btnGoToRect1.Location = new System.Drawing.Point(111, 25);
+            this.btnGoToRect1.Location = new System.Drawing.Point(112, 25);
             this.btnGoToRect1.Name = "btnGoToRect1";
             this.btnGoToRect1.Size = new System.Drawing.Size(39, 24);
             this.btnGoToRect1.TabIndex = 41;
@@ -576,17 +650,17 @@
             // 
             // btnRect
             // 
-            this.btnRect.Location = new System.Drawing.Point(16, 138);
+            this.btnRect.Location = new System.Drawing.Point(141, 176);
             this.btnRect.Name = "btnRect";
-            this.btnRect.Size = new System.Drawing.Size(81, 38);
+            this.btnRect.Size = new System.Drawing.Size(100, 37);
             this.btnRect.TabIndex = 41;
-            this.btnRect.Text = "矩形";
+            this.btnRect.Text = "矩形手动点胶";
             this.btnRect.UseVisualStyleBackColor = true;
             this.btnRect.Click += new System.EventHandler(this.btnRect_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(59, 428);
+            this.button1.Location = new System.Drawing.Point(12, 403);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(81, 38);
             this.button1.TabIndex = 41;
@@ -625,7 +699,7 @@
             this.tbrJogSpeed.Size = new System.Drawing.Size(359, 26);
             this.tbrJogSpeed.TabIndex = 3;
             this.tbrJogSpeed.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tbrJogSpeed.Value = 10;
+            this.tbrJogSpeed.Value = 25;
             this.tbrJogSpeed.Scroll += new System.EventHandler(this.tbrJogSpeed_Scroll);
             // 
             // moveSelectHorizontal1
@@ -652,11 +726,11 @@
             // 
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 7;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.386364F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.89773F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.28409F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.20455F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel1.Controls.Add(this.panel5, 3, 1);
@@ -726,10 +800,10 @@
             // 
             this.panel5.Controls.Add(this.chxLX);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(155, 31);
+            this.panel5.Location = new System.Drawing.Point(153, 31);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(86, 29);
+            this.panel5.Size = new System.Drawing.Size(88, 29);
             this.panel5.TabIndex = 5;
             // 
             // chxLX
@@ -738,9 +812,9 @@
             this.chxLX.Dock = System.Windows.Forms.DockStyle.Left;
             this.chxLX.Location = new System.Drawing.Point(0, 0);
             this.chxLX.Name = "chxLX";
-            this.chxLX.Size = new System.Drawing.Size(90, 29);
+            this.chxLX.Size = new System.Drawing.Size(78, 29);
             this.chxLX.TabIndex = 5;
-            this.chxLX.Text = "清洗X轴使能";
+            this.chxLX.Text = "清洗X使能";
             this.chxLX.UseVisualStyleBackColor = true;
             this.chxLX.Click += new System.EventHandler(this.chxLX_Click);
             // 
@@ -751,7 +825,7 @@
             this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(4, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(21, 29);
+            this.label1.Size = new System.Drawing.Size(19, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "LX";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -763,7 +837,7 @@
             this.label3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.Location = new System.Drawing.Point(4, 61);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(21, 29);
+            this.label3.Size = new System.Drawing.Size(19, 29);
             this.label3.TabIndex = 1;
             this.label3.Text = "LY";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -775,7 +849,7 @@
             this.lblZaxisName.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblZaxisName.Location = new System.Drawing.Point(4, 91);
             this.lblZaxisName.Name = "lblZaxisName";
-            this.lblZaxisName.Size = new System.Drawing.Size(21, 29);
+            this.lblZaxisName.Size = new System.Drawing.Size(19, 29);
             this.lblZaxisName.TabIndex = 1;
             this.lblZaxisName.Text = "LZ";
             this.lblZaxisName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -787,7 +861,7 @@
             this.lblLZCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLZCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLZCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLZCurrentpos.Location = new System.Drawing.Point(32, 91);
+            this.lblLZCurrentpos.Location = new System.Drawing.Point(30, 91);
             this.lblLZCurrentpos.Name = "lblLZCurrentpos";
             this.lblLZCurrentpos.Size = new System.Drawing.Size(56, 29);
             this.lblLZCurrentpos.TabIndex = 1;
@@ -801,7 +875,7 @@
             this.lblLXCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLXCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLXCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLXCurrentpos.Location = new System.Drawing.Point(32, 31);
+            this.lblLXCurrentpos.Location = new System.Drawing.Point(30, 31);
             this.lblLXCurrentpos.Name = "lblLXCurrentpos";
             this.lblLXCurrentpos.Size = new System.Drawing.Size(56, 29);
             this.lblLXCurrentpos.TabIndex = 2;
@@ -815,7 +889,7 @@
             this.lblLYCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLYCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLYCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLYCurrentpos.Location = new System.Drawing.Point(32, 61);
+            this.lblLYCurrentpos.Location = new System.Drawing.Point(30, 61);
             this.lblLYCurrentpos.Name = "lblLYCurrentpos";
             this.lblLYCurrentpos.Size = new System.Drawing.Size(56, 29);
             this.lblLYCurrentpos.TabIndex = 3;
@@ -829,7 +903,7 @@
             this.lblLXCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLXCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLXCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLXCurrentSpeed.Location = new System.Drawing.Point(95, 31);
+            this.lblLXCurrentSpeed.Location = new System.Drawing.Point(93, 31);
             this.lblLXCurrentSpeed.Name = "lblLXCurrentSpeed";
             this.lblLXCurrentSpeed.Size = new System.Drawing.Size(56, 29);
             this.lblLXCurrentSpeed.TabIndex = 4;
@@ -843,7 +917,7 @@
             this.lblLYCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLYCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLYCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLYCurrentSpeed.Location = new System.Drawing.Point(95, 61);
+            this.lblLYCurrentSpeed.Location = new System.Drawing.Point(93, 61);
             this.lblLYCurrentSpeed.Name = "lblLYCurrentSpeed";
             this.lblLYCurrentSpeed.Size = new System.Drawing.Size(56, 29);
             this.lblLYCurrentSpeed.TabIndex = 5;
@@ -857,7 +931,7 @@
             this.lblLZCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLZCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLZCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblLZCurrentSpeed.Location = new System.Drawing.Point(95, 91);
+            this.lblLZCurrentSpeed.Location = new System.Drawing.Point(93, 91);
             this.lblLZCurrentSpeed.Name = "lblLZCurrentSpeed";
             this.lblLZCurrentSpeed.Size = new System.Drawing.Size(56, 29);
             this.lblLZCurrentSpeed.TabIndex = 6;
@@ -869,7 +943,7 @@
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(32, 1);
+            this.label5.Location = new System.Drawing.Point(30, 1);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 29);
             this.label5.TabIndex = 7;
@@ -881,7 +955,7 @@
             this.label6.AutoSize = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(95, 1);
+            this.label6.Location = new System.Drawing.Point(93, 1);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(56, 29);
             this.label6.TabIndex = 7;
@@ -893,9 +967,9 @@
             this.label9.AutoSize = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(158, 1);
+            this.label9.Location = new System.Drawing.Point(156, 1);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(80, 29);
+            this.label9.Size = new System.Drawing.Size(82, 29);
             this.label9.TabIndex = 7;
             this.label9.Text = "伺服状态";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -904,10 +978,10 @@
             // 
             this.panel6.Controls.Add(this.chxLY);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(155, 61);
+            this.panel6.Location = new System.Drawing.Point(153, 61);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(86, 29);
+            this.panel6.Size = new System.Drawing.Size(88, 29);
             this.panel6.TabIndex = 5;
             // 
             // chxLY
@@ -916,9 +990,9 @@
             this.chxLY.Dock = System.Windows.Forms.DockStyle.Left;
             this.chxLY.Location = new System.Drawing.Point(0, 0);
             this.chxLY.Name = "chxLY";
-            this.chxLY.Size = new System.Drawing.Size(90, 29);
+            this.chxLY.Size = new System.Drawing.Size(78, 29);
             this.chxLY.TabIndex = 5;
-            this.chxLY.Text = "清洗Y轴使能";
+            this.chxLY.Text = "清洗Y使能";
             this.chxLY.UseVisualStyleBackColor = true;
             this.chxLY.Click += new System.EventHandler(this.chxLY_Click);
             // 
@@ -926,10 +1000,10 @@
             // 
             this.panel7.Controls.Add(this.chxLZ);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(155, 91);
+            this.panel7.Location = new System.Drawing.Point(153, 91);
             this.panel7.Margin = new System.Windows.Forms.Padding(0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(86, 29);
+            this.panel7.Size = new System.Drawing.Size(88, 29);
             this.panel7.TabIndex = 5;
             // 
             // chxLZ
@@ -938,9 +1012,9 @@
             this.chxLZ.Dock = System.Windows.Forms.DockStyle.Left;
             this.chxLZ.Location = new System.Drawing.Point(0, 0);
             this.chxLZ.Name = "chxLZ";
-            this.chxLZ.Size = new System.Drawing.Size(90, 29);
+            this.chxLZ.Size = new System.Drawing.Size(78, 29);
             this.chxLZ.TabIndex = 5;
-            this.chxLZ.Text = "清洗Z轴使能";
+            this.chxLZ.Text = "清洗Z使能";
             this.chxLZ.UseVisualStyleBackColor = true;
             this.chxLZ.Click += new System.EventHandler(this.chxLZ_Click);
             // 
@@ -951,7 +1025,7 @@
             this.label24.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label24.Location = new System.Drawing.Point(245, 1);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(45, 29);
+            this.label24.Size = new System.Drawing.Size(43, 29);
             this.label24.TabIndex = 7;
             this.label24.Text = "备注";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -964,7 +1038,7 @@
             this.panel8.Location = new System.Drawing.Point(242, 31);
             this.panel8.Margin = new System.Windows.Forms.Padding(0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(51, 29);
+            this.panel8.Size = new System.Drawing.Size(49, 29);
             this.panel8.TabIndex = 5;
             // 
             // picLXadd
@@ -998,7 +1072,7 @@
             this.panel9.Location = new System.Drawing.Point(242, 61);
             this.panel9.Margin = new System.Windows.Forms.Padding(0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(51, 29);
+            this.panel9.Size = new System.Drawing.Size(49, 29);
             this.panel9.TabIndex = 5;
             // 
             // picLYadd
@@ -1031,7 +1105,7 @@
             this.panel10.Location = new System.Drawing.Point(242, 91);
             this.panel10.Margin = new System.Windows.Forms.Padding(0);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(51, 29);
+            this.panel10.Size = new System.Drawing.Size(49, 29);
             this.panel10.TabIndex = 5;
             // 
             // picLZadd
@@ -1061,7 +1135,7 @@
             this.label4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(4, 1);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(21, 29);
+            this.label4.Size = new System.Drawing.Size(19, 29);
             this.label4.TabIndex = 0;
             this.label4.Text = "轴";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1073,7 +1147,7 @@
             this.label8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label8.Location = new System.Drawing.Point(4, 121);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(21, 29);
+            this.label8.Size = new System.Drawing.Size(19, 29);
             this.label8.TabIndex = 7;
             this.label8.Text = "RX";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1085,7 +1159,7 @@
             this.label10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label10.Location = new System.Drawing.Point(4, 151);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(21, 29);
+            this.label10.Size = new System.Drawing.Size(19, 29);
             this.label10.TabIndex = 7;
             this.label10.Text = "RY";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1097,7 +1171,7 @@
             this.label12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.Location = new System.Drawing.Point(4, 181);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(21, 34);
+            this.label12.Size = new System.Drawing.Size(19, 34);
             this.label12.TabIndex = 7;
             this.label12.Text = "RZ";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1109,7 +1183,7 @@
             this.lblRXCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRXCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRXCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRXCurrentpos.Location = new System.Drawing.Point(32, 121);
+            this.lblRXCurrentpos.Location = new System.Drawing.Point(30, 121);
             this.lblRXCurrentpos.Name = "lblRXCurrentpos";
             this.lblRXCurrentpos.Size = new System.Drawing.Size(56, 29);
             this.lblRXCurrentpos.TabIndex = 1;
@@ -1123,7 +1197,7 @@
             this.lblRYCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRYCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRYCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRYCurrentpos.Location = new System.Drawing.Point(32, 151);
+            this.lblRYCurrentpos.Location = new System.Drawing.Point(30, 151);
             this.lblRYCurrentpos.Name = "lblRYCurrentpos";
             this.lblRYCurrentpos.Size = new System.Drawing.Size(56, 29);
             this.lblRYCurrentpos.TabIndex = 1;
@@ -1137,7 +1211,7 @@
             this.lblRZCurrentpos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRZCurrentpos.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRZCurrentpos.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRZCurrentpos.Location = new System.Drawing.Point(32, 181);
+            this.lblRZCurrentpos.Location = new System.Drawing.Point(30, 181);
             this.lblRZCurrentpos.Name = "lblRZCurrentpos";
             this.lblRZCurrentpos.Size = new System.Drawing.Size(56, 34);
             this.lblRZCurrentpos.TabIndex = 1;
@@ -1151,7 +1225,7 @@
             this.lblRXCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRXCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRXCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRXCurrentSpeed.Location = new System.Drawing.Point(95, 121);
+            this.lblRXCurrentSpeed.Location = new System.Drawing.Point(93, 121);
             this.lblRXCurrentSpeed.Name = "lblRXCurrentSpeed";
             this.lblRXCurrentSpeed.Size = new System.Drawing.Size(56, 29);
             this.lblRXCurrentSpeed.TabIndex = 1;
@@ -1165,7 +1239,7 @@
             this.lblRYCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRYCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRYCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRYCurrentSpeed.Location = new System.Drawing.Point(95, 151);
+            this.lblRYCurrentSpeed.Location = new System.Drawing.Point(93, 151);
             this.lblRYCurrentSpeed.Name = "lblRYCurrentSpeed";
             this.lblRYCurrentSpeed.Size = new System.Drawing.Size(56, 29);
             this.lblRYCurrentSpeed.TabIndex = 1;
@@ -1179,7 +1253,7 @@
             this.lblRZCurrentSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRZCurrentSpeed.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblRZCurrentSpeed.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblRZCurrentSpeed.Location = new System.Drawing.Point(95, 181);
+            this.lblRZCurrentSpeed.Location = new System.Drawing.Point(93, 181);
             this.lblRZCurrentSpeed.Name = "lblRZCurrentSpeed";
             this.lblRZCurrentSpeed.Size = new System.Drawing.Size(56, 34);
             this.lblRZCurrentSpeed.TabIndex = 1;
@@ -1190,11 +1264,11 @@
             // 
             this.chxRX.AutoSize = true;
             this.chxRX.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chxRX.Location = new System.Drawing.Point(158, 124);
+            this.chxRX.Location = new System.Drawing.Point(156, 124);
             this.chxRX.Name = "chxRX";
-            this.chxRX.Size = new System.Drawing.Size(80, 23);
+            this.chxRX.Size = new System.Drawing.Size(78, 23);
             this.chxRX.TabIndex = 5;
-            this.chxRX.Text = "点胶X轴使能";
+            this.chxRX.Text = "点胶X使能";
             this.chxRX.UseVisualStyleBackColor = true;
             this.chxRX.Click += new System.EventHandler(this.chxRX_Click);
             // 
@@ -1202,11 +1276,11 @@
             // 
             this.chxRY.AutoSize = true;
             this.chxRY.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chxRY.Location = new System.Drawing.Point(158, 154);
+            this.chxRY.Location = new System.Drawing.Point(156, 154);
             this.chxRY.Name = "chxRY";
-            this.chxRY.Size = new System.Drawing.Size(80, 23);
+            this.chxRY.Size = new System.Drawing.Size(78, 23);
             this.chxRY.TabIndex = 5;
-            this.chxRY.Text = "点胶Y轴使能";
+            this.chxRY.Text = "点胶Y使能";
             this.chxRY.UseVisualStyleBackColor = true;
             this.chxRY.Click += new System.EventHandler(this.chxRY_Click);
             // 
@@ -1214,11 +1288,11 @@
             // 
             this.chxRZ.AutoSize = true;
             this.chxRZ.Dock = System.Windows.Forms.DockStyle.Left;
-            this.chxRZ.Location = new System.Drawing.Point(158, 184);
+            this.chxRZ.Location = new System.Drawing.Point(156, 184);
             this.chxRZ.Name = "chxRZ";
-            this.chxRZ.Size = new System.Drawing.Size(80, 28);
+            this.chxRZ.Size = new System.Drawing.Size(78, 28);
             this.chxRZ.TabIndex = 5;
-            this.chxRZ.Text = "点胶Z轴使能";
+            this.chxRZ.Text = "点胶Z使能";
             this.chxRZ.UseVisualStyleBackColor = true;
             this.chxRZ.Click += new System.EventHandler(this.chxRZ_Click);
             // 
@@ -1230,7 +1304,7 @@
             this.panel18.Location = new System.Drawing.Point(242, 121);
             this.panel18.Margin = new System.Windows.Forms.Padding(0);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(51, 29);
+            this.panel18.Size = new System.Drawing.Size(49, 29);
             this.panel18.TabIndex = 5;
             // 
             // picRXadd
@@ -1263,7 +1337,7 @@
             this.panel19.Location = new System.Drawing.Point(242, 151);
             this.panel19.Margin = new System.Windows.Forms.Padding(0);
             this.panel19.Name = "panel19";
-            this.panel19.Size = new System.Drawing.Size(51, 29);
+            this.panel19.Size = new System.Drawing.Size(49, 29);
             this.panel19.TabIndex = 5;
             // 
             // picRYadd
@@ -1296,7 +1370,7 @@
             this.panel21.Location = new System.Drawing.Point(242, 181);
             this.panel21.Margin = new System.Windows.Forms.Padding(0);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(51, 34);
+            this.panel21.Size = new System.Drawing.Size(49, 34);
             this.panel21.TabIndex = 5;
             // 
             // picRZadd
@@ -1325,7 +1399,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(296, 1);
+            this.label2.Location = new System.Drawing.Point(294, 1);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(23, 29);
@@ -1336,17 +1410,17 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Location = new System.Drawing.Point(324, 1);
+            this.label7.Location = new System.Drawing.Point(322, 1);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 29);
+            this.label7.Size = new System.Drawing.Size(28, 29);
             this.label7.TabIndex = 8;
             this.label7.Text = "停止";
             // 
             // btnCleanXHome
             // 
             this.btnCleanXHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanXHome.Location = new System.Drawing.Point(296, 33);
+            this.btnCleanXHome.Location = new System.Drawing.Point(294, 33);
             this.btnCleanXHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanXHome.Name = "btnCleanXHome";
             this.btnCleanXHome.Size = new System.Drawing.Size(23, 25);
@@ -1358,10 +1432,10 @@
             // btnCleanXStop
             // 
             this.btnCleanXStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanXStop.Location = new System.Drawing.Point(324, 33);
+            this.btnCleanXStop.Location = new System.Drawing.Point(322, 33);
             this.btnCleanXStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanXStop.Name = "btnCleanXStop";
-            this.btnCleanXStop.Size = new System.Drawing.Size(26, 25);
+            this.btnCleanXStop.Size = new System.Drawing.Size(28, 25);
             this.btnCleanXStop.TabIndex = 9;
             this.btnCleanXStop.Text = "LX";
             this.btnCleanXStop.UseVisualStyleBackColor = true;
@@ -1370,7 +1444,7 @@
             // btnCleanYHome
             // 
             this.btnCleanYHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanYHome.Location = new System.Drawing.Point(296, 63);
+            this.btnCleanYHome.Location = new System.Drawing.Point(294, 63);
             this.btnCleanYHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanYHome.Name = "btnCleanYHome";
             this.btnCleanYHome.Size = new System.Drawing.Size(23, 25);
@@ -1382,10 +1456,10 @@
             // btnCleanYStop
             // 
             this.btnCleanYStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanYStop.Location = new System.Drawing.Point(324, 63);
+            this.btnCleanYStop.Location = new System.Drawing.Point(322, 63);
             this.btnCleanYStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanYStop.Name = "btnCleanYStop";
-            this.btnCleanYStop.Size = new System.Drawing.Size(26, 25);
+            this.btnCleanYStop.Size = new System.Drawing.Size(28, 25);
             this.btnCleanYStop.TabIndex = 9;
             this.btnCleanYStop.Text = "LY";
             this.btnCleanYStop.UseVisualStyleBackColor = true;
@@ -1394,7 +1468,7 @@
             // btnCleanZHome
             // 
             this.btnCleanZHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanZHome.Location = new System.Drawing.Point(296, 93);
+            this.btnCleanZHome.Location = new System.Drawing.Point(294, 93);
             this.btnCleanZHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanZHome.Name = "btnCleanZHome";
             this.btnCleanZHome.Size = new System.Drawing.Size(23, 25);
@@ -1406,10 +1480,10 @@
             // btnCleanZStop
             // 
             this.btnCleanZStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCleanZStop.Location = new System.Drawing.Point(324, 93);
+            this.btnCleanZStop.Location = new System.Drawing.Point(322, 93);
             this.btnCleanZStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanZStop.Name = "btnCleanZStop";
-            this.btnCleanZStop.Size = new System.Drawing.Size(26, 25);
+            this.btnCleanZStop.Size = new System.Drawing.Size(28, 25);
             this.btnCleanZStop.TabIndex = 9;
             this.btnCleanZStop.Text = "LZ";
             this.btnCleanZStop.UseVisualStyleBackColor = true;
@@ -1418,7 +1492,7 @@
             // btnGlueXHome
             // 
             this.btnGlueXHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueXHome.Location = new System.Drawing.Point(296, 123);
+            this.btnGlueXHome.Location = new System.Drawing.Point(294, 123);
             this.btnGlueXHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueXHome.Name = "btnGlueXHome";
             this.btnGlueXHome.Size = new System.Drawing.Size(23, 25);
@@ -1430,10 +1504,10 @@
             // btnGlueXStop
             // 
             this.btnGlueXStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueXStop.Location = new System.Drawing.Point(324, 123);
+            this.btnGlueXStop.Location = new System.Drawing.Point(322, 123);
             this.btnGlueXStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueXStop.Name = "btnGlueXStop";
-            this.btnGlueXStop.Size = new System.Drawing.Size(26, 25);
+            this.btnGlueXStop.Size = new System.Drawing.Size(28, 25);
             this.btnGlueXStop.TabIndex = 9;
             this.btnGlueXStop.Text = "RX";
             this.btnGlueXStop.UseVisualStyleBackColor = true;
@@ -1442,7 +1516,7 @@
             // btnGlueYHome
             // 
             this.btnGlueYHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueYHome.Location = new System.Drawing.Point(296, 153);
+            this.btnGlueYHome.Location = new System.Drawing.Point(294, 153);
             this.btnGlueYHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueYHome.Name = "btnGlueYHome";
             this.btnGlueYHome.Size = new System.Drawing.Size(23, 25);
@@ -1454,10 +1528,10 @@
             // btnGlueYStop
             // 
             this.btnGlueYStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueYStop.Location = new System.Drawing.Point(324, 153);
+            this.btnGlueYStop.Location = new System.Drawing.Point(322, 153);
             this.btnGlueYStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueYStop.Name = "btnGlueYStop";
-            this.btnGlueYStop.Size = new System.Drawing.Size(26, 25);
+            this.btnGlueYStop.Size = new System.Drawing.Size(28, 25);
             this.btnGlueYStop.TabIndex = 9;
             this.btnGlueYStop.Text = "RY";
             this.btnGlueYStop.UseVisualStyleBackColor = true;
@@ -1466,7 +1540,7 @@
             // btnGlueZHome
             // 
             this.btnGlueZHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueZHome.Location = new System.Drawing.Point(296, 183);
+            this.btnGlueZHome.Location = new System.Drawing.Point(294, 183);
             this.btnGlueZHome.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueZHome.Name = "btnGlueZHome";
             this.btnGlueZHome.Size = new System.Drawing.Size(23, 30);
@@ -1478,10 +1552,10 @@
             // btnGlueRStop
             // 
             this.btnGlueRStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGlueRStop.Location = new System.Drawing.Point(324, 183);
+            this.btnGlueRStop.Location = new System.Drawing.Point(322, 183);
             this.btnGlueRStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueRStop.Name = "btnGlueRStop";
-            this.btnGlueRStop.Size = new System.Drawing.Size(26, 30);
+            this.btnGlueRStop.Size = new System.Drawing.Size(28, 30);
             this.btnGlueRStop.TabIndex = 9;
             this.btnGlueRStop.Text = "RZ";
             this.btnGlueRStop.UseVisualStyleBackColor = true;
@@ -1490,7 +1564,7 @@
             // cbUseGlue
             // 
             this.cbUseGlue.AutoSize = true;
-            this.cbUseGlue.Location = new System.Drawing.Point(7, 175);
+            this.cbUseGlue.Location = new System.Drawing.Point(13, 186);
             this.cbUseGlue.Name = "cbUseGlue";
             this.cbUseGlue.Size = new System.Drawing.Size(72, 16);
             this.cbUseGlue.TabIndex = 42;
@@ -1505,7 +1579,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(835, 292);
+            this.groupBox2.Size = new System.Drawing.Size(836, 292);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "清洗坐标位置";
@@ -1516,14 +1590,14 @@
             this.dgvCleanPosition.AllowUserToDeleteRows = false;
             this.dgvCleanPosition.AllowUserToResizeRows = false;
             this.dgvCleanPosition.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCleanPosition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCleanPosition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvCleanPosition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvCleanPosition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -1533,29 +1607,29 @@
             this.Column6,
             this.Column7,
             this.Column5});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCleanPosition.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCleanPosition.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvCleanPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCleanPosition.EnableHeadersVisualStyles = false;
             this.dgvCleanPosition.Location = new System.Drawing.Point(3, 17);
             this.dgvCleanPosition.Name = "dgvCleanPosition";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCleanPosition.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCleanPosition.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvCleanPosition.RowHeadersVisible = false;
             this.dgvCleanPosition.RowTemplate.Height = 23;
-            this.dgvCleanPosition.Size = new System.Drawing.Size(602, 272);
+            this.dgvCleanPosition.Size = new System.Drawing.Size(603, 272);
             this.dgvCleanPosition.TabIndex = 1;
             this.dgvCleanPosition.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCleanPosition_CellClick);
             // 
@@ -1565,45 +1639,51 @@
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column1.Width = 140;
+            this.Column1.Width = 150;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "X";
             this.Column2.Name = "Column2";
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 60;
+            this.Column2.Width = 70;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Y";
             this.Column3.Name = "Column3";
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column3.Width = 60;
+            this.Column3.Width = 70;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Z";
             this.Column4.Name = "Column4";
             this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column4.Width = 60;
+            this.Column4.Width = 70;
             // 
             // Column6
             // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column6.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column6.HeaderText = "保存";
             this.Column6.Name = "Column6";
             this.Column6.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column6.Width = 50;
+            this.Column6.Width = 70;
             // 
             // Column7
             // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column7.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column7.HeaderText = "定位";
             this.Column7.Name = "Column7";
             this.Column7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column7.Width = 50;
+            this.Column7.Width = 70;
             // 
             // Column5
             // 
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column5.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column5.HeaderText = "定位Z:0";
             this.Column5.Name = "Column5";
             this.Column5.Width = 80;
@@ -1620,7 +1700,7 @@
             this.panel3.Controls.Add(this.btnLXadd);
             this.panel3.Controls.Add(this.btnLZdec);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(605, 17);
+            this.panel3.Location = new System.Drawing.Point(606, 17);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(227, 272);
@@ -1628,7 +1708,7 @@
             // 
             // btnCleanLens
             // 
-            this.btnCleanLens.Location = new System.Drawing.Point(145, 220);
+            this.btnCleanLens.Location = new System.Drawing.Point(152, 220);
             this.btnCleanLens.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanLens.Name = "btnCleanLens";
             this.btnCleanLens.Size = new System.Drawing.Size(64, 44);
@@ -1639,7 +1719,7 @@
             // 
             // btnCleanCone
             // 
-            this.btnCleanCone.Location = new System.Drawing.Point(74, 220);
+            this.btnCleanCone.Location = new System.Drawing.Point(81, 220);
             this.btnCleanCone.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanCone.Name = "btnCleanCone";
             this.btnCleanCone.Size = new System.Drawing.Size(64, 44);
@@ -1666,7 +1746,7 @@
             // 
             // btnCleanOpen
             // 
-            this.btnCleanOpen.Location = new System.Drawing.Point(5, 220);
+            this.btnCleanOpen.Location = new System.Drawing.Point(12, 220);
             this.btnCleanOpen.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanOpen.Name = "btnCleanOpen";
             this.btnCleanOpen.Size = new System.Drawing.Size(64, 44);
@@ -1768,7 +1848,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(841, 597);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(842, 597);
             this.tableLayoutPanel2.TabIndex = 40;
             // 
             // groupBox4
@@ -1778,7 +1858,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 301);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(835, 293);
+            this.groupBox4.Size = new System.Drawing.Size(836, 293);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "点胶坐标位置";
@@ -1789,14 +1869,14 @@
             this.dgvGluePosition.AllowUserToDeleteRows = false;
             this.dgvGluePosition.AllowUserToResizeRows = false;
             this.dgvGluePosition.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvGluePosition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvGluePosition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvGluePosition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvGluePosition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -1828,7 +1908,7 @@
             this.dgvGluePosition.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvGluePosition.RowHeadersVisible = false;
             this.dgvGluePosition.RowTemplate.Height = 23;
-            this.dgvGluePosition.Size = new System.Drawing.Size(602, 273);
+            this.dgvGluePosition.Size = new System.Drawing.Size(603, 273);
             this.dgvGluePosition.TabIndex = 1;
             this.dgvGluePosition.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGluePosition_CellClick);
             // 
@@ -1838,45 +1918,51 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn1.Width = 140;
+            this.dataGridViewTextBoxColumn1.Width = 150;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "X";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn2.Width = 60;
+            this.dataGridViewTextBoxColumn2.Width = 70;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "Y";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn3.Width = 60;
+            this.dataGridViewTextBoxColumn3.Width = 70;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "Z";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn4.Width = 60;
+            this.dataGridViewTextBoxColumn4.Width = 70;
             // 
             // dataGridViewLinkColumn1
             // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewLinkColumn1.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewLinkColumn1.HeaderText = "保存";
             this.dataGridViewLinkColumn1.Name = "dataGridViewLinkColumn1";
             this.dataGridViewLinkColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLinkColumn1.Width = 50;
+            this.dataGridViewLinkColumn1.Width = 70;
             // 
             // dataGridViewLinkColumn2
             // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewLinkColumn2.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewLinkColumn2.HeaderText = "定位";
             this.dataGridViewLinkColumn2.Name = "dataGridViewLinkColumn2";
             this.dataGridViewLinkColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLinkColumn2.Width = 50;
+            this.dataGridViewLinkColumn2.Width = 70;
             // 
             // Column9
             // 
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column9.DefaultCellStyle = dataGridViewCellStyle10;
             this.Column9.HeaderText = "定位Z:0";
             this.Column9.Name = "Column9";
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1898,7 +1984,7 @@
             this.panel4.Controls.Add(this.cbZero);
             this.panel4.Controls.Add(this.cbUseGlue);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(605, 17);
+            this.panel4.Location = new System.Drawing.Point(606, 17);
             this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 273);
@@ -1907,7 +1993,7 @@
             // cb_pinmove
             // 
             this.cb_pinmove.AutoSize = true;
-            this.cb_pinmove.Location = new System.Drawing.Point(3, 3);
+            this.cb_pinmove.Location = new System.Drawing.Point(7, 3);
             this.cb_pinmove.Name = "cb_pinmove";
             this.cb_pinmove.Size = new System.Drawing.Size(150, 16);
             this.cb_pinmove.TabIndex = 42;
@@ -1916,10 +2002,10 @@
             // 
             // btnAirOpen
             // 
-            this.btnAirOpen.Location = new System.Drawing.Point(155, 193);
+            this.btnAirOpen.Location = new System.Drawing.Point(83, 210);
             this.btnAirOpen.Margin = new System.Windows.Forms.Padding(2);
             this.btnAirOpen.Name = "btnAirOpen";
-            this.btnAirOpen.Size = new System.Drawing.Size(64, 44);
+            this.btnAirOpen.Size = new System.Drawing.Size(64, 28);
             this.btnAirOpen.TabIndex = 10;
             this.btnAirOpen.Text = "通气屏蔽";
             this.btnAirOpen.UseVisualStyleBackColor = true;
@@ -1927,21 +2013,21 @@
             // 
             // btnCamGlue
             // 
-            this.btnCamGlue.Location = new System.Drawing.Point(15, 239);
+            this.btnCamGlue.Location = new System.Drawing.Point(13, 240);
             this.btnCamGlue.Margin = new System.Windows.Forms.Padding(2);
             this.btnCamGlue.Name = "btnCamGlue";
-            this.btnCamGlue.Size = new System.Drawing.Size(81, 28);
+            this.btnCamGlue.Size = new System.Drawing.Size(134, 28);
             this.btnCamGlue.TabIndex = 9;
-            this.btnCamGlue.Text = "视觉圆点胶";
+            this.btnCamGlue.Text = "视觉圆形点胶";
             this.btnCamGlue.UseVisualStyleBackColor = true;
             this.btnCamGlue.Click += new System.EventHandler(this.btnCamGlue_Click);
             // 
             // btnArcMove
             // 
-            this.btnArcMove.Location = new System.Drawing.Point(85, 193);
+            this.btnArcMove.Location = new System.Drawing.Point(152, 210);
             this.btnArcMove.Margin = new System.Windows.Forms.Padding(2);
             this.btnArcMove.Name = "btnArcMove";
-            this.btnArcMove.Size = new System.Drawing.Size(64, 44);
+            this.btnArcMove.Size = new System.Drawing.Size(64, 28);
             this.btnArcMove.TabIndex = 9;
             this.btnArcMove.Text = "圆弧点胶";
             this.btnArcMove.UseVisualStyleBackColor = true;
@@ -1949,10 +2035,10 @@
             // 
             // btnGlueOpen
             // 
-            this.btnGlueOpen.Location = new System.Drawing.Point(15, 193);
+            this.btnGlueOpen.Location = new System.Drawing.Point(13, 210);
             this.btnGlueOpen.Margin = new System.Windows.Forms.Padding(2);
             this.btnGlueOpen.Name = "btnGlueOpen";
-            this.btnGlueOpen.Size = new System.Drawing.Size(64, 44);
+            this.btnGlueOpen.Size = new System.Drawing.Size(64, 28);
             this.btnGlueOpen.TabIndex = 9;
             this.btnGlueOpen.Text = "点胶打开";
             this.btnGlueOpen.UseVisualStyleBackColor = true;
@@ -2058,7 +2144,7 @@
             // cbZero
             // 
             this.cbZero.AutoSize = true;
-            this.cbZero.Location = new System.Drawing.Point(116, 246);
+            this.cbZero.Location = new System.Drawing.Point(152, 186);
             this.cbZero.Name = "cbZero";
             this.cbZero.Size = new System.Drawing.Size(48, 16);
             this.cbZero.TabIndex = 42;
@@ -2072,7 +2158,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox5.Location = new System.Drawing.Point(0, 597);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(841, 144);
+            this.groupBox5.Size = new System.Drawing.Size(842, 144);
             this.groupBox5.TabIndex = 41;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "气缸操作";
@@ -2083,23 +2169,14 @@
             this.flpCylinder.Location = new System.Drawing.Point(3, 17);
             this.flpCylinder.Margin = new System.Windows.Forms.Padding(2);
             this.flpCylinder.Name = "flpCylinder";
-            this.flpCylinder.Size = new System.Drawing.Size(835, 124);
+            this.flpCylinder.Size = new System.Drawing.Size(836, 124);
             this.flpCylinder.TabIndex = 0;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(-5, 125);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(77, 12);
-            this.label20.TabIndex = 47;
-            this.label20.Text = "出胶后延时ms";
             // 
             // frmTeach
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1206, 741);
+            this.ClientSize = new System.Drawing.Size(1207, 741);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
@@ -2115,12 +2192,14 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeDelay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRectY5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectY1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudAxisNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRectX5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRectX2)).EndInit();
@@ -2267,20 +2346,6 @@
         private System.Windows.Forms.Button btnGlueYStop;
         private System.Windows.Forms.Button btnGlueZHome;
         private System.Windows.Forms.Button btnGlueRStop;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewLinkColumn Column6;
-        private System.Windows.Forms.DataGridViewLinkColumn Column7;
-        private System.Windows.Forms.DataGridViewLinkColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewLinkColumn dataGridViewLinkColumn1;
-        private System.Windows.Forms.DataGridViewLinkColumn dataGridViewLinkColumn2;
-        private System.Windows.Forms.DataGridViewLinkColumn Column9;
         private System.Windows.Forms.Button btnAirOpen;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox cb_pinmove;
@@ -2309,11 +2374,29 @@
         private System.Windows.Forms.NumericUpDown nudTimeDelay;
         private System.Windows.Forms.Button btnCamGlue;
         private System.Windows.Forms.CheckBox cbZero;
-        private System.Windows.Forms.CheckBox cbRuseRect;
         private System.Windows.Forms.Button btnGoToRect1;
         private System.Windows.Forms.Button btnGoToRect2;
         private System.Windows.Forms.Button btnGoToRect3;
         private System.Windows.Forms.Button btnGoTorect4;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewLinkColumn Column6;
+        private System.Windows.Forms.DataGridViewLinkColumn Column7;
+        private System.Windows.Forms.DataGridViewLinkColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewLinkColumn dataGridViewLinkColumn1;
+        private System.Windows.Forms.DataGridViewLinkColumn dataGridViewLinkColumn2;
+        private System.Windows.Forms.DataGridViewLinkColumn Column9;
+        private System.Windows.Forms.Button btnVIRect;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.NumericUpDown nudRectY5;
+        private System.Windows.Forms.NumericUpDown nudRectX5;
+        private System.Windows.Forms.Button btnGoTorect5;
     }
 }

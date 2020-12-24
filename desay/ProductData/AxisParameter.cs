@@ -23,37 +23,37 @@ namespace desay.ProductData
 
         //速度参数
         public VelocityCurve LXspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve LYspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve LZspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 3.00, Maxvel = 10.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve CleanPathSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
 
         public VelocityCurve RXspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve RYspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve RZspeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
         public VelocityCurve GluePathSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.3, Tdec = 0.3, VelocityCurveType = CurveTypes.T };
 
         //回零速度
         public VelocityCurve LXhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
         public VelocityCurve LYhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
         public VelocityCurve LZhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
 
         public VelocityCurve RXhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
         public VelocityCurve RYhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
         public VelocityCurve RZhomeSpeed { get; set; } = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 20.0, Tacc = 0.5, Tdec = 0.5, VelocityCurveType = CurveTypes.T };
 
         //传动参数
         public TransmissionParams LXTransParams { get; set; } = new TransmissionParams() { Lead = 10, SubDivisionNum = 10000 };

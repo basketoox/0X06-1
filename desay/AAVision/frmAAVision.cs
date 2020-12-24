@@ -14,6 +14,9 @@ using System.Runtime.InteropServices;
 using HalconDotNet;
 using desay.AAVision.Algorithm;
 using System.IO;
+using NationalInstruments.Vision;
+using Vision_Assistant;
+
 namespace desay
 {
     public partial class frmAAVision : Form
@@ -26,6 +29,7 @@ namespace desay
 
         public static frmAAVision acq;
 
+        Form1 form1;
         private BaumerCamera _Subject;
 
         public bool SaveImage = true;
@@ -43,7 +47,7 @@ namespace desay
             acq = this;
             ReadParamFromFile();
             _Subject = new BaumerCamera();
-            lblPath.Text = "图片保存路径： "+System.Environment.CurrentDirectory+@"\Image";
+            lblPath.Text = "图片保存路径： " + System.Environment.CurrentDirectory + @"\Image";
             NUPday.Value = Position.Instance.DayOfImageSave;
             DeleteFiles();
 
@@ -51,75 +55,75 @@ namespace desay
         public static void ReadParamFromFile()
         {
 
-            CenterLocate.circleCenter_x = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleCenter_x", CenterLocate.circleCenter_x);
-            CenterLocate.circleCenter_y = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleCenter_y", CenterLocate.circleCenter_y);
-            CenterLocate.circleRadius = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleRadius", CenterLocate.circleRadius);
+            CenterLocate.circleCenter_x = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleCenter_x", CenterLocate.circleCenter_x);
+            CenterLocate.circleCenter_y = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleCenter_y", CenterLocate.circleCenter_y);
+            CenterLocate.circleRadius = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleRadius", CenterLocate.circleRadius);
 
-            CenterLocate.threshold_min = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "threshold_min", CenterLocate.threshold_min);
-            CenterLocate.threshold_max = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "m_laserOnVision", CenterLocate.threshold_max);
-            CenterLocate.eroKernel = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "eroKernel", CenterLocate.eroKernel);
+            CenterLocate.threshold_min = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "threshold_min", CenterLocate.threshold_min);
+            CenterLocate.threshold_max = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "m_laserOnVision", CenterLocate.threshold_max);
+            CenterLocate.eroKernel = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "eroKernel", CenterLocate.eroKernel);
 
-            CenterLocate.areaMin = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "areaMin", CenterLocate.areaMin);
-            CenterLocate.areaMax = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "areaMax", CenterLocate.areaMax);
+            CenterLocate.areaMin = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "areaMin", CenterLocate.areaMin);
+            CenterLocate.areaMax = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "areaMax", CenterLocate.areaMax);
 
-            NeedleLocate.circleCenter_x = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleCenter_x", NeedleLocate.circleCenter_x);
-            NeedleLocate.circleCenter_y = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleCenter_y", NeedleLocate.circleCenter_y);
-            NeedleLocate.circleRadius = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleRadius", NeedleLocate.circleRadius);
-            NeedleLocate.areaSizeMin = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "areaSizeMin", NeedleLocate.areaSizeMin);
+            NeedleLocate.circleCenter_x = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleCenter_x", NeedleLocate.circleCenter_x);
+            NeedleLocate.circleCenter_y = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleCenter_y", NeedleLocate.circleCenter_y);
+            NeedleLocate.circleRadius = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleRadius", NeedleLocate.circleRadius);
+            NeedleLocate.areaSizeMin = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "areaSizeMin", NeedleLocate.areaSizeMin);
 
-            GlueCheck.GlueInnerCircle = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "GlueInnerCircle", GlueCheck.GlueInnerCircle);
-            GlueCheck.GlueWidth = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "GlueWidth", GlueCheck.GlueWidth);
-            GlueCheck.glueOverflowOutter = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOverflowOutter", GlueCheck.glueOverflowOutter);
-            GlueCheck.glueOverflowInner = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOverflowInner", GlueCheck.glueOverflowInner);
-            GlueCheck.glueOffset = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOffset", GlueCheck.glueOffset);
-            GlueCheck.glueLackOutter = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueLackOutter", GlueCheck.glueLackOutter);
-            GlueCheck.glueLackInner = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueLackInner", GlueCheck.glueLackInner);
-            GlueCheck.kernel = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "kernel", GlueCheck.kernel);
+            GlueCheck.GlueInnerCircle = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "GlueInnerCircle", GlueCheck.GlueInnerCircle);
+            GlueCheck.GlueWidth = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "GlueWidth", GlueCheck.GlueWidth);
+            GlueCheck.glueOverflowOutter = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOverflowOutter", GlueCheck.glueOverflowOutter);
+            GlueCheck.glueOverflowInner = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOverflowInner", GlueCheck.glueOverflowInner);
+            GlueCheck.glueOffset = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOffset", GlueCheck.glueOffset);
+            GlueCheck.glueLackOutter = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueLackOutter", GlueCheck.glueLackOutter);
+            GlueCheck.glueLackInner = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueLackInner", GlueCheck.glueLackInner);
+            GlueCheck.kernel = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "kernel", GlueCheck.kernel);
 
-            GlueCheck.tol = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "tol", GlueCheck.tol);
-            GlueCheck.area = IniOperation.ReadDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "area", GlueCheck.area);
-       
-            acq.SaveImage = IniOperation.ReadBoolValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "acq", "SaveImage", acq.SaveImage);
+            GlueCheck.tol = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "tol", GlueCheck.tol);
+            GlueCheck.area = IniOperation.ReadDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "area", GlueCheck.area);
+
+            acq.SaveImage = IniOperation.ReadBoolValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "acq", "SaveImage", acq.SaveImage);
 
         }
         public static void WriteParamToFile()
         {
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleCenter_x", CenterLocate.circleCenter_x);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleCenter_y", CenterLocate.circleCenter_y);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "circleRadius", CenterLocate.circleRadius);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleCenter_x", CenterLocate.circleCenter_x);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleCenter_y", CenterLocate.circleCenter_y);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "circleRadius", CenterLocate.circleRadius);
 
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "threshold_min", CenterLocate.threshold_min);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "m_laserOnVision", CenterLocate.threshold_max);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "eroKernel", CenterLocate.eroKernel);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "threshold_min", CenterLocate.threshold_min);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "m_laserOnVision", CenterLocate.threshold_max);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "eroKernel", CenterLocate.eroKernel);
 
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "areaMin", CenterLocate.areaMin);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "CenterLocate", "areaMax", CenterLocate.areaMax);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "areaMin", CenterLocate.areaMin);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "CenterLocate", "areaMax", CenterLocate.areaMax);
 
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleCenter_x", NeedleLocate.circleCenter_x);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleCenter_y", NeedleLocate.circleCenter_y);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "circleRadius", NeedleLocate.circleRadius);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "NeedleLocate", "areaSizeMin", NeedleLocate.areaSizeMin);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleCenter_x", NeedleLocate.circleCenter_x);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleCenter_y", NeedleLocate.circleCenter_y);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "circleRadius", NeedleLocate.circleRadius);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "NeedleLocate", "areaSizeMin", NeedleLocate.areaSizeMin);
 
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "GlueInnerCircle", GlueCheck.GlueInnerCircle);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "GlueWidth", GlueCheck.GlueWidth);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "kernel", GlueCheck.kernel);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOverflowOutter", GlueCheck.glueOverflowOutter);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOverflowInner", GlueCheck.glueOverflowInner);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueOffset", GlueCheck.glueOffset);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueLackOutter", GlueCheck.glueLackOutter);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "glueLackInner", GlueCheck.glueLackInner);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "GlueInnerCircle", GlueCheck.GlueInnerCircle);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "GlueWidth", GlueCheck.GlueWidth);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "kernel", GlueCheck.kernel);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOverflowOutter", GlueCheck.glueOverflowOutter);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOverflowInner", GlueCheck.glueOverflowInner);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueOffset", GlueCheck.glueOffset);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueLackOutter", GlueCheck.glueLackOutter);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "glueLackInner", GlueCheck.glueLackInner);
 
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "tol", GlueCheck.tol);
-            IniOperation.WriteDoubleValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "GlueCheck", "area", GlueCheck.area);
-            
-            IniOperation.WriteBoolValue(AppConfig.VisonPath+ "\\AAVisionConfig.ini",  "SaveImage", "acq", acq.SaveImage);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "tol", GlueCheck.tol);
+            IniOperation.WriteDoubleValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "GlueCheck", "area", GlueCheck.area);
+
+            IniOperation.WriteBoolValue(AppConfig.VisonPath + "\\AAVisionConfig.ini", "SaveImage", "acq", acq.SaveImage);
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
-           Acquire();
+
+            Acquire();
             try
             {
                 ho_Image.Dispose();
@@ -134,12 +138,12 @@ namespace desay
 
         private void Acquire()
         {
-            
-                if (_Subject == null)
-                    {
-                        return;
-                    }
-                _Subject.Acquire();
+
+            if (_Subject == null)
+            {
+                return;
+            }
+            _Subject.Acquire();
             if (SaveImage)
             {
                 try
@@ -152,11 +156,20 @@ namespace desay
                     //SaveImg($"{_filePath }//{ DateTime.Now.ToString("yy_MM_dd_HH_mm_ss")}.bmp");
                     SaveImg_JPG($"{_filePath }//{ DateTime.Now.ToString("yy_MM_dd_HH_mm_ss_fff")}.jpg");
                 }
-                catch { ; }
+                catch {; }
             }
-          
+
         }
 
+        public void AcquireRec()
+        {
+
+            if (_Subject == null)
+            {
+                return;
+            }
+            _Subject.Acquire();
+        }
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -167,7 +180,7 @@ namespace desay
         private void NeedleLocateTestAcquire()
         {
             Marking.NeedleLocateTest = true;
-            Marking.NeedleLocateTestSucceed = false; 
+            Marking.NeedleLocateTestSucceed = false;
             Acquire();
         }
 
@@ -188,10 +201,8 @@ namespace desay
         {
             if (cb_SelectImg.Checked)
             {
-
                 try
                 {
-
                     new CenterLocateParameter(InputImage).ShowDialog();
                 }
                 catch (Exception ex) { MessageBox.Show($"打开失败{ex.ToString()}"); }
@@ -237,19 +248,20 @@ namespace desay
 
                 try
                 {
-                   
+
                     new frmGlueCheck(InputImage).ShowDialog();
                 }
                 catch (Exception ex) { MessageBox.Show($"打开失败{ex.ToString()}"); }
             }
             else
             {
-               
-                try {
+
+                try
+                {
                     Acquire();
                     new frmGlueCheck(ImageFactory.CreateBitmap(_Subject.OutputImageData)).ShowDialog();
-            }
-            catch (Exception ex) { MessageBox.Show($"打开失败{ex.ToString()}"); }
+                }
+                catch (Exception ex) { MessageBox.Show($"打开失败{ex.ToString()}"); }
             }
         }
 
@@ -293,10 +305,10 @@ namespace desay
             dialog.Filter = "bmp图片(*.bmp)|*.*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-               
+
                 Bitmap InputImage = new Bitmap(Image.FromFile(dialog.FileName));  // 加载图像
-                CenterLocate.CenterMatch(InputImage,hWindowControl1.HalconWindow);
-               
+                CenterLocate.CenterMatch(InputImage, hWindowControl1.HalconWindow);
+
             }
         }
 
@@ -308,10 +320,10 @@ namespace desay
             dialog.Filter = "bmp图片(*.bmp)|*.*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-              
+
                 Bitmap Bmp = new Bitmap(Image.FromFile(dialog.FileName));  // 加载图像
                 GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, Bmp, frmAAVision.acq.hWindowControl1.HalconWindow, acq.SaveImage);
-               
+                Bmp.Dispose();
             }
         }
 
@@ -335,14 +347,14 @@ namespace desay
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
 
-                 InputImage = new Bitmap(Image.FromFile(dialog.FileName));  // 加载图像
+                InputImage = new Bitmap(Image.FromFile(dialog.FileName));  // 加载图像
                 ho_Image.Dispose();
                 Bitmap2HObject.Bitmap2HObj(InputImage, out ho_Image);
                 HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
                 str_imgSize = string.Format("{0}X{1}", hv_Width, hv_Height);
                 CenterLocate.ShowIMg(InputImage, hWindowControl1.HalconWindow);
-                CenterLocate.TestBmp(InputImage, hWindowControl1.HalconWindow,SaveImage);
-                
+                CenterLocate.TestBmp(InputImage, hWindowControl1.HalconWindow, SaveImage);
+
             }
         }
 
@@ -400,7 +412,7 @@ namespace desay
                     }
                     else
                         ss2 = "";
-                    m_CtrlHStatusLabelCtrl.Text = str_imgSize + "    " + ss1 + "    " + ss2+"  Xpxiel"+Config.Instance.CameraPixelMM_X + "  Ypxiel" + Config.Instance.CameraPixelMM_Y;
+                    m_CtrlHStatusLabelCtrl.Text = str_imgSize + "    " + ss1 + "    " + ss2 + "  Xpxiel" + Config.Instance.CameraPixelMM_X + "  Ypxiel" + Config.Instance.CameraPixelMM_Y;
                 }
             }
             catch (Exception ex)
@@ -430,7 +442,7 @@ namespace desay
             }
             catch (Exception ex)
             {
-                
+
                 return false;
             }
             return true;
@@ -465,7 +477,7 @@ namespace desay
                 {
                     string file = dg.FileName;
                     SaveImg(file);
-                   
+
                 }
 
 
@@ -484,24 +496,54 @@ namespace desay
         {
             DateTime nowTime = DateTime.Now;
             DirectoryInfo root = new DirectoryInfo(@"./Image");
-            FileInfo[] dics = root.GetFiles();  
-                foreach (FileInfo file in dics)//遍历文件夹
+            FileInfo[] dics = root.GetFiles();
+            foreach (FileInfo file in dics)//遍历文件夹
+            {
+                TimeSpan t = nowTime - file.CreationTime;  //当前时间  减去 文件创建时间
+                int day = t.Days;
+                if (day >= Position.Instance.DayOfImageSave)   //保存的时间 ；  单位：天
                 {
-                    TimeSpan t = nowTime - file.CreationTime;  //当前时间  减去 文件创建时间
-                    int day = t.Days;
-                    if (day >= Position.Instance.DayOfImageSave)   //保存的时间 ；  单位：天
-                    {
 
-                        File.Delete(file.FullName);  //删除超过时间的文件
-                    }
+                    File.Delete(file.FullName);  //删除超过时间的文件
                 }
-            
+            }
+        }
+
+        private void RectangleCheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Form1 frmRectangle = new Form1();
+                //frmRectangle.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"打开失败{ex.ToString()}");
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Marking.CenterLocateTest = true;
+            Acquire();
         }
 
         private void frmAAVision_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Visible=false;
-            e.Cancel = true;
+            if (e.CloseReason == CloseReason.FormOwnerClosing || e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                this.WindowState = FormWindowState.Minimized;
+            }
+        }
+
+        private void GlueCheck_c_Click(object sender, EventArgs e)
+        {
+            if (form1 == null || form1.IsDisposed)
+            {
+                form1 = new Form1();
+            }
+            form1.ShowDialog();
         }
     }
 }

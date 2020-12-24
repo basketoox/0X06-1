@@ -70,9 +70,12 @@ namespace desay.ProductData
         public int MesWorkNum = 7;
 
         public double[] RectX = new double[10];
-
         public double[] RectY = new double[10];
         public double RectZ=0.0;
-        public int GlueRectNOoneDelayTime = 100;
+        /// <summary>
+        /// 出胶和移动时间间隔
+        /// </summary>
+        public int GlueRectNOoneDelayTime = 50;
+        
     }
 }

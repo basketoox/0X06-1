@@ -49,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(482, 410);
             this.Controls.Add(this.button1);
             this.Name = "frmWb";
-            this.Text = "frmWb";
+            this.Text = "白板测试";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmWb_FormClosing);
             this.Load += new System.EventHandler(this.frmWb_Load);
             this.ResumeLayout(false);

@@ -132,6 +132,8 @@ namespace desay
 
             Position.Instance.CleanPathSpeed = (double)ndnCleanPathSpeed.Value;
             Position.Instance.GluePathSpeed = (double)ndnGluePathSpeed.Value;
+            AxisParameter.Instance.CleanPathSpeed.Maxvel = (double)ndnCleanPathSpeed.Value;
+            AxisParameter.Instance.GluePathSpeed.Maxvel = (double)ndnGluePathSpeed.Value;
             #endregion
 
             SerializerManager<AxisParameter>.Instance.Save(AppConfig.ConfigAxisName, AxisParameter.Instance);

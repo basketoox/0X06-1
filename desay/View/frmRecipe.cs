@@ -135,6 +135,8 @@ namespace desay
             CurrentProductType = selectType;
             m_Load?.Invoke(); ;
             RefreshInfo();
+            MessageBox.Show("切换成功！", "提示", MessageBoxButtons.OK);
+            this.Close();
         }
         private void lstProductType_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -72,7 +72,7 @@ namespace desay.Flow
                     CarrierUpCylinder.Condition.External = AlarmReset;
 
                     CarrierHomeBit = MoveCylinder.OutOriginStatus && CarrierUpCylinder.OutOriginStatus && CarrierClampCylinder.OutOriginStatus && CarrierPressCylinder.OutOriginStatus
-                        && (IoPoints.IDI28.Value || IoPoints.IDI29.Value || IoPoints.IDI30.Value || IoPoints.IDI31.Value || Marking.DoorShield) && (IoPoints.IDI15.Value || Marking.CurtainShield);//门禁暂时屏蔽
+                        && ((IoPoints.IDI28.Value && IoPoints.IDI29.Value && IoPoints.IDI30.Value && IoPoints.IDI31.Value) || Marking.DoorShield) && (IoPoints.IDI15.Value || Marking.CurtainShield);//门禁暂时屏蔽
 
                     #region 自动流程
                     if (stationOperate.Running)
@@ -90,8 +90,9 @@ namespace desay.Flow
                                     IoPoints.IDO1.Value = false;
                                     Marking.SN = null;
                                     Marking.FN = null;
-                                    if ((!IoPoints.IDI15.Value && !Marking.CurtainShield) || (/*!IoPoints.TDI5.Value &&*/ !Marking.DoorShield))
+                                    if ((!IoPoints.IDI15.Value && !Marking.CurtainShield) || !Marking.DoorShield)
                                         break;
+
                                     if (CarrierHomeBit)
                                         step = 30;
                                     else
@@ -186,7 +187,7 @@ namespace desay.Flow
                             case 30://顶升气缸顶起
                                 if (IoPoints.TDI8.Value)
                                 {
-                                    Thread.Sleep(10);
+                                    Thread.Sleep(100);
                                     CarrierUpCylinder.Set();
                                     Marking.CarrierWorking = true;
                                     step = 40;
@@ -196,7 +197,7 @@ namespace desay.Flow
                                 if (CarrierUpCylinder.OutMoveStatus && CarrierClampCylinder.OutOriginStatus)
                                 {
                                     CarrierClampCylinder.Set();
-                                    Thread.Sleep(10);
+                                    Thread.Sleep(100);
                                     if (!IoPoints.IDI18.Value)
                                     {
                                         Marking.AaAllowPassFlg = true;
@@ -232,24 +233,20 @@ namespace desay.Flow
                                 }
                                 else
                                 {
-                                    _watch.Stop();
                                     if (_watch.ElapsedMilliseconds > Position.Instance.SocketTimeout)
                                     {
                                         m_Alarm = PlateformAlarm.扫产品码超时;
                                         step = 70;//扫产品码启动
-                                    }
-                                }
-                                _watch.Restart();
+                                    }                                
+                                }                                
                                 break;
-                            case 100://等待双启动信号，10.26改单启动
+                            case 100://等待启动信号
                                 if (IoPoints.TDI0.Value && ((IoPoints.IDI28.Value && IoPoints.IDI29.Value && IoPoints.IDI30.Value && IoPoints.IDI31.Value) || Marking.DoorShield)
                                         && (IoPoints.IDI15.Value || Marking.CurtainShield))
                                 {
-                                    Marking.CarrierCallInFinish = false;                   //20201019  清除入料状态    zw
-                                    if (Marking.HaveLensShield || IoPoints.IDI19.Value)    //20201110   XiaoW 改
+                                    Marking.CarrierCallInFinish = false;                   //20201019   清除入料状态    zw
+                                    if (Marking.HaveLensShield || IoPoints.IDI19.Value)    
                                     {
-                                        Marking.CarrierCallInFinish = false;
-                                        //xmz  修改
                                         log.Debug("启动信号");
                                         step = 102;
                                     }
@@ -289,13 +286,12 @@ namespace desay.Flow
                                 break;
 
                             case 105://判断是否有回流到位信号,无则发送入料请求
-
                                 //w无用代码
                                 if (!IoPoints.IDI18.Value)
                                 {
                                     //允许放料
                                     Marking.AaAllowPassFlg = true;
-                                    SendRequest(5);//////////////可能有问题
+                                    SendRequest(5);                  
                                 }
                                 step = 110;
                                 break;
@@ -305,7 +301,6 @@ namespace desay.Flow
                                 {
                                     log.Debug("平移气缸置位");
                                     MoveCylinder.Set();
-                                    Thread.Sleep(10);
                                     step = 120;
                                 }
                                 break;
@@ -313,7 +308,7 @@ namespace desay.Flow
                                 if (Marking.ScannerEnable)
                                     step = 130;
                                 else
-                                    step = 150;
+                                    step = 160;
                                 break;
                             case 130://触发扫治具码FN
                                 if (MoveCylinder.OutMoveStatus)
@@ -325,8 +320,7 @@ namespace desay.Flow
                                     step = 140;
                                 }
                                 break;
-
-                            case 140:
+                            case 140://获取扫描FN码结果
                                 if (Marking.GetFNFlg)
                                 {
                                     Marking.GetFNFlg = false;
@@ -334,16 +328,13 @@ namespace desay.Flow
                                 }
                                 else
                                 {
-                                    _watch.Stop();
                                     if (_watch.ElapsedMilliseconds > Position.Instance.SocketTimeout)
-                                    {
-                                        _watch.Restart();
+                                    {                                        
                                         m_Alarm = PlateformAlarm.扫治具码超时;
                                         step = 120;//扫治具码启动
                                     }
                                 }
                                 break;
-
                             case 160://顶升气缸复位
                                 if (CarrierClampCylinder.OutOriginStatus && CarrierUpCylinder.OutMoveStatus && CarrierPressCylinder.OutOriginStatus)
                                 {
@@ -352,7 +343,7 @@ namespace desay.Flow
                                     step = 170;
                                 }
                                 break;
-                            case 170://接驳台反转
+                            case 170://前接驳台电机反转
                                 if (CarrierClampCylinder.OutOriginStatus && CarrierUpCylinder.OutOriginStatus
                                     && !IoPoints.IDI0.Value && IoPoints.IDI2.Value)//判断Plasma工位是否有料
                                 {
@@ -365,7 +356,6 @@ namespace desay.Flow
                                     && (IoPoints.IDI15.Value || Marking.CurtainShield))
                                 {
                                     IoPoints.IDO1.Value = false;
-
                                     lock (MesData.CarrierDataLock)
                                     {
                                         lock (MesData.CleanDataLock)
@@ -378,7 +368,6 @@ namespace desay.Flow
                                         MesData.carrierData.FN = "";
                                         MesData.carrierData.StartTime = "";
                                     }
-
                                     MoveCylinder.Reset();
                                     Thread.Sleep(10);
                                     Marking.CarrierCallOut = false;
@@ -405,7 +394,7 @@ namespace desay.Flow
                                 step = 210;
                                 break;
                             case 210://回流线阻挡气缸放下
-                                if (IoPoints.IDI18.Value && !IoPoints.TDI8.Value)
+                                if (IoPoints.IDI18.Value && !IoPoints.TDI8.Value)//回流阻挡到位
                                 {
                                     CarrierStopCylinder.Set();
                                     Marking.CarrierCallInFinish = true;
@@ -437,25 +426,26 @@ namespace desay.Flow
                                     }
                                     step = 220;
                                 }
-                                else if (IoPoints.IDI18.Value)
+                                else if (IoPoints.IDI18.Value)//回流阻挡到位
                                 {
+                                    //回流电机停止
                                     IoPoints.IDO8.Value = false;
                                 }
-                                else
+                                else//回流阻挡未到位
                                 {
-                                    _watch.Stop();
-                                    if (_watch.ElapsedMilliseconds > 60000 /*|| *//*IoPoints.TDI7.Value*/)
+                                    if (_watch.ElapsedMilliseconds > 60000)
                                     {
-                                        step = 200;//
+                                        step = 200;
+                                        _watch.Restart();
                                     }
-                                }
-                                _watch.Restart();
+                                }   
                                 break;
                             case 220://接驳台治具到位
                                 if (IoPoints.TDI8.Value)
                                 {
                                     Thread.Sleep(10);
                                     CarrierStopCylinder.Reset();
+                                    //IoPoints.IDO8.Value = false;
                                     IoPoints.IDO0.Value = false;
                                     if (needAlarm)
                                     {

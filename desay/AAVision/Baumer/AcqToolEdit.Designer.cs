@@ -55,7 +55,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(131, 420);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(131, 312);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -63,17 +63,20 @@
             this.panel1.Controls.Add(this.Tab_setting);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(127, 414);
+            this.panel1.Size = new System.Drawing.Size(127, 305);
             this.panel1.TabIndex = 0;
             // 
             // Tab_setting
             // 
             this.Tab_setting.Controls.Add(this.tab_set);
             this.Tab_setting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tab_setting.ItemSize = new System.Drawing.Size(60, 18);
             this.Tab_setting.Location = new System.Drawing.Point(0, 0);
+            this.Tab_setting.Multiline = true;
             this.Tab_setting.Name = "Tab_setting";
             this.Tab_setting.SelectedIndex = 0;
-            this.Tab_setting.Size = new System.Drawing.Size(127, 414);
+            this.Tab_setting.Size = new System.Drawing.Size(127, 305);
+            this.Tab_setting.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.Tab_setting.TabIndex = 0;
             this.Tab_setting.Tag = "";
             // 
@@ -88,7 +91,7 @@
             this.tab_set.Location = new System.Drawing.Point(4, 22);
             this.tab_set.Name = "tab_set";
             this.tab_set.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_set.Size = new System.Drawing.Size(119, 388);
+            this.tab_set.Size = new System.Drawing.Size(119, 279);
             this.tab_set.TabIndex = 0;
             this.tab_set.Text = "Setting";
             this.tab_set.UseVisualStyleBackColor = true;
@@ -98,7 +101,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(77, 206);
+            this.checkBox1.Location = new System.Drawing.Point(87, 206);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(15, 14);
             this.checkBox1.TabIndex = 8;
@@ -107,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 206);
+            this.label1.Location = new System.Drawing.Point(16, 206);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 7;
@@ -115,7 +118,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 130);
+            this.button2.Location = new System.Drawing.Point(18, 130);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 6;
@@ -125,7 +128,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 88);
+            this.button1.Location = new System.Drawing.Point(18, 88);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -157,7 +160,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "AcqToolEdit";
-            this.Size = new System.Drawing.Size(131, 420);
+            this.Size = new System.Drawing.Size(131, 312);
             this.Load += new System.EventHandler(this.AcqToolEdit_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

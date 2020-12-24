@@ -17,18 +17,18 @@ namespace desay.ProductData
         public static bool isErrorExit = false;
 
         public static VelocityCurve LXmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
         public static VelocityCurve LYmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
         public static VelocityCurve LZmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
 
         public static VelocityCurve RXmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
         public static VelocityCurve RYmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
         public static VelocityCurve RZmanualSpeed = new VelocityCurve()
-        { Strvel = 5.00, Maxvel = 10.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
+        { Strvel = 5.00, Maxvel = 25.0, Tacc = 0.1, Tdec = 0.1, VelocityCurveType = CurveTypes.T };
 
         public static bool FactoryUser = false;
         public static bool WritePulse = true;

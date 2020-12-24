@@ -5,6 +5,8 @@ using System.Toolkit;
 using System.Toolkit.Helpers;
 using System.Threading;
 using desay.ProductData;
+using Vision_Assistant;
+
 namespace desay
 {
     static class Program
@@ -50,8 +52,12 @@ namespace desay
                 Delay.Instance = SerializerManager<Delay>.Instance.Load(AppConfig.ConfigDelayName);
                 }
                 catch { MessageBox.Show("Delay.xml出错"); Application.Exit(); }
+
+                //SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
+                //SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName,Position.Instance);
                 //Application.Run(new frmAAVision());
                 Application.Run(new frmMain());
+                
             }
             else
             {

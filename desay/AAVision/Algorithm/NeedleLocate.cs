@@ -123,6 +123,10 @@ namespace desay
                 "window", 12, 7, "black", new HTuple(), new HTuple());
             HOperatorSet.DispText(Window, "Y方向偏差：" + System.Math.Round(offset_y, 4) + " mm",
                 "window", 30, 7, "black", new HTuple(), new HTuple());
+            HOperatorSet.DispText(Window, "圆心X轴坐标：" + System.Math.Round((double)(1 * hv_target_circle_center_X[0]),4) + " pix",
+                "window", 48, 7, "black", new HTuple(), new HTuple());
+            HOperatorSet.DispText(Window, "圆心Y轴坐标：" + System.Math.Round((double)(1 * hv_target_circle_center_Y[0]),4) + " pix",
+                "window", 66, 7, "black", new HTuple(), new HTuple());
             #region//释放图像变量
             ho_src_image.Dispose();
             ho_circle_mask.Dispose();
@@ -135,9 +139,42 @@ namespace desay
             ho_Contours.Dispose();
             ho_Cross.Dispose();
             #endregion
-            offset[0] = CamPos.X - Needlepos.X + offset_x;
-            offset[1] = CamPos.Y - Needlepos.Y - offset_y;
+            offset[0] = CamPos.X - Needlepos.X - offset_x;
+            offset[1] = CamPos.Y - Needlepos.Y + offset_y;
             return offset;
+        }
+
+        public static void FindNeedleLoc(Bitmap bmp, HWindow Window,double[] data,double[] offset)//图像处理代码
+        {
+            #region//声明控制变量
+            HTuple hv_Width = null, hv_Height = null;
+            #endregion
+            #region//声明需要用到的图像变量
+            HObject ho_src_image;
+            #endregion
+            #region//初始化将要用到的图像变量
+            HOperatorSet.GenEmptyObj(out ho_src_image);
+            #endregion
+            //将bitmap转换成HObject.
+            Bitmap2HObject.Bitmap2HObj(bmp, out ho_src_image);
+            HWindow hWindow = Window;
+            //获取图片尺寸信息
+            HOperatorSet.GetImageSize(ho_src_image, out hv_Width, out hv_Height);
+
+            HOperatorSet.SetPart(hWindow, 0, 0, hv_Height - 1, hv_Width - 1);
+            HOperatorSet.DispObj(ho_src_image, hWindow);
+            SetString(Window, "OK", "green", 100);
+            HOperatorSet.DispText(Window, "X方向偏差：" + System.Math.Round(offset[0], 4) + " mm",
+                "window", 12, 7, "black", new HTuple(), new HTuple());
+            HOperatorSet.DispText(Window, "Y方向偏差：" + System.Math.Round(offset[1], 4) + " mm",
+                "window", 30, 7, "black", new HTuple(), new HTuple());
+            HOperatorSet.DispText(Window, "圆心X轴坐标：" + System.Math.Round(data[0], 4) + " pix",
+                "window", 48, 7, "black", new HTuple(), new HTuple());
+            HOperatorSet.DispText(Window, "圆心Y轴坐标：" + System.Math.Round(data[1], 4) + " pix",
+                "window", 66, 7, "black", new HTuple(), new HTuple());
+            #region//释放图像变量
+            ho_src_image.Dispose();
+            #endregion
         }
 
         public static void Test(HWindow hWindow)
