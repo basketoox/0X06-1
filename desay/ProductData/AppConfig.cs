@@ -171,5 +171,13 @@ namespace desay.ProductData
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + $"VisionModel\\{Config.Instance.CurrentProductType}");
             }
         }
+
+        public static string DryRunPic
+        {
+            get
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"VisionModel\\{Config.Instance.CurrentProductType}\\DryRunPic.jpg");
+            }
+        }
     }
 }

@@ -76,6 +76,25 @@ namespace desay.ProductData
         /// 出胶和移动时间间隔
         /// </summary>
         public int GlueRectNOoneDelayTime = 50;
-        
+        /// <summary>
+        /// 安全门屏蔽
+        /// </summary>
+        public int DoorShield = 0;
+        /// <summary>
+        /// AA工位屏蔽
+        /// </summary>
+        public int AAShield = 0;
+        /// <summary>
+        /// 安全光幕屏蔽
+        /// </summary>
+        public int CurtainShield = 0;
+        /// <summary>
+        /// 产品扫描枪屏蔽
+        /// </summary>
+        public int SnScannerShield = 0;
+        /// <summary>
+        /// 治具库
+        /// </summary>
+        public string[] FNLibrary = { "0X06-1-01", "0X06-1-02", "0X06-1-03", "0X06-1-04", "0X06-1-05", "0X06-1-06" };
     }
 }

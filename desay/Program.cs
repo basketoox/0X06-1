@@ -53,7 +53,7 @@ namespace desay
                 }
                 catch { MessageBox.Show("Delay.xml出错"); Application.Exit(); }
 
-                //SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
+                SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
                 //SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName,Position.Instance);
                 //Application.Run(new frmAAVision());
                 Application.Run(new frmMain());

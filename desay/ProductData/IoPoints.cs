@@ -505,21 +505,21 @@ namespace desay.ProductData
         };
 
         /// <summary>
-        ///   前接驳台绿灯
+        ///   前接驳台红灯
         /// </summary>
         public static IoPoint IDO6 = new IoPoint(m_DaskController, PCI7432, 6, IoModes.Signal)
         {
             Name = "DO6.6",
-            Description = "前接驳台绿灯"
+            Description = "前接驳台红灯"
         };
 
         /// <summary>
-        ///   前接驳台红灯
+        ///   前接驳台绿灯
         /// </summary>
         public static IoPoint IDO7 = new IoPoint(m_DaskController, PCI7432, 7, IoModes.Signal)
         {
             Name = "DO6.7",
-            Description = "前接驳台红灯"
+            Description = "前接驳台绿灯"
         };
 
         /// <summary>

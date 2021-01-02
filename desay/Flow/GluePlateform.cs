@@ -150,11 +150,7 @@ namespace desay.Flow
                                 else
                                     step = 0;
                                 break;
-                            case 51://Z轴返回安全位
-                                Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                step = 52;
-                                break;
-                            case 52://检测Z轴是否在安全位，XY轴移至测高位置
+                            case 51://检测Z轴是否在安全位，XY轴移至测高位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
                                     Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
@@ -174,7 +170,7 @@ namespace desay.Flow
                                 if (Zaxis.IsInPosition(Position.Instance.GlueHeightPosition.Z))
                                 {
                                     Marking.RequestHeightFlg = true;
-                                    Thread.Sleep(1500);//测高模块需要等待一会数据稳定
+                                    Thread.Sleep(1000);//测高模块需要等待一会数据稳定
                                     SendRequest(1);
                                     _watch.Restart();
                                     step = 55;
@@ -190,7 +186,15 @@ namespace desay.Flow
                                     }
                                     else
                                     {
-                                        glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
+                                        if (!Marking.DryRun)
+                                        {
+                                            glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
+                                        }
+                                        else
+                                        {
+                                            glueHeightOffset = -9;
+                                        }
+                                            
                                         Marking.GetHeightFlg = false;
                                         step = 60;
                                     }
@@ -206,7 +210,7 @@ namespace desay.Flow
                                 break;
                             case 60:// Z轴返回安全位
                                 Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                if (glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown)
+                                if ((glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown)&& !Marking.DryRun)
                                 {
                                     AppendText("测高偏差过大异常");
                                     log.Debug("测高偏差过大异常");
@@ -237,7 +241,7 @@ namespace desay.Flow
                                 if (Yaxis.IsInPosition(Position.Instance.GlueCameraPosition.Y)
                                     && Xaxis.IsInPosition(Position.Instance.GlueCameraPosition.X))
                                 {
-                                    Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, AxisParameter.Instance.RZspeed);
+                                    Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, AxisParameter.Instance.RZspeed);   
                                     step = 80;
                                 }
                                 break;
@@ -276,6 +280,7 @@ namespace desay.Flow
                                     if (Marking.CenterLocateTestSucceed)
                                     {
                                         AppendText("点胶定位识别完成");
+                                        Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                         step = 100;//计算点胶位置
                                     }
                                     else
@@ -297,7 +302,6 @@ namespace desay.Flow
                                 break;
 
                             #region 矩形定点点胶
-                            //目前没有加入胶水检测
                             case 500:// XY轴前往拍照位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
@@ -333,6 +337,7 @@ namespace desay.Flow
                                     Marking.CenterLocateTestFinish = false;
                                     if (Marking.CenterLocateTestSucceed)
                                     {
+                                        Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                         step = 540;
                                     }
                                     else
@@ -343,32 +348,24 @@ namespace desay.Flow
                                     }
                                 }
                                 break;
-                            case 540://接收数据  计算
-                                step = 550;
-                                break;
-
-                            case 550://Z轴移到点胶安全位置
-                                Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                step = 560;
-                                break;
-                            case 560://XY轴移到矩形第一个点
+                            case 540://XY轴移到矩形第一个点
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
                                     Xaxis.MoveTo(Config.Instance.RectX[0], AxisParameter.Instance.RXspeed);
                                     Yaxis.MoveTo(Config.Instance.RectY[0], AxisParameter.Instance.RYspeed);
-                                    step = 570;
+                                    step = 550;
                                 }
                                 break;
-                            case 570://Z轴移到第一点胶位置
+                            case 550://Z轴移到第一点胶位置
                                 if (Xaxis.IsInPosition(Config.Instance.RectX[0]) && Yaxis.IsInPosition(Config.Instance.RectY[0]))
                                 {
                                     Config.Instance.RectZ = glueHeightOffset + Position.Instance.GlueHeight;
                                     Zaxis.MoveTo(Config.Instance.RectZ, AxisParameter.Instance.RZspeed);
                                     Thread.Sleep(10);
-                                    step = 580;
+                                    step = 560;
                                 }
                                 break;
-                            case 580://点胶，拖胶
+                            case 560://点胶，拖胶
                                 if (Zaxis.IsInPosition(Config.Instance.RectZ))
                                 {
                                     InitBufferMode(3, (int)Position.Instance.GluePathSpeed);
@@ -377,15 +374,15 @@ namespace desay.Flow
                                     DoRect(3, Config.Instance.RectX[2], Config.Instance.RectY[2], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                     DoRect(3, Config.Instance.RectX[3], Config.Instance.RectY[3], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                     DoRect(3, Config.Instance.RectX[4], Config.Instance.RectY[4], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
-                                    DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                    DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0] - (0.1 * Position.Instance.DragGlueAngle), Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                     APSptStart((int)Position.Instance.StartGlueDelay, !Marking.GlueRun);
-                                    //m_GluePlateform.Zaxis.MoveTo(Position.Instance.DragGlueHeight, Global.RZmanualSpeed);
-                                    //Thread.Sleep(200);
-                                    Yaxis.MoveTo(Config.Instance.RectY[0]+2, AxisParameter.Instance.GluePathSpeed);
-                                    step = 590;
+                                    //拖胶前等待
+                                    Thread.Sleep(500);
+                                    Yaxis.MoveTo(Config.Instance.RectY[0] + (0.2 * Position.Instance.DragGlueAngle), AxisParameter.Instance.GluePathSpeed);
+                                    step = 570;
                                 }
                                 break;
-                            case 590://点胶结束，Z轴回点胶安全位置
+                            case 570://点胶结束，Z轴回点胶安全位置
                                 if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                 {
                                     IoPoints.IDO19.Value = false;
@@ -396,10 +393,17 @@ namespace desay.Flow
                             case 600://点胶结束
                                 if (Zaxis.IsDone)
                                 {
-                                    Marking.GlueResult = true;
-                                    Marking.CcdGetResultFlg = true;
-                                    Marking.CcdGetResultFailFlg = false;
-                                    step = 180;//结束
+                                    if (Marking.CCDShield)
+                                    {
+                                        Marking.GlueResult = true;
+                                        Marking.CcdGetResultFlg = true;
+                                        Marking.CcdGetResultFailFlg = false;
+                                        step = 180;//结束
+                                    }
+                                    else
+                                    {
+                                        step = 141;//进行点胶检测
+                                    }
                                 }
                                 break;
                             #endregion
@@ -421,11 +425,7 @@ namespace desay.Flow
                                 step = 120;
                                 break;
 
-                            case 120:// Z轴返回安全位
-                                Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                step = 121;
-                                break;
-                            case 121:// XY轴点胶圆形轨迹起点
+                            case 120:// XY轴点胶圆形轨迹起点
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
                                     Xaxis.MoveTo(Position.Instance.GlueStartPosition.X, AxisParameter.Instance.RXspeed);
@@ -516,10 +516,10 @@ namespace desay.Flow
                                                 }
                                                 break;
                                             case 40://点胶结束
-                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone && Xaxis.CurrentSpeed == 0
-                                                    && Yaxis.CurrentSpeed == 0 && Zaxis.CurrentSpeed == 0)
+                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                                 {
                                                     IoPoints.IDO19.Value = false;
+                                                    Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                                     istrue = false;
                                                     step1 = 0;
                                                 }
@@ -529,8 +529,8 @@ namespace desay.Flow
                                     step = 133;
                                 }
                                 break;
-                            case 133: //点胶次数判断
-                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone && Xaxis.CurrentSpeed == 0 && Yaxis.CurrentSpeed == 0)
+                            case 133: 
+                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                 {
                                     Marking.GlueFinish = true;
                                     IoPoints.IDO19.Value = false;
@@ -551,8 +551,6 @@ namespace desay.Flow
                                 break;
                             case 141://胶水检测
                                 Marking.GlueFinish = false;
-                                Thread.Sleep(10);
-                                Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                 step = 142;
                                 break;
                             case 142:// XY轴前往拍照位置 
@@ -647,8 +645,8 @@ namespace desay.Flow
                             case 190://XY轴回点胶安全位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueSafePosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueSafePosition.Y, AxisParameter.Instance.RYspeed);
+                                    Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
+                                    Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, AxisParameter.Instance.RYspeed);
                                     Marking.GlueCallOut = true;
                                     Marking.GlueCallOutFinish = false;
                                     watchGlueCT.Stop();
@@ -974,6 +972,11 @@ namespace desay.Flow
             {
                 AlarmLevel = AlarmLevels.Error,
                 Name = PlateformAlarm.测高偏差值过大异常.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.测高模块通讯超时)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.测高模块通讯超时.ToString()
             });
             list.AddRange(GlueStopCylinder.Alarms);
             list.AddRange(GlueUpCylinder.Alarms);

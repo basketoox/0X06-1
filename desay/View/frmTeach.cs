@@ -3409,12 +3409,11 @@ namespace desay
                                         m_GluePlateform.DoRect(3, Config.Instance.RectX[2], Config.Instance.RectY[2], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                         m_GluePlateform.DoRect(3, Config.Instance.RectX[3], Config.Instance.RectY[3], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                         m_GluePlateform.DoRect(3, Config.Instance.RectX[4], Config.Instance.RectY[4], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
-                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0], Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
+                                        m_GluePlateform.DoRect(3, Config.Instance.RectX[0], Config.Instance.RectY[0] - (0.1 * Position.Instance.DragGlueAngle), Config.Instance.RectZ, (int)Position.Instance.GluePathSpeed, (int)Position.Instance.GluePathSpeed);
                                         m_GluePlateform.APSptStart((int)nudTimeDelay.Value, cbUseGlue.Checked);
-                                        //m_GluePlateform.Zaxis.MoveTo(Position.Instance.DragGlueHeight, Global.RZmanualSpeed);
-                                        //Thread.Sleep(200);
-                                        m_GluePlateform.Xaxis.MoveTo(Config.Instance.RectX[4], Global.RXmanualSpeed);
-                                        m_GluePlateform.Yaxis.MoveTo(Config.Instance.RectY[4], Global.RYmanualSpeed);
+                                        //拖胶前等待
+                                        Thread.Sleep(500);
+                                        m_GluePlateform.Yaxis.MoveTo(Config.Instance.RectY[0] + (0.2 * Position.Instance.DragGlueAngle), AxisParameter.Instance.GluePathSpeed);
                                         step = 220;
                                     }
                                     break;
@@ -3483,6 +3482,7 @@ namespace desay
             m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
             //});
         }
+
 
         #region MoveToPoint的重载
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,

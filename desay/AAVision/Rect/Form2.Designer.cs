@@ -1,6 +1,6 @@
 namespace Vision_Assistant
 {
-    partial class Form1
+    partial class Form2
     {
         /// <summary>
         /// Required designer variable.
@@ -28,28 +28,30 @@ namespace Vision_Assistant
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.imageViewer = new NationalInstruments.Vision.WindowsForms.ImageViewer();
             this.LoadImageButton = new System.Windows.Forms.Button();
             this.RunButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.outsideVal = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.CheckResult = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.numinside = new System.Windows.Forms.NumericUpDown();
-            this.insideVal = new System.Windows.Forms.Label();
-            this.numoutside = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numCenterY = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numCenterX = new System.Windows.Forms.NumericUpDown();
+            this.CheckResult = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numLowLimt = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numHiLimt = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numinside)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numoutside)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCenterY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCenterX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLowLimt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHiLimt)).BeginInit();
             this.SuspendLayout();
             // 
             // imageViewer
@@ -84,52 +86,61 @@ namespace Vision_Assistant
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.outsideVal);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.CheckResult);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.numinside);
-            this.groupBox1.Controls.Add(this.ExitButton);
-            this.groupBox1.Controls.Add(this.insideVal);
-            this.groupBox1.Controls.Add(this.LoadImageButton);
-            this.groupBox1.Controls.Add(this.RunButton);
-            this.groupBox1.Controls.Add(this.numoutside);
+            this.groupBox1.Controls.Add(this.imageViewer);
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            this.groupBox1.Tag = "3";
             // 
-            // label4
+            // groupBox2
             // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
+            this.groupBox2.Controls.Add(this.numHiLimt);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.numLowLimt);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.numCenterY);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.numCenterX);
+            this.groupBox2.Controls.Add(this.CheckResult);
+            this.groupBox2.Controls.Add(this.ExitButton);
+            this.groupBox2.Controls.Add(this.RunButton);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.LoadImageButton);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
-            // outsideVal
+            // numCenterY
             // 
-            resources.ApplyResources(this.outsideVal, "outsideVal");
-            this.outsideVal.Name = "outsideVal";
+            resources.ApplyResources(this.numCenterY, "numCenterY");
+            this.numCenterY.Maximum = new decimal(new int[] {
+            1944,
+            0,
+            0,
+            0});
+            this.numCenterY.Name = "numCenterY";
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
+            // 
+            // numCenterX
+            // 
+            resources.ApplyResources(this.numCenterX, "numCenterX");
+            this.numCenterX.Maximum = new decimal(new int[] {
+            2592,
+            0,
+            0,
+            0});
+            this.numCenterX.Name = "numCenterX";
             // 
             // CheckResult
             // 
@@ -138,48 +149,59 @@ namespace Vision_Assistant
             this.CheckResult.Name = "CheckResult";
             this.CheckResult.UseVisualStyleBackColor = false;
             // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // numinside
+            // numLowLimt
             // 
-            resources.ApplyResources(this.numinside, "numinside");
-            this.numinside.Name = "numinside";
+            resources.ApplyResources(this.numLowLimt, "numLowLimt");
+            this.numLowLimt.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numLowLimt.Name = "numLowLimt";
             // 
-            // insideVal
+            // label4
             // 
-            resources.ApplyResources(this.insideVal, "insideVal");
-            this.insideVal.Name = "insideVal";
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
             // 
-            // numoutside
+            // numHiLimt
             // 
-            resources.ApplyResources(this.numoutside, "numoutside");
-            this.numoutside.Name = "numoutside";
+            resources.ApplyResources(this.numHiLimt, "numHiLimt");
+            this.numHiLimt.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numHiLimt.Name = "numHiLimt";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.imageViewer);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // Form1
+            // Form2
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Name = "Form2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numinside)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numoutside)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCenterY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCenterX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLowLimt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHiLimt)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -191,18 +213,18 @@ namespace Vision_Assistant
         private System.Windows.Forms.Button RunButton;
         private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button CheckResult;
-        private System.Windows.Forms.NumericUpDown numinside;
-        private System.Windows.Forms.NumericUpDown numoutside;
+        private System.Windows.Forms.NumericUpDown numCenterY;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label outsideVal;
-        private System.Windows.Forms.Label insideVal;
+        private System.Windows.Forms.NumericUpDown numCenterX;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numHiLimt;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numLowLimt;
+        private System.Windows.Forms.Label label1;
     }
 }
 

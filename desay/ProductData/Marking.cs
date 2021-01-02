@@ -497,6 +497,9 @@ namespace desay.ProductData
         /// 新增型号或者 切换型号时 重新加载；
         /// </summary>
         public static bool IsProductThrans = false;
-
+        /// <summary>
+        /// 空跑模式
+        /// </summary>
+        public static bool DryRun = false;
     }
 }

@@ -30,6 +30,7 @@ namespace desay
         public static frmAAVision acq;
 
         Form1 form1;
+        Form2 form2;
         private BaumerCamera _Subject;
 
         public bool SaveImage = true;
@@ -513,8 +514,38 @@ namespace desay
         {
             try
             {
-                //Form1 frmRectangle = new Form1();
-                //frmRectangle.Show();
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Multiselect = true;//该值确定是否可以选择多个文件
+                dialog.Title = "请选择文件夹";
+                dialog.Filter = "bmp图片(*.bmp)|*.*";
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Bitmap bmp = new Bitmap(Image.FromFile(dialog.FileName));
+                    VisionImage VI = new VisionImage(ImageType.Rgb32);
+                    VI.ReadFile(dialog.FileName);
+                    Image_Processing.ProcessImage(VI);
+                    double ICCenter_X = 0;
+                    double ICCenter_Y = 0;
+                    if (Image_Processing.gpm2Results.Count == 2)
+                    {
+                        if (Image_Processing.gpm2Results[0].Position.Y < Image_Processing.gpm2Results[1].Position.Y)
+                        {
+                            Image_Processing.gpm2Results.RemoveAt(0);
+                        }
+                        else
+                        {
+                            Image_Processing.gpm2Results.RemoveAt(1);
+                        }
+
+                    }
+                    if (Image_Processing.gpm2Results.Count == 1)
+                    {
+                        ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X - 457;//457
+                        ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y - 414;//414
+                        Marking.CenterLocateTestSucceed = true;  
+                    }
+                    CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1, ICCenter_X, ICCenter_Y);
+                }
             }
             catch (Exception ex)
             {
@@ -544,6 +575,15 @@ namespace desay
                 form1 = new Form1();
             }
             form1.ShowDialog();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (form2 == null || form2.IsDisposed)
+            {
+                form2 = new Form2();
+            }
+            form2.ShowDialog();
         }
     }
 }

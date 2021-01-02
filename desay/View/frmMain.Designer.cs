@@ -1424,8 +1424,6 @@
             // chkPlasmaShield
             // 
             this.chkPlasmaShield.AutoSize = true;
-            this.chkPlasmaShield.Checked = true;
-            this.chkPlasmaShield.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPlasmaShield.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chkPlasmaShield.ForeColor = System.Drawing.Color.Black;
             this.chkPlasmaShield.Location = new System.Drawing.Point(14, 90);

@@ -21,6 +21,7 @@ namespace desay
         static ILog log = LogManager.GetLogger(typeof(AcqToolEdit));
         public static double offset_x;
         public static double offset_y;
+        public static double[] offsetOri;
         private TabPage[] tabpage;
         Bitmap bmp;
         VisionImage VI;
@@ -40,7 +41,7 @@ namespace desay
         {
             InitializeComponent();
             tabpage = new TabPage[] { this.tab_set};
-
+            offsetOri = new double[] { 0, 0 };
          
         }
 
@@ -94,9 +95,19 @@ namespace desay
 
         public void bmpToVisionImage(Bitmap bmp)
         {
-            bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
-            VI = new VisionImage(ImageType.Rgb32);
-            VI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+            if (!Marking.DryRun)
+            {
+                bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+                VI = new VisionImage(ImageType.Rgb32);
+                VI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+            }
+            else
+            {
+                VI = new VisionImage(ImageType.Rgb32);
+                string p = Config.Instance.CurrentProductType;
+                VI.ReadFile(AppConfig.DryRunPic);
+            }
+            
         }
 
 
@@ -158,14 +169,30 @@ namespace desay
                             try
                             {
                                 Image_Processing.ProcessImage(VI);
+                                double ICCenter_X = 0;
+                                double ICCenter_Y = 0;
+                                if(Image_Processing.gpm2Results.Count == 2)
+                                {
+                                   if(Image_Processing.gpm2Results[0].Position.Y < Image_Processing.gpm2Results[1].Position.Y)
+                                    {
+                                        Image_Processing.gpm2Results.RemoveAt(0);
+                                    }
+                                    else
+                                    {
+                                        Image_Processing.gpm2Results.RemoveAt(1);
+                                    }
+                                }
                                 if (Image_Processing.gpm2Results.Count == 1)
                                 {
-                                    double ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X-457;
-                                    double ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y-414;
+                                    offsetOri[0] = Image_Processing.gpm2Results[0].CalibratedPosition.X - 1759.58;
+                                    offsetOri[1] = Image_Processing.gpm2Results[0].CalibratedPosition.Y - 1411.70;
+
+                                    ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X-457;//457
+                                    ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y-414;//414
                                     offset_x = ICCenter_X - VI.Width / 2;
                                     offset_y = ICCenter_Y - VI.Height / 2;
-                                    double[] offset_x_pix = { -630, 575, 655, 655, -630, -630 };
-                                    double[] offset_y_pix = { -650, -650, -558, 650, 650, -650 };
+                                    double[] offset_x_pix = { -630, 580, 655, 655, -630, -630 };
+                                    double[] offset_y_pix = { -650, -650, -580, 640, 640, -650 };
                                     for (int i = 0; i < offset_x_pix.Length; i++)
                                     {
                                         Config.Instance.RectX[i] = Position.Instance.GlueCameraPosition.X - Position.Instance.CCD2NeedleOffset.X + Position.Instance.GlueOffsetX - (offset_x_pix[i] - offset_x) / 96;
@@ -179,7 +206,7 @@ namespace desay
                                 {
                                     Marking.CenterLocateTestSucceed = false;
                                 }
-                                CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1);
+                                CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1, ICCenter_X, ICCenter_Y);
                             }
                             catch
                             {
@@ -220,39 +247,60 @@ namespace desay
                 }
                 else if (Marking.GlueCheckTest)
                 {
-                    try
+                    if (!Marking.DryRun)
                     {
-                        Marking.GlueCheckTest = false;
-                        if (Position.Instance.UseRectGlue)
+                        try
                         {
-                            
-                        }
-                        else
-                        {
-                            //GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
-                            double[] distance;
-                            LastVI = new VisionImage(ImageType.Rgb32);
-                            LastVI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
-                            bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
-                            GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}",out distance);
-                            if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.OutsideDistance)
+                            Marking.GlueCheckTest = false;
+                            if (Position.Instance.UseRectGlue)
                             {
-                                Marking.GlueResult = true;
+                                bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+                                VI = new VisionImage(ImageType.Rgb32);
+                                VI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+                                RectGlueCheck.ProcessImage(VI, offsetOri);
+                                if (Form2.JudegCenterPosition() && Form2.JudgeRectangleSize() && Form2.JudegMaxMassArea())
+                                {
+                                    Marking.GlueResult = true;
+                                }
+                                else
+                                {
+                                    Marking.GlueResult = false;
+                                }
+                                GlueCheck.GlueCheck_R(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult);
+                                VI.Dispose();
                             }
                             else
                             {
-                                Marking.GlueResult = false;
+                                //GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                                double[] distance;
+                                LastVI = new VisionImage(ImageType.Rgb32);
+                                LastVI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+                                bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+                                GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}", out distance);
+                                if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.insideDistance)
+                                {
+                                    Marking.GlueResult = true;
+                                }
+                                else
+                                {
+                                    Marking.GlueResult = false;
+                                }
+                                GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult, distance);
+                                LastVI.Dispose();
                             }
-                            GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult, distance);
-                            LastVI.Dispose();
-                        } 
-                        Marking.GlueCheckTestSucceed = true;
+                            Marking.GlueCheckTestSucceed = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Debug("图像识别异常333！" + ex.Message + ex.StackTrace);
+                        }
+                        VI.Dispose();
                     }
-                    catch (Exception ex)
+                    else//空跑模式
                     {
-                        log.Debug("图像识别异常333！" + ex.Message + ex.StackTrace);
+                        Marking.GlueCheckTest = false;
+                        Marking.GlueResult = false;
                     }
-                    VI.Dispose();
                 }
             }
             catch (Exception ex)

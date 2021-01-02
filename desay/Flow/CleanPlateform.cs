@@ -24,7 +24,8 @@ namespace desay.Flow
         /// 报警信息枚举变量
         /// </summary>        
         public CleanPlateform(External ExternalSign, StationInitialize stationIni, StationOperate stationOpe)
-                        : base(ExternalSign, stationIni, stationOpe, typeof(CleanPlateform)) { }
+                        : base(ExternalSign, stationIni, stationOpe, typeof(CleanPlateform))
+        { }
         #region 部件
         /// <summary>
         /// X-轴
@@ -180,6 +181,8 @@ namespace desay.Flow
                             case 30://判断Z轴是否在安全位置
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
                                 {
+                                    Xaxis.MoveTo(Position.Instance.CleanSafePosition.X, AxisParameter.Instance.LXspeed);
+                                    Yaxis.MoveTo(Position.Instance.CleanSafePosition.Y, AxisParameter.Instance.LYspeed);
                                     step = 50;
                                 }
                                 break;
@@ -189,7 +192,7 @@ namespace desay.Flow
                                 if (CleanHomeBit)
                                 {
                                     //移动到位，稳定再顶升
-                                    Thread.Sleep(1000);
+                                    Thread.Sleep(500);
                                     Marking.CleanStart = true;
                                     Marking.CleanFinish = false;
                                     _repositoryWatch.Restart();
@@ -257,7 +260,7 @@ namespace desay.Flow
                                     Thread.Sleep(1000);
                                     step = 310;//判断是否进行白板检测
                                 }
-                                   
+
                                 else
                                     step = 106;//执行Plasma流程
                                 break;
@@ -292,12 +295,13 @@ namespace desay.Flow
                                     if (Position.Instance.UseRectGlue)
                                     {
                                         #region 矩形清洗
-                                        InitBufferMode(3, (int)AxisParameter.Instance.CleanPathSpeed.Maxvel);
-                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z);
-                                        DoRect(3, Position.Instance.CleanConeSecondPosition.X, Position.Instance.CleanConeSecondPosition.Y, Position.Instance.CleanConeSecondPosition.Z);
-                                        DoRect(3, Position.Instance.CleanConeThirdPositon.X, Position.Instance.CleanConeThirdPositon.Y, Position.Instance.CleanConeThirdPositon.Z);
-                                        DoRect(3, Position.Instance.CleanConeForthPosition.X, Position.Instance.CleanConeForthPosition.Y, Position.Instance.CleanConeForthPosition.Z);
-                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z);
+
+                                        InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanConeSecondPosition.X, Position.Instance.CleanConeSecondPosition.Y, Position.Instance.CleanConeSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanConeThirdPositon.X, Position.Instance.CleanConeThirdPositon.Y, Position.Instance.CleanConeThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanConeForthPosition.X, Position.Instance.CleanConeForthPosition.Y, Position.Instance.CleanConeForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
                                         if (Marking.CleanRun)
                                             IoPoints.IDO16.Value = false;
                                         else
@@ -351,7 +355,9 @@ namespace desay.Flow
                             case 160://清洗上下气缸下降
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z) && CleanUpDownCylinder.OutOriginStatus)
                                 {
-                                    Thread.Sleep(100);
+                                    Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    Thread.Sleep(200);
                                     CleanUpDownCylinder.Set();
                                     step = 170;
                                 }
@@ -385,7 +391,7 @@ namespace desay.Flow
                                     else
                                     {
                                         step = 191;//Freetech 圆心 清洗时气缸需下降
-                                    }                                    
+                                    }
                                 }
                                 break;
                             case 191://清洗上下气缸下降                                     
@@ -400,7 +406,7 @@ namespace desay.Flow
                                     else
                                     {
                                         step = 200;
-                                    } 
+                                    }
                                 }
                                 break;
                             case 192://清洗上下气缸到位
@@ -416,12 +422,12 @@ namespace desay.Flow
                                     Zaxis.MoveTo(Position.Instance.CleanSafePosition.Z, AxisParameter.Instance.LZspeed);
                                     step = 210;
                                 }
-                                break;                                
+                                break;
                             case 210://XY 2次前往清洗圆形轨迹起点
-                                if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
+                                if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z) && Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y) && Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
-                                    Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
                                     CleanNum2 = 0;
                                     step = 220;
                                 }
@@ -439,12 +445,12 @@ namespace desay.Flow
                                     if (Position.Instance.UseRectGlue)
                                     {
                                         #region 矩形清洗
-                                        InitBufferMode(3, (int)AxisParameter.Instance.CleanPathSpeed.Maxvel);
-                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z);
-                                        DoRect(3, Position.Instance.CleanLensSecondPosition.X, Position.Instance.CleanLensSecondPosition.Y, Position.Instance.CleanLensSecondPosition.Z);
-                                        DoRect(3, Position.Instance.CleanLensThirdPositon.X, Position.Instance.CleanLensThirdPositon.Y, Position.Instance.CleanLensThirdPositon.Z);
-                                        DoRect(3, Position.Instance.CleanLensForthPosition.X, Position.Instance.CleanLensForthPosition.Y, Position.Instance.CleanLensForthPosition.Z);
-                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z);
+                                        InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanLensSecondPosition.X, Position.Instance.CleanLensSecondPosition.Y, Position.Instance.CleanLensSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanLensThirdPositon.X, Position.Instance.CleanLensThirdPositon.Y, Position.Instance.CleanLensThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanLensForthPosition.X, Position.Instance.CleanLensForthPosition.Y, Position.Instance.CleanLensForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
                                         if (Marking.CleanRun)
                                             IoPoints.IDO16.Value = false;
                                         else
@@ -465,8 +471,8 @@ namespace desay.Flow
                                         if (Marking.CleanRun)
                                             IoPoints.IDO16.Value = false;
                                         else
-                                            IoPoints.IDO16.Value = true;                                                                                                                          
-                                        APS168.APS_absolute_arc_move(Dimension2, Axis_ID_Array_For_2Axes_ArcMove2, Center_Pos_Array2, (int)Position.Instance.CleanPathSpeed * 1000, Angle2);                                        
+                                            IoPoints.IDO16.Value = true;
+                                        APS168.APS_absolute_arc_move(Dimension2, Axis_ID_Array_For_2Axes_ArcMove2, Center_Pos_Array2, (int)Position.Instance.CleanPathSpeed * 1000, Angle2);
                                         #endregion
                                     }
                                     step = 250;
@@ -498,6 +504,12 @@ namespace desay.Flow
                             case 261://清洗上下气缸复位
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
                                 {
+                                    if (!Marking.WhiteShield)
+                                    {
+                                        log.Debug("XY模组移至白板测试位置");
+                                        Xaxis.MoveTo(Position.Instance.AdjustLightPosition.X, AxisParameter.Instance.LXspeed);
+                                        Yaxis.MoveTo(Position.Instance.AdjustLightPosition.Y, AxisParameter.Instance.LYspeed);
+                                    }
                                     if (CleanUpDownCylinder.OutMoveStatus)
                                     {
                                         CleanUpDownCylinder.Reset();
@@ -572,7 +584,7 @@ namespace desay.Flow
                                     if (Position.Instance.WbLightCylinder == 1)
                                     {
                                         LightUpDownCylinder.Set();
-                                    }                                    
+                                    }
                                     Thread.Sleep(500);
                                     wbCheckCount = 0;//点亮次数归零
                                     step = 350;//白板测试启动
@@ -584,11 +596,24 @@ namespace desay.Flow
                                     AppendText("白板测试启动");
                                     try
                                     {
-                                        //调用DLL
-                                        CallWb.StartAAImage(MesData.cleanData.carrierData.SN, MesData.cleanData.carrierData.FN);
-                                        Thread.Sleep(500);
-                                        _watch.Restart();
-                                        step = 845;
+                                        if (!Marking.DryRun)
+                                        {
+                                            //调用DLL
+                                            CallWb.StartAAImage(MesData.cleanData.carrierData.SN, MesData.cleanData.carrierData.FN);
+                                            Thread.Sleep(500);
+                                            _watch.Restart();
+                                            step = 845;
+                                        }
+                                        else
+                                        {
+                                            _watch.Restart();
+                                            Config.Instance.CleanProductOkTotal++;
+                                            Marking.CleanResult = true;
+                                            Marking.WhiteBoardResult = true;
+                                            Marking.WbGetResultFlg = true;
+                                            step = 370;
+                                        }
+
                                     }
                                     catch (Exception ex)
                                     {
@@ -599,7 +624,7 @@ namespace desay.Flow
                                         step = 360;
                                     }
                                     if (_watch.ElapsedMilliseconds / 1000 > 20)
-                                    {                                       
+                                    {
                                         AppendText("AA工位超时");
                                         _watch.Restart();
                                         step = 360;
@@ -610,6 +635,7 @@ namespace desay.Flow
                                 break;
 
                             case 845://获取测试状态
+
                                 if (CallWb.GetAAImageStatus() == (int)AAImageSTATUS.AAImage_READY)//测试完成
                                 {
                                     step = 846;
@@ -683,7 +709,7 @@ namespace desay.Flow
                                         Marking.CleanResult = false;
                                         Marking.WhiteBoardResult = false;
                                         Marking.WbGetResultFlg = true;
-                                        step = 370;                                        
+                                        step = 370;
                                     }
                                     else
                                     {
@@ -693,7 +719,7 @@ namespace desay.Flow
                                         Marking.CleanResult = false;
                                         Marking.WhiteBoardResult = false;
                                         Marking.WbGetResultFlg = true;
-                                        step = 380;
+                                        step = 370;
                                         log.Debug("点亮成功结果NG");
                                     }
                                 }
@@ -701,7 +727,7 @@ namespace desay.Flow
                             case 361://点亮失败重新顶升
                                 IoPoints.IDO9.Value = false;
                                 Thread.Sleep(1000);
-                                log.Debug("点亮失败，复位顶升气缸");                                
+                                log.Debug("点亮失败，复位顶升气缸");
                                 CleanUpCylinder.Reset();
 
                                 Thread.Sleep(1000);
@@ -722,7 +748,7 @@ namespace desay.Flow
                                 if (LightUpDownCylinder.OutMoveStatus)
                                 {
                                     LightUpDownCylinder.Reset();
-                                    Thread.Sleep(200);                              
+                                    Thread.Sleep(200);
                                 }
                                 step = 380;
                                 break;
@@ -730,7 +756,15 @@ namespace desay.Flow
                                 Zaxis.MoveTo(Position.Instance.CleanSafePosition.Z, AxisParameter.Instance.RZspeed);
                                 Marking.CleanHoming = true;
                                 Marking.CleanFinishBit = true;
-                                step = 410;//流程结束
+                                step = 390;
+                                break;
+                            case 390:
+                                if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
+                                {
+                                    Xaxis.MoveTo(Position.Instance.CleanConeFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    Yaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    step = 410;//流程结束
+                                }
                                 break;
                             case 410://阻挡气缸下降
                                 if ((Marking.CleanFinishBit || Marking.CleanShield) && !Marking.CleanRecycleRun)
@@ -786,19 +820,19 @@ namespace desay.Flow
                                 Marking.CleanCycleTime = _repositoryWatch.ElapsedMilliseconds / 1000.0;
                                 if (Marking.CleanRecycleRun)
                                 {
-                                   CleanStopCylinder.Reset();
-                                   Marking.CleanStart = false;
-                                   Marking.CleanFinish = true;
-                                   Marking.CleanFinishBit = false;
-                                   Marking.CleanHoming = false;
-                                   Marking.CleanWorking = false;
-                                   Marking.CleanCallOut = false;
-                                   Marking.CleanCallOutFinish = true;
-                                   Thread.Sleep(100);
-                                   step = 0;
+                                    CleanStopCylinder.Reset();
+                                    Marking.CleanStart = false;
+                                    Marking.CleanFinish = true;
+                                    Marking.CleanFinishBit = false;
+                                    Marking.CleanHoming = false;
+                                    Marking.CleanWorking = false;
+                                    Marking.CleanCallOut = false;
+                                    Marking.CleanCallOutFinish = true;
+                                    Thread.Sleep(100);
+                                    step = 0;
                                 }
                                 else
-                                   step = 430;                              
+                                    step = 430;
                                 break;
                             case 430://阻挡气缸复位                           
                                 if (IoPoints.IDO9.Value)//默认在传送带正转2s后，复位阻挡汽缸
@@ -1200,7 +1234,6 @@ namespace desay.Flow
             catch { }
         }
         #endregion
-
     }
 
 }

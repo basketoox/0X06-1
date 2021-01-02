@@ -40,6 +40,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button12 = new System.Windows.Forms.Button();
             this.GlueCheck_c = new System.Windows.Forms.Button();
             this.RectangleCheck = new System.Windows.Forms.Button();
             this.btn_ReadImg = new System.Windows.Forms.Button();
@@ -77,7 +78,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(116, 23);
             this.button3.TabIndex = 5;
-            this.button3.Text = "圆心检测";
+            this.button3.Text = "圆形定位";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -123,7 +124,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(24, 146);
+            this.button2.Location = new System.Drawing.Point(24, 175);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(116, 23);
             this.button2.TabIndex = 11;
@@ -140,7 +141,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(29, 121);
+            this.button8.Location = new System.Drawing.Point(29, 119);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(116, 23);
             this.button8.TabIndex = 15;
@@ -150,7 +151,7 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(29, 63);
+            this.button9.Location = new System.Drawing.Point(168, 34);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(116, 23);
             this.button9.TabIndex = 14;
@@ -160,16 +161,17 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(29, 92);
+            this.button10.Location = new System.Drawing.Point(29, 63);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(116, 23);
             this.button10.TabIndex = 13;
-            this.button10.Text = "圆心检测";
+            this.button10.Text = "圆形定位";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button12);
             this.groupBox1.Controls.Add(this.GlueCheck_c);
             this.groupBox1.Controls.Add(this.RectangleCheck);
             this.groupBox1.Controls.Add(this.button9);
@@ -183,23 +185,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "本地测试";
             // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(168, 92);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(116, 23);
+            this.button12.TabIndex = 24;
+            this.button12.Text = "矩形胶水检测";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
             // GlueCheck_c
             // 
-            this.GlueCheck_c.Location = new System.Drawing.Point(168, 34);
+            this.GlueCheck_c.Location = new System.Drawing.Point(29, 92);
             this.GlueCheck_c.Name = "GlueCheck_c";
             this.GlueCheck_c.Size = new System.Drawing.Size(116, 23);
             this.GlueCheck_c.TabIndex = 24;
-            this.GlueCheck_c.Text = "点胶检测";
+            this.GlueCheck_c.Text = "圆形点胶检测";
             this.GlueCheck_c.UseVisualStyleBackColor = true;
             this.GlueCheck_c.Click += new System.EventHandler(this.GlueCheck_c_Click);
             // 
             // RectangleCheck
             // 
-            this.RectangleCheck.Location = new System.Drawing.Point(168, 121);
+            this.RectangleCheck.Location = new System.Drawing.Point(168, 63);
             this.RectangleCheck.Name = "RectangleCheck";
             this.RectangleCheck.Size = new System.Drawing.Size(116, 23);
             this.RectangleCheck.TabIndex = 24;
-            this.RectangleCheck.Text = "矩形检测";
+            this.RectangleCheck.Text = "矩形定位";
             this.RectangleCheck.UseVisualStyleBackColor = true;
             this.RectangleCheck.Click += new System.EventHandler(this.RectangleCheck_Click);
             // 
@@ -236,11 +248,11 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(24, 175);
+            this.button11.Location = new System.Drawing.Point(24, 146);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(116, 23);
             this.button11.TabIndex = 14;
-            this.button11.Text = "矩形检测";
+            this.button11.Text = "矩形定位";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
@@ -420,6 +432,7 @@
         private System.Windows.Forms.Button RectangleCheck;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button GlueCheck_c;
+        private System.Windows.Forms.Button button12;
     }
 }
 

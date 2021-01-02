@@ -319,7 +319,7 @@ namespace desay
             } 
         }
 
-        public static void RectangleMatch(Bitmap bmp, HWindow window,bool ok)
+        public static void RectangleMatch(Bitmap bmp, HWindow window,bool ok,double a,double b)
         {
             try
             {
@@ -353,7 +353,18 @@ namespace desay
                 {
                     SetString(window, "NG", "red", 100);
                 }
-                
+                HObject region;
+                HTuple Length1 = 200;
+                HTuple Length2 = 150;
+                HTuple phi = 0;
+                HTuple row = b;
+                HTuple column = a;
+                HOperatorSet.SetColor(window, "red");
+                HOperatorSet.SetLineWidth(window, 1);
+                HOperatorSet.SetDraw(window, "margin");
+
+                HOperatorSet.GenRectangle2(out region, row, column, phi, Length1, Length2);
+                HOperatorSet.DispObj(region, window);
             }
             catch
             {

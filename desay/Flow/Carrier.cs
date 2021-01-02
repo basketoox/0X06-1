@@ -71,7 +71,7 @@ namespace desay.Flow
                     CarrierClampCylinder.Condition.External = AlarmReset;
                     CarrierUpCylinder.Condition.External = AlarmReset;
 
-                    CarrierHomeBit = MoveCylinder.OutOriginStatus && CarrierUpCylinder.OutOriginStatus && CarrierClampCylinder.OutOriginStatus && CarrierPressCylinder.OutOriginStatus
+                    CarrierHomeBit = MoveCylinder.OutOriginStatus && CarrierUpCylinder.OutOriginStatus && CarrierClampCylinder.OutOriginStatus //&& CarrierPressCylinder.OutOriginStatus
                         && ((IoPoints.IDI28.Value && IoPoints.IDI29.Value && IoPoints.IDI30.Value && IoPoints.IDI31.Value) || Marking.DoorShield) && (IoPoints.IDI15.Value || Marking.CurtainShield);//门禁暂时屏蔽
 
                     #region 自动流程
@@ -121,7 +121,7 @@ namespace desay.Flow
                                 step = 13;
                                 break;
                             case 13://复位产品下压气缸   20201110  XiaoW 增
-                                if (CarrierPressCylinder.OutOriginStatus)
+                                if (CarrierPressCylinder.OutMoveStatus)
                                 {
                                     CarrierPressCylinder.Reset();
                                 }
@@ -197,6 +197,9 @@ namespace desay.Flow
                                 if (CarrierUpCylinder.OutMoveStatus && CarrierClampCylinder.OutOriginStatus)
                                 {
                                     CarrierClampCylinder.Set();
+                                    //接驳台指示灯
+                                    IoPoints.IDO6.Value = false;
+                                    IoPoints.IDO7.Value = true;
                                     Thread.Sleep(100);
                                     if (!IoPoints.IDI18.Value)
                                     {
@@ -215,8 +218,11 @@ namespace desay.Flow
                                     step = 70;
                                 }
                                 else
+                                {
                                     step = 100;
+                                }
 
+                                //IoPoints.IDO6.Value = true;
                                 break;
 
                             case 70://等待人工扫产品码SN
@@ -228,7 +234,7 @@ namespace desay.Flow
                             case 80:
                                 if (Marking.GetSNFlg || Marking.SnScannerShield)
                                 {
-                                    Marking.GetSNFlg = false;
+                                    Marking.GetSNFlg = false;                                    
                                     step = 100;
                                 }
                                 else
@@ -242,12 +248,14 @@ namespace desay.Flow
                                 break;
                             case 100://等待启动信号
                                 if (IoPoints.TDI0.Value && ((IoPoints.IDI28.Value && IoPoints.IDI29.Value && IoPoints.IDI30.Value && IoPoints.IDI31.Value) || Marking.DoorShield)
-                                        && (IoPoints.IDI15.Value || Marking.CurtainShield))
+                                        && (IoPoints.IDI15.Value || Marking.CurtainShield) || Marking.DryRun)
                                 {
                                     Marking.CarrierCallInFinish = false;                   //20201019   清除入料状态    zw
                                     if (Marking.HaveLensShield || IoPoints.IDI19.Value)    
                                     {
                                         log.Debug("启动信号");
+                                        IoPoints.IDO7.Value = false;
+                                        IoPoints.IDO6.Value = true;
                                         step = 102;
                                     }
                                     else
@@ -258,29 +266,29 @@ namespace desay.Flow
                                 break;
 
                             case 102://产品下压气缸动作   20201110  XiaoW 改
-                                if (CarrierPressCylinder.OutOriginStatus && CarrierClampCylinder.OutMoveStatus)
+                                if ( /*CarrierPressCylinder.OutOriginStatus && */ CarrierClampCylinder.OutMoveStatus)
                                 {
                                     log.Debug("产品下压气缸置位");
-                                    CarrierPressCylinder.Set();
+                                    //CarrierPressCylinder.Set();
                                     step = 103;
                                 }
                                 break;
 
                             case 103: //产品到位后，开夹气缸复位   20201110 XiaoW 改
-                                if (CarrierClampCylinder.OutMoveStatus && CarrierPressCylinder.OutMoveStatus)
+                                if ( CarrierClampCylinder.OutMoveStatus /* && CarrierPressCylinder.OutMoveStatus */ )
                                 {
-                                    Thread.Sleep(CarrierPressCylinder.Delay.MoveTime);
-                                    log.Debug("开夹气缸到位并复位");
+                                    //Thread.Sleep(CarrierPressCylinder.Delay.MoveTime);
+                                    //log.Debug("开夹气缸到位并复位");
                                     CarrierClampCylinder.Reset();
                                     step = 104;
                                 }
                                 break;
 
                             case 104://开夹气缸复位后，产品下压气缸复位   20201110  XiaoW 改
-                                if (CarrierPressCylinder.OutMoveStatus && CarrierClampCylinder.OutOriginStatus)
+                                if ( /*CarrierPressCylinder.OutMoveStatus && */ CarrierClampCylinder.OutOriginStatus)
                                 {
-                                    log.Debug("产品下压气缸复位");
-                                    CarrierPressCylinder.Reset();                                    
+                                    //log.Debug("产品下压气缸复位");
+                                    //CarrierPressCylinder.Reset();                                    
                                     step = 110;
                                 }
                                 break;
@@ -296,7 +304,7 @@ namespace desay.Flow
                                 step = 110;
                                 break;
                             case 110://平移气缸伸出
-                                if (CarrierClampCylinder.OutOriginStatus && MoveCylinder.OutOriginStatus && CarrierPressCylinder.OutOriginStatus
+                                if (CarrierClampCylinder.OutOriginStatus && MoveCylinder.OutOriginStatus // && CarrierPressCylinder.OutOriginStatus
                                     && (IoPoints.IDI15.Value || Marking.CurtainShield))
                                 {
                                     log.Debug("平移气缸置位");
@@ -328,7 +336,7 @@ namespace desay.Flow
                                 }
                                 else
                                 {
-                                    if (_watch.ElapsedMilliseconds > Position.Instance.SocketTimeout)
+                                    if (_watch.ElapsedMilliseconds/1000 > 20 )
                                     {                                        
                                         m_Alarm = PlateformAlarm.扫治具码超时;
                                         step = 120;//扫治具码启动
@@ -336,7 +344,7 @@ namespace desay.Flow
                                 }
                                 break;
                             case 160://顶升气缸复位
-                                if (CarrierClampCylinder.OutOriginStatus && CarrierUpCylinder.OutMoveStatus && CarrierPressCylinder.OutOriginStatus)
+                                if (CarrierClampCylinder.OutOriginStatus && CarrierUpCylinder.OutMoveStatus /* && CarrierPressCylinder.OutOriginStatus */ )
                                 {
                                     CarrierUpCylinder.Reset();
                                     Marking.CarrierCallOut = true;
@@ -418,7 +426,7 @@ namespace desay.Flow
                                             Marking.WhiteBoardRst = MesData.ResultList[MesData.NeedShowFN].whiteBoardRst;
                                             Marking.GlueCheckRst = MesData.ResultList[MesData.NeedShowFN].glueCheckRst;
                                             MesData.ResultList.Remove(MesData.NeedShowFN);
-                                            if (!Marking.UVAfterRst)
+                                            if (!Marking.AAResult && !Marking.DryRun)//(!Marking.UVAfterRst)
                                             {
                                                 needAlarm = true;
                                             }
@@ -481,6 +489,8 @@ namespace desay.Flow
                         switch (stationInitialize.Flow)
                         {
                             case 0://清除所有标志位
+                                IoPoints.IDO6.Value = false;
+                                IoPoints.IDO7.Value = false;
                                 stationInitialize.InitializeDone = false;
                                 stationOperate.RunningSign = false;
                                 step = 0;
@@ -527,7 +537,7 @@ namespace desay.Flow
                                 {
                                     CarrierStopCylinder.InitExecute();
                                     CarrierStopCylinder.Reset();
-                                    stationInitialize.Flow = 14;
+                                    stationInitialize.Flow = 20;//14
                                 }
                                 break;
                             case 14://产品下压气缸复位   20201101  XiaoW 增
@@ -541,7 +551,7 @@ namespace desay.Flow
                                 break;
                             case 20://判断所有气缸到位,伸缩气缸收回
                                 if (MoveCylinder.OutOriginStatus && CarrierClampCylinder.OutOriginStatus
-                                    && CarrierUpCylinder.OutOriginStatus && CarrierPressCylinder.OutOriginStatus)   //20201101  XiaoW 改
+                                    && CarrierUpCylinder.OutOriginStatus /* && CarrierPressCylinder.OutOriginStatus */ )   //20201101  XiaoW 改
                                 {
                                     //MoveCylinder.Set();
                                     stationInitialize.Flow = 30;
@@ -588,6 +598,11 @@ namespace desay.Flow
             {
                 AlarmLevel = AlarmLevels.None,
                 Name = PlateformAlarm.初始化故障.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.扫治具码超时)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.扫治具码超时.ToString()
             });
             //list.Add(new Alarm(() => FailCount >= Marking.CarrierFailCount)
             //{

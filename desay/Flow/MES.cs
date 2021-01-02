@@ -32,6 +32,7 @@ namespace desay.Flow
         public string EndTime = null;
         bool RequestLocation = false;
         bool RequestResult = false;
+        public int FNScanTimes = 0;
 
         #region 通讯处理
         private void DealMsg()
@@ -46,13 +47,24 @@ namespace desay.Flow
                     if (FNResult != null && FNResult.IsCompleted && Marking.BeginTriggerFN)
                     {
                         Marking.FN = AutoScanner.ReceiveString;
-                        if (Marking.FN == null || Marking.FN == "" || Marking.FN.Length <= 4 || Marking.FN.Contains("Error") /*|| !Marking.FN.Substring(0, 4).Equals("0X06")*/ )
+                        //if (Marking.FN == null || Marking.FN == "" || Marking.FN.Length <= 5 || Marking.FN.Contains("Error") /*|| !Marking.FN.Substring(0, 4).Equals("0X06")*/ )
+                        if(!((IList<string>)Config.Instance.FNLibrary).Contains(Marking.FN.Substring(0,9)))
                         {
-                            Marking.BeginTriggerFN = true;
-                            SendRequestMsg(2);
+                            if (FNScanTimes > 10)
+                            {
+                                AppendText("治具码异常:" + Marking.FN);
+                                Marking.BeginTriggerFN = false;
+                            }
+                            else
+                            {
+                                Marking.BeginTriggerFN = true;
+                                SendRequestMsg(2);
+                                FNScanTimes++;
+                            }
                         }
                         else
                         {
+                            FNScanTimes = 0;
                             Marking.BeginTriggerFN = false;
                             AppendText("读到的治具码为:" + Marking.FN);
                             StartTime = DateTime.Now.ToString("yyyyMMdd HH:mm:ss.fff");
@@ -358,6 +370,52 @@ namespace desay.Flow
         protected override IList<Alarm> alarms()
         {
             var list = new List<Alarm>();
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.初始化故障)
+            {
+                AlarmLevel = AlarmLevels.None,
+                Name = PlateformAlarm.初始化故障.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.MES通讯超时)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.MES通讯超时.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.接收到AA字符为空)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.接收到AA字符为空.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.入料请求发送失败)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.入料请求发送失败.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.写入MES数据文件失败)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.写入MES数据文件失败.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.结果发送失败)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.结果发送失败.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.未找到当前治具码数据)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.未找到当前治具码数据.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.AA返回的结果数据缺失)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.AA返回的结果数据缺失.ToString()
+            });
+            list.Add(new Alarm(() => m_Alarm == PlateformAlarm.AA返回结果码数据缺失)
+            {
+                AlarmLevel = AlarmLevels.Error,
+                Name = PlateformAlarm.AA返回结果码数据缺失.ToString()
+            });
+
             return list;
         }
 
@@ -383,7 +441,7 @@ namespace desay.Flow
             AA返回的结果数据缺失,
             AA返回结果码数据缺失,
             未找到当前治具码数据,
-            写入MES数据文件失败
+            写入MES数据文件失败,
         }
 
         public void SendRequestMsg(int type)
@@ -461,7 +519,18 @@ namespace desay.Flow
                                 //    strMsg += "NG3";
 
                                 //xmz  全OK 01  其余10   无镜头NG1  白板点亮测试NG NG2   点胶NG  NG3
-                                if (Marking.GlueShield) Marking.GlueResult = true;                //不考虑相机
+                                if (Marking.GlueShield)
+                                {
+                                    if (!Marking.DryRun)
+                                    {
+                                        Marking.GlueResult = true;//不考虑相机
+                                    }
+                                    else
+                                    {
+                                        Marking.GlueResult = false;
+                                    }
+                                    
+                                }               
                                 strMsg = (MesData.glueData.cleanData.HaveLens.Equals("OK")        //有无镜头
                                             && MesData.glueData.cleanData.CleanResult             //清洗结果
                                             && MesData.glueData.cleanData.WbResult.Equals("OK")   //白板结果

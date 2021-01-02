@@ -429,13 +429,29 @@ namespace desay.ProductData
         /// </summary>
         public int CleanUpDownCylinder = 0;
         /// <summary>
-        /// 胶水外边缘溢胶/少胶的距离
+        /// 圆形胶水外边缘溢胶/少胶的距离
         /// </summary>
         public double OutsideDistance = 0;
         /// <summary>
-        /// 胶水内边缘溢胶/少胶的距离
+        /// 圆形胶水内边缘溢胶/少胶的距离
         /// </summary>
         public double insideDistance = 0;
+        /// <summary>
+        /// 矩形质心X轴偏移
+        /// </summary>
+        public double CenterOffset_X;
+        /// <summary>
+        /// 矩形质心Y轴偏移
+        /// </summary>
+        public double CenterOffset_Y;
+        /// <summary>
+        /// 矩形胶水面积上限
+        /// </summary>
+        public double MaxGlueArea = 0;
+        /// <summary>
+        /// 矩形胶水面积下限
+        /// </summary>
+        public double MinGlueArea = 0;
 
 
     }

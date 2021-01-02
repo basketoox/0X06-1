@@ -175,10 +175,15 @@ namespace desay
             Config.Instance.userLevel = UserLevel.操作员;
 
 
-            //调试方便暂时开放权限以及设置屏蔽
+            //调试方便暂时开放权限
             Config.Instance.userLevel = UserLevel.工程师;
-            Marking.AAShield = true;
-            Marking.CurtainShield = true;
+
+            //运行设置
+            Marking.DryRun = false;
+            Marking.DoorShield = Config.Instance.DoorShield == 1;
+            Marking.AAShield = Config.Instance.AAShield == 1;
+            Marking.CurtainShield = Config.Instance.CurtainShield == 1;
+            Marking.SnScannerShield = Config.Instance.SnScannerShield == 1;
 
             OnUserLevelChange(Config.Instance.userLevel);
             new Thread(new ThreadStart(() =>
@@ -660,10 +665,12 @@ namespace desay
             //    Name = "安全光幕已感应！"
             //});
 
-            MachineAlarms.Add(new Alarm(() => Marking.UVAfterAlarm & !Marking.UVAfterRst)
+            //MachineAlarms.Add(new Alarm(() => Marking.UVAfterAlarm & !Marking.UVAfterRst)
+            MachineAlarms.Add(new Alarm(() => Marking.UVAfterAlarm)
             {
                 AlarmLevel = AlarmLevels.Error,
-                Name = "UV后检测NG！"
+                Name = "AA工站结果NG！"
+                //Name = "UV后检测NG！"
             });
 
             MachineAlarms.Add(new Alarm(() => !Marking.TcpServerOpenSuccess)
@@ -795,7 +802,7 @@ namespace desay
             }
             else
             {
-                DialogResult result = MessageBox.Show("是否保存配置文件再退出？", "退出", MessageBoxButtons.YesNoCancel);
+                DialogResult result = MessageBox.Show("是否退出？", "提示", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
@@ -820,34 +827,7 @@ namespace desay
                     CloseDetectHeight();
                     ClosePower();
 
-                    MessageBox.Show("软件即将关闭，请注意清洗点胶装置！");
-
-                    Environment.Exit(0);
-                }
-                else if (result == DialogResult.No)
-                {
-                    threadStatusCheck?.Abort();
-                    threadMachineRun?.Abort();
-                    threadAlarmCheck?.Abort();
-                    m_Mes?.threadDealMsg?.Abort();
-                    //m_GluePlateform.threadRun.Abort();
-                    //m_AAVision.m_pThread?.Abort();
-                    
-                    m_GluePlateform.Xaxis.Stop();
-                    m_GluePlateform.Yaxis.Stop();
-                    m_GluePlateform.Zaxis.Stop();
-
-                    m_CleanPlateform.Xaxis.Stop();
-                    m_CleanPlateform.Yaxis.Stop();
-                    m_CleanPlateform.Zaxis.Stop();
-
-                    CloseScanner();
-                    CloseDetectHeight();
-                    ClosePower();
-
-                    SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
-                    log.Debug("配置文件不保存");
-                    MessageBox.Show("软件即将关闭，请注意清洗点胶装置！");
+                    //MessageBox.Show("软件即将关闭，请注意清洗点胶装置！");
 
                     Environment.Exit(0);
                 }
@@ -1121,7 +1101,7 @@ namespace desay
                     //IoPoints.TDO8.Value = false;
 
                 }
-
+                //设备暂停中
                 if (MachineOperation.Pausing)
                 {
                     //cdm 10.26改
@@ -1766,8 +1746,8 @@ namespace desay
         }
         private void btnReset_MouseDown(object sender, EventArgs e)
         {
-            if (Position.Instance.UseRectGlue) MessageBox.Show("当前模式为矩形点胶请注意治具点位匹配");
-            else MessageBox.Show("当前模式为圆弧点胶请注意治具点位匹配");
+            //if (Position.Instance.UseRectGlue) MessageBox.Show("当前模式为矩形点胶请注意治具点位匹配");
+            //else MessageBox.Show("当前模式为圆弧点胶请注意治具点位匹配");
             if (ManualAutoMode)
             {
                 if (!MachineIsAlarm.IsAlarm && !LplateformIsAlarm.IsAlarm
@@ -2768,7 +2748,7 @@ namespace desay
             {
                 if (this.serialPort1.IsOpen)
                     this.serialPort1.Close();
-                MessageBox.Show("电源端口关闭成功");
+                //MessageBox.Show("电源端口关闭成功");
             }
             catch (Exception ex)
             {

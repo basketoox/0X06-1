@@ -26,6 +26,7 @@ namespace desay
             chkCurtainShield.Checked = Marking.CurtainShield;
             chkAAShield.Checked = Marking.AAShield;
             chkSnScannerShield.Checked = Marking.SnScannerShield;
+            chkDryRun.Checked = Marking.DryRun;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -37,6 +38,11 @@ namespace desay
             Marking.CurtainShield = chkCurtainShield.Checked;
             Marking.AAShield = chkAAShield.Checked;
             Marking.SnScannerShield = chkSnScannerShield.Checked;
+            Marking.DryRun = chkDryRun.Checked;
+            Config.Instance.DoorShield = Marking.DoorShield ? 1 : 0;
+            Config.Instance.AAShield = Marking.AAShield ? 1 : 0;
+            Config.Instance.CurtainShield = Marking.CurtainShield ? 1 : 0;
+            Config.Instance.SnScannerShield = Marking.SnScannerShield ? 1 : 0;
             this.Close();
         }
 

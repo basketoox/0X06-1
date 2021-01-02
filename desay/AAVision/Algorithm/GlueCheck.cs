@@ -2,6 +2,7 @@
 using desay.ProductData;
 using HalconDotNet;
 using System.Drawing;
+using Vision_Assistant;
 
 namespace desay
 {
@@ -833,9 +834,77 @@ namespace desay
                     SetString(window, "NG", "red", 100);
                 }
                 catch { }
-                Marking.CenterLocateTestSucceed = false;
             }
         }
+
+        public static void GlueCheck_R(Bitmap bmp, HWindow window, bool ok)
+        {
+            try
+            {
+                HObject image, img_old;
+                HOperatorSet.GenEmptyObj(out image);
+                HOperatorSet.GenEmptyObj(out img_old);
+                img_old.Dispose();
+                Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
+
+                HTuple htuple;
+                HOperatorSet.CountChannels(img_old, out htuple);
+                image.Dispose();
+                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
+                else image = img_old.Clone();
+
+                HTuple width, height;
+                HOperatorSet.GetImageSize(image, out width, out height);
+                HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                HOperatorSet.DispObj(image, window);
+                HOperatorSet.SetLineWidth(window, 3);
+                HOperatorSet.SetColor(window, "red");
+                HOperatorSet.DispText(window, "胶路面积：" + RectGlueCheck.TotalAreas.ToString("") + " pix",
+                     "window", 30, 7, "black", new HTuple(), new HTuple());
+                HOperatorSet.DispText(window, "等效矩形长宽：" + RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 2].ToString("") 
+                                                      + " ，" + RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 3].ToString(""), "window", 60, 7, "black", new HTuple(), new HTuple());
+                double MassPos_X = RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 0];
+                double MassPos_Y = RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 1];
+                HOperatorSet.DispText(window, "胶圈质心X偏移：" + System.Math.Round(MassPos_X - 1296, 0) + " pix",
+                     "window", 90, 7, "black", new HTuple(), new HTuple());
+                HOperatorSet.DispText(window, "胶圈质心Y偏移：" + System.Math.Round(MassPos_Y - 972, 0) + " pix",
+                    "window", 120, 7, "black", new HTuple(), new HTuple());
+                if (ok)
+                {
+                    SetString(window, "OK", "green", 100);
+                }
+                else
+                {
+                    SetString(window, "NG", "red", 100);
+                }
+
+                HObject rect;
+                HTuple Length1 = Position.Instance.CenterOffset_X;
+                HTuple Length2 = Position.Instance.CenterOffset_Y;
+                HTuple phi = 0;
+                HTuple row = 972;
+                HTuple column = 1296;
+                HOperatorSet.SetLineWidth(window, 3);
+                HOperatorSet.SetDraw(window, "margin");
+                HOperatorSet.GenRectangle2(out rect, row, column, phi, Length1, Length2);
+                HOperatorSet.DispObj(rect, window);
+
+                HObject circ;
+                HOperatorSet.GenCircle(out circ, MassPos_Y, MassPos_X, 5);
+                HOperatorSet.DispObj(circ, window);
+
+
+            }
+            catch
+            {
+                try
+                {
+                    SetString(window, "NG", "red", 100);
+                }
+                catch { }
+            }
+        }
+
         public static void TestBmp(Bitmap no_glue_bmp, Bitmap glue_bmp, HWindow hWindow, bool save)
         {
             Marking.GlueResult = action(no_glue_bmp, glue_bmp, hWindow);

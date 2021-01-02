@@ -39,6 +39,7 @@
             this.chkCurtainShield = new System.Windows.Forms.CheckBox();
             this.chkDoorSheild = new System.Windows.Forms.CheckBox();
             this.chkGlueHaveProduct = new System.Windows.Forms.CheckBox();
+            this.chkDryRun = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +65,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkDryRun);
             this.groupBox3.Controls.Add(this.chkCarrierHaveProduct);
             this.groupBox3.Controls.Add(this.chkCleanHaveProduct);
             this.groupBox3.Controls.Add(this.chkSnScannerShield);
@@ -157,6 +159,17 @@
             this.chkGlueHaveProduct.Text = "点胶平台有料";
             this.chkGlueHaveProduct.UseVisualStyleBackColor = true;
             // 
+            // chkDryRun
+            // 
+            this.chkDryRun.AutoSize = true;
+            this.chkDryRun.Font = new System.Drawing.Font("宋体", 12F);
+            this.chkDryRun.Location = new System.Drawing.Point(164, 140);
+            this.chkDryRun.Name = "chkDryRun";
+            this.chkDryRun.Size = new System.Drawing.Size(91, 20);
+            this.chkDryRun.TabIndex = 11;
+            this.chkDryRun.Text = "空跑模式";
+            this.chkDryRun.UseVisualStyleBackColor = true;
+            // 
             // frmRunSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -191,5 +204,6 @@
         private System.Windows.Forms.CheckBox chkCurtainShield;
         private System.Windows.Forms.CheckBox chkAAShield;
         private System.Windows.Forms.CheckBox chkSnScannerShield;
+        private System.Windows.Forms.CheckBox chkDryRun;
     }
 }
