@@ -153,8 +153,10 @@ namespace desay.Flow
                             case 51://检测Z轴是否在安全位，XY轴移至测高位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueHeightPosition, AxisParameter.Instance.RXspeed);
+
                                     step = 53;
                                 }
                                 break;
@@ -170,7 +172,7 @@ namespace desay.Flow
                                 if (Zaxis.IsInPosition(Position.Instance.GlueHeightPosition.Z))
                                 {
                                     Marking.RequestHeightFlg = true;
-                                    Thread.Sleep(1000);//测高模块需要等待一会数据稳定
+                                    Thread.Sleep(1500);//测高模块需要等待一会数据稳定
                                     SendRequest(1);
                                     _watch.Restart();
                                     step = 55;
@@ -232,8 +234,10 @@ namespace desay.Flow
                             case 65://XY模组移至相机拍照位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueCameraPosition, AxisParameter.Instance.RXspeed);
+
                                     step = 70;
                                 }
                                 break;
@@ -305,8 +309,10 @@ namespace desay.Flow
                             case 500:// XY轴前往拍照位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueCameraPosition, AxisParameter.Instance.RXspeed);
+
                                     step = 510;
                                 }
                                 break;
@@ -351,8 +357,15 @@ namespace desay.Flow
                             case 540://XY轴移到矩形第一个点
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Config.Instance.RectX[0], AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Config.Instance.RectY[0], AxisParameter.Instance.RYspeed);
+                                    Point3D<double> point = new Point3D<double>();
+                                    point.X = Config.Instance.RectX[0];
+                                    point.Y = Config.Instance.RectY[0];
+                                    point.Z = Position.Instance.GlueSafePosition.Z;
+                                    MoveLine2Absolute(Xaxis, Yaxis, point, AxisParameter.Instance.RXspeed);
+
+                                    //Xaxis.MoveTo(Config.Instance.RectX[0], AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Config.Instance.RectY[0], AxisParameter.Instance.RYspeed);
+
                                     step = 550;
                                 }
                                 break;
@@ -428,8 +441,10 @@ namespace desay.Flow
                             case 120:// XY轴点胶圆形轨迹起点
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueStartPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueStartPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueStartPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueStartPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueStartPosition, AxisParameter.Instance.RXspeed);
+
                                     step = 122;
                                 }
                                 break;
@@ -454,7 +469,7 @@ namespace desay.Flow
                             case 130://XYZ前往点胶圆形轨迹起点
                                 if (Zaxis.IsInPosition(glueHeightOffset + Position.Instance.GlueHeight))
                                 {                                    
-                                    Thread.Sleep(500);
+                                    Thread.Sleep(10);
                                     int step1 = 0;
                                     bool istrue = true;
                                     while (istrue)
@@ -472,46 +487,47 @@ namespace desay.Flow
                                                     Thread.Sleep((int)Position.Instance.StartGlueDelay);
                                                 }
 
-                                                APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
-                                                { (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                                                  (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                                (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.StartGlueAngle);
-                                                Thread.Sleep(10);
+                                                //APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
+                                                //{ (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                                //  (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                                //(int)Position.Instance.GluePathSpeed * 1000, Position.Instance.StartGlueAngle);
+                                                //Thread.Sleep(10);
+
                                                 step1 = 10;
                                                 break;
                                             case 10://点胶第一圈
-                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone && Xaxis.CurrentSpeed == 0 && Yaxis.CurrentSpeed == 0 && Zaxis.CurrentSpeed == 0)
+                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                                 {
                                                     APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
                                                     {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
                                                        (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                                    (int)Position.Instance.GluePathSpeed * 1000, 360);
-                                                    Thread.Sleep(10);
+                                                    (int)Position.Instance.GluePathSpeed * 1000, 360 + Position.Instance.StartGlueAngle);
                                                     step1 = 20;
                                                 }
                                                 break;
                                             case 20://点胶第二圈
-                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone && Xaxis.CurrentSpeed == 0 && Yaxis.CurrentSpeed == 0 && Zaxis.CurrentSpeed == 0)
+                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                                 {
-                                                    APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
-                                                    {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                                                       (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                                                    (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
-                                                    Thread.Sleep((int)Position.Instance.StopGlueDelay);//断胶延时
+                                                    //APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
+                                                    //{  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
+                                                    //   (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
+                                                    //(int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
+
+                                                    Thread.Sleep((int)Position.Instance.StopGlueDelay);//关胶延时
                                                     step1 = 30;
                                                 }
                                                 break;
                                             case 30://点胶拖胶
-                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone && Xaxis.CurrentSpeed == 0 && Yaxis.CurrentSpeed == 0 && Zaxis.CurrentSpeed == 0)
+                                                if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                                 {
                                                     IoPoints.IDO19.Value = false;//关闭胶阀
-                                                    APS168.APS_absolute_move(Zaxis.NoId, (int)((Zaxis.CurrentPos - Position.Instance.DragGlueHeight) / AxisParameter.Instance.RYTransParams.PulseEquivalent),
-                                                        (int)Position.Instance.DragGlueSpeed * 1000);
                                                     APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
                                                     {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
                                                        (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
                                                     (int)Position.Instance.DragGlueSpeed * 1000, Position.Instance.DragGlueAngle);
-                                                    Thread.Sleep(10);
+                                                    APS168.APS_absolute_move(Zaxis.NoId, (int)((Zaxis.CurrentPos - Position.Instance.DragGlueHeight) / AxisParameter.Instance.RYTransParams.PulseEquivalent),
+                                                        (int)Position.Instance.DragGlueSpeed * 1000);
+
                                                     step1 = 40;
                                                 }
                                                 break;
@@ -556,8 +572,10 @@ namespace desay.Flow
                             case 142:// XY轴前往拍照位置 
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueCameraPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueCameraPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueCameraPosition, AxisParameter.Instance.RXspeed);
+
                                     step = 143;
                                     _watch.Restart();
                                 }
@@ -645,8 +663,10 @@ namespace desay.Flow
                             case 190://XY轴回点胶安全位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
-                                    Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, AxisParameter.Instance.RYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.GlueHeightPosition.X, AxisParameter.Instance.RXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.GlueHeightPosition.Y, AxisParameter.Instance.RYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueHeightPosition, AxisParameter.Instance.RXspeed);
+
                                     Marking.GlueCallOut = true;
                                     Marking.GlueCallOutFinish = false;
                                     watchGlueCT.Stop();
@@ -1112,6 +1132,19 @@ namespace desay.Flow
             catch { }
         }
         #endregion
+
+        /// <summary>
+        /// 两轴直线插补（绝对运动）
+        /// </summary>
+        public void MoveLine2Absolute(ServoAxis axis_a, ServoAxis axis_b, Point3D<double> point, VelocityCurve velParams)
+        {
+            int pulseNum1 = Convert.ToInt32(point.X / AxisParameter.Instance.LXTransParams.PulseEquivalent);
+            int pulseNum2 = Convert.ToInt32(point.Y / AxisParameter.Instance.LYTransParams.PulseEquivalent);
+            var velocity = velParams;
+            velocity.Maxvel = velParams.Maxvel * AxisParameter.Instance.LXTransParams.EquivalentPulse;
+            IoPoints.m_ApsController.MoveLine2Absolute(axis_a.NoId, axis_b.NoId, pulseNum1, pulseNum2, velocity);
+            velocity.Maxvel /= AxisParameter.Instance.LXTransParams.EquivalentPulse;
+        }
 
         /// <summary>
         /// 打开自己开发的程序

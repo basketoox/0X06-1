@@ -534,8 +534,8 @@ namespace Motion.AdlinkAps
             pos[1] = pulseNum2;
 
             //设置速度
-            SetAxisVelocity(axisNo1, velocityCurveParams);
-
+            //SetAxisVelocity(axisNo1, velocityCurveParams);
+            SetAxisVelACC(axisNo1, velocityCurveParams);
             //启动运动
             APS168.APS_absolute_linear_move(2, axis, pos, (int) velocityCurveParams.Maxvel);
         }
@@ -782,9 +782,31 @@ namespace Motion.AdlinkAps
             //if (velocityCurveParams.Sfac != 0)
             //{ 
             //SetAxisParam(axisNo, (int) APS_Define.PRA_SF, velocityCurveParams.Sfac);
-            SetAxisParam(axisNo, (int) APS_Define.PRA_ACC, velocityCurveParams.Svacc);
-            SetAxisParam(axisNo, (int) APS_Define.PRA_DEC, velocityCurveParams.Svdec);
+            //SetAxisParam(axisNo, (int) APS_Define.PRA_ACC, velocityCurveParams.Svacc);
+            //SetAxisParam(axisNo, (int) APS_Define.PRA_DEC, velocityCurveParams.Svdec);
             //}
+            if(velocityCurveParams.Tacc == 0|| velocityCurveParams.Tdec == 0)
+            {
+                velocityCurveParams.Tacc = 0.5;
+                velocityCurveParams.Tdec = 0.5;
+            }
+            double Vacc = velocityCurveParams.Maxvel / velocityCurveParams.Tacc;
+            double Vdec = velocityCurveParams.Maxvel / velocityCurveParams.Tdec;
+            SetAxisParam(axisNo, (int)APS_Define.PRA_ACC, Vacc);
+            SetAxisParam(axisNo, (int)APS_Define.PRA_DEC, Vdec);
+        }
+
+        private void SetAxisVelACC(int axisNo, VelocityCurve velocityCurveParams)
+        {
+            if (velocityCurveParams.Tacc == 0 || velocityCurveParams.Tdec == 0)
+            {
+                velocityCurveParams.Tacc = 0.5;
+                velocityCurveParams.Tdec = 0.5;
+            }
+            double Vacc = velocityCurveParams.Maxvel / velocityCurveParams.Tacc;
+            double Vdec = velocityCurveParams.Maxvel / velocityCurveParams.Tdec;
+            SetAxisParam(axisNo, (int)APS_Define.PRA_ACC, Vacc);
+            SetAxisParam(axisNo, (int)APS_Define.PRA_DEC, Vdec);
         }
 
         /// <summary>

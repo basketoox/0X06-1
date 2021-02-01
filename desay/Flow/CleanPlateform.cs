@@ -181,8 +181,10 @@ namespace desay.Flow
                             case 30://判断Z轴是否在安全位置
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.CleanSafePosition.X, AxisParameter.Instance.LXspeed);
-                                    Yaxis.MoveTo(Position.Instance.CleanSafePosition.Y, AxisParameter.Instance.LYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.CleanSafePosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.CleanSafePosition.Y, AxisParameter.Instance.LYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanSafePosition, AxisParameter.Instance.LXspeed);
+
                                     step = 50;
                                 }
                                 break;
@@ -274,16 +276,17 @@ namespace desay.Flow
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
                                 {
                                     Thread.Sleep(500);
-                                    Xaxis.MoveTo(Position.Instance.CleanConeFirstPosition.X, AxisParameter.Instance.LXspeed);
-                                    Yaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.CleanConeFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeFirstPosition, AxisParameter.Instance.LXspeed);
+
                                     CleanNum = 0;
                                     step = 120;
                                 }
                                 break;
 
                             case 120://Z轴移动到镜筒清洗位
-                                if (Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
-                                    && Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y))
+                                if (Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y))
                                 {
                                     Zaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Z, AxisParameter.Instance.LZspeed);
                                     step = 130;
@@ -295,19 +298,71 @@ namespace desay.Flow
                                     if (Position.Instance.UseRectGlue)
                                     {
                                         #region 矩形清洗
+                                        int rectstep = 0;
+                                        bool stepstatus = true;
+                                        while (stepstatus)
+                                        {
+                                            switch (rectstep)
+                                            {
+                                                case 0:
+                                                    if (Marking.CleanRun)
+                                                    { IoPoints.IDO16.Value = false; }
+                                                    else
+                                                    { IoPoints.IDO16.Value = true; }
 
-                                        InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanConeSecondPosition.X, Position.Instance.CleanConeSecondPosition.Y, Position.Instance.CleanConeSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanConeThirdPositon.X, Position.Instance.CleanConeThirdPositon.Y, Position.Instance.CleanConeThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanConeForthPosition.X, Position.Instance.CleanConeForthPosition.Y, Position.Instance.CleanConeForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        if (Marking.CleanRun)
-                                            IoPoints.IDO16.Value = false;
-                                        else
-                                            IoPoints.IDO16.Value = true;
-                                        //清洗启动
-                                        APSptStart();
+                                                    //第二个点
+                                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeSecondPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                    rectstep = 10;
+                                                    break;
+                                                case 10:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanConeSecondPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanConeSecondPosition.Y))
+                                                    {
+                                                        //第三个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeThirdPositon, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 20;
+                                                    }
+                                                    break;
+                                                case 20:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanConeThirdPositon.X) && Yaxis.IsInPosition(Position.Instance.CleanConeThirdPositon.Y))
+                                                    {
+                                                        //第四个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeForthPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 30;
+                                                    }
+                                                    break;
+                                                case 30:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanConeForthPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanConeForthPosition.Y))
+                                                    {
+                                                        //第一个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeFirstPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 40;
+                                                    }
+                                                    break;
+                                                case 40:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y))
+                                                    {
+                                                        stepstatus = false;
+                                                        rectstep = 0;
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+
+                                        //InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanConeSecondPosition.X, Position.Instance.CleanConeSecondPosition.Y, Position.Instance.CleanConeSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanConeThirdPositon.X, Position.Instance.CleanConeThirdPositon.Y, Position.Instance.CleanConeThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanConeForthPosition.X, Position.Instance.CleanConeForthPosition.Y, Position.Instance.CleanConeForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanConeFirstPosition.X, Position.Instance.CleanConeFirstPosition.Y, Position.Instance.CleanConeFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //if (Marking.CleanRun)
+                                        //    IoPoints.IDO16.Value = false;
+                                        //else
+                                        //    IoPoints.IDO16.Value = true;
+                                        ////清洗启动
+                                        //APSptStart();
+
                                         #endregion
                                     }
                                     else
@@ -331,8 +386,7 @@ namespace desay.Flow
                                 }
                                 break;
                             case 140://清洗次数判断
-                                if (Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X)
-                                    && Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y))   //&& Xaxis.IsAcrStop && Yaxis.IsAcrStop
+                                if (Xaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Y))   //&& Xaxis.IsAcrStop && Yaxis.IsAcrStop
                                 {
                                     CleanNum++;
                                     // if (CleanNum < 3) step = 151;
@@ -355,8 +409,10 @@ namespace desay.Flow
                             case 160://清洗上下气缸下降
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z) && CleanUpDownCylinder.OutOriginStatus)
                                 {
-                                    Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
-                                    Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanLensFirstPosition, AxisParameter.Instance.LXspeed);
+
                                     Thread.Sleep(200);
                                     CleanUpDownCylinder.Set();
                                     step = 170;
@@ -426,8 +482,6 @@ namespace desay.Flow
                             case 210://XY 2次前往清洗圆形轨迹起点
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z) && Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y) && Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X))
                                 {
-                                    //Xaxis.MoveTo(Position.Instance.CleanLensFirstPosition.X, AxisParameter.Instance.LXspeed);
-                                    //Yaxis.MoveTo(Position.Instance.CleanLensFirstPosition.Y, AxisParameter.Instance.LYspeed);
                                     CleanNum2 = 0;
                                     step = 220;
                                 }
@@ -445,18 +499,71 @@ namespace desay.Flow
                                     if (Position.Instance.UseRectGlue)
                                     {
                                         #region 矩形清洗
-                                        InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanLensSecondPosition.X, Position.Instance.CleanLensSecondPosition.Y, Position.Instance.CleanLensSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanLensThirdPositon.X, Position.Instance.CleanLensThirdPositon.Y, Position.Instance.CleanLensThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanLensForthPosition.X, Position.Instance.CleanLensForthPosition.Y, Position.Instance.CleanLensForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
-                                        if (Marking.CleanRun)
-                                            IoPoints.IDO16.Value = false;
-                                        else
-                                            IoPoints.IDO16.Value = true;
-                                        //清洗启动
-                                        APSptStart();
+                                        int rectstep = 0;
+                                        bool stepstatus = true;
+                                        while (stepstatus)
+                                        {
+                                            switch (rectstep)
+                                            {
+                                                case 0:
+                                                    if (Marking.CleanRun)
+                                                    { IoPoints.IDO16.Value = false; }
+                                                    else
+                                                    { IoPoints.IDO16.Value = true; }
+
+                                                    //第二个点
+                                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanLensSecondPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                    rectstep = 10;
+                                                    break;
+                                                case 10:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanLensSecondPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanLensSecondPosition.Y))
+                                                    {
+                                                        //第三个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanLensThirdPositon, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 20;
+                                                    }
+                                                    break;
+                                                case 20:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanLensThirdPositon.X) && Yaxis.IsInPosition(Position.Instance.CleanLensThirdPositon.Y))
+                                                    {
+                                                        //第四个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanLensForthPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 30;
+                                                    }
+                                                    break;
+                                                case 30:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanLensForthPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanLensForthPosition.Y))
+                                                    {
+                                                        //第一个点
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanLensFirstPosition, AxisParameter.Instance.CleanPathSpeed);
+                                                        rectstep = 40;
+                                                    }
+                                                    break;
+                                                case 40:
+                                                    if (Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y))
+                                                    {
+                                                        stepstatus = false;
+                                                        rectstep = 0;
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+
+                                        //InitBufferMode(3, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanLensSecondPosition.X, Position.Instance.CleanLensSecondPosition.Y, Position.Instance.CleanLensSecondPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanLensThirdPositon.X, Position.Instance.CleanLensThirdPositon.Y, Position.Instance.CleanLensThirdPositon.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanLensForthPosition.X, Position.Instance.CleanLensForthPosition.Y, Position.Instance.CleanLensForthPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //DoRect(3, Position.Instance.CleanLensFirstPosition.X, Position.Instance.CleanLensFirstPosition.Y, Position.Instance.CleanLensFirstPosition.Z, (int)Position.Instance.CleanPathSpeed, (int)Position.Instance.CleanPathSpeed);
+                                        //if (Marking.CleanRun)
+                                        //    IoPoints.IDO16.Value = false;
+                                        //else
+                                        //    IoPoints.IDO16.Value = true;
+                                        ////清洗启动
+                                        //APSptStart();
+
                                         #endregion
                                     }
                                     else
@@ -480,8 +587,7 @@ namespace desay.Flow
                                 }
                                 break;
                             case 250://清洗次数判断   
-                                if (Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X)
-                                    && Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y))   //&& Xaxis.IsAcrStop && Yaxis.IsAcrStop
+                                if (Xaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.X) && Yaxis.IsInPosition(Position.Instance.CleanLensFirstPosition.Y))   //&& Xaxis.IsAcrStop && Yaxis.IsAcrStop
                                 {
                                     CleanNum2++;
                                     if (CleanNum2 < Position.Instance.LensCleanNum)
@@ -507,8 +613,9 @@ namespace desay.Flow
                                     if (!Marking.WhiteShield)
                                     {
                                         log.Debug("XY模组移至白板测试位置");
-                                        Xaxis.MoveTo(Position.Instance.AdjustLightPosition.X, AxisParameter.Instance.LXspeed);
-                                        Yaxis.MoveTo(Position.Instance.AdjustLightPosition.Y, AxisParameter.Instance.LYspeed);
+                                        //Xaxis.MoveTo(Position.Instance.AdjustLightPosition.X, AxisParameter.Instance.LXspeed);
+                                        //Yaxis.MoveTo(Position.Instance.AdjustLightPosition.Y, AxisParameter.Instance.LYspeed);
+                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.AdjustLightPosition, AxisParameter.Instance.LXspeed);
                                     }
                                     if (CleanUpDownCylinder.OutMoveStatus)
                                     {
@@ -566,14 +673,20 @@ namespace desay.Flow
                                 }
                                 break;
                             case 320://XY轴移至白板测试位置
-                                log.Debug("XY模组移至白板测试位置");
-                                Xaxis.MoveTo(Position.Instance.AdjustLightPosition.X, AxisParameter.Instance.LXspeed);
-                                Yaxis.MoveTo(Position.Instance.AdjustLightPosition.Y, AxisParameter.Instance.LYspeed);
+                                if (Xaxis.IsInPosition(Position.Instance.AdjustLightPosition.X) && Yaxis.IsInPosition(Position.Instance.AdjustLightPosition.Y))
+                                { }
+                                else
+                                {
+                                    //Xaxis.MoveTo(Position.Instance.AdjustLightPosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.AdjustLightPosition.Y, AxisParameter.Instance.LYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.AdjustLightPosition, AxisParameter.Instance.LXspeed);
+                                }
                                 step = 330;
                                 break;
                             case 330://Z轴移至白板测试位置
-                                if (Yaxis.IsInPosition(Position.Instance.AdjustLightPosition.Y) && Xaxis.IsInPosition(Position.Instance.AdjustLightPosition.X))
+                                if (Xaxis.IsInPosition(Position.Instance.AdjustLightPosition.X) && Yaxis.IsInPosition(Position.Instance.AdjustLightPosition.Y))
                                 {
+                                    log.Debug("XY模组移至白板测试位置");
                                     Zaxis.MoveTo(Position.Instance.AdjustLightPosition.Z, AxisParameter.Instance.LZspeed);
                                     step = 340;
                                 }
@@ -761,8 +874,9 @@ namespace desay.Flow
                             case 390:
                                 if (Zaxis.IsInPosition(Position.Instance.CleanSafePosition.Z))
                                 {
-                                    Xaxis.MoveTo(Position.Instance.CleanConeFirstPosition.X, AxisParameter.Instance.LXspeed);
-                                    Yaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    //Xaxis.MoveTo(Position.Instance.CleanConeFirstPosition.X, AxisParameter.Instance.LXspeed);
+                                    //Yaxis.MoveTo(Position.Instance.CleanConeFirstPosition.Y, AxisParameter.Instance.LYspeed);
+                                    MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.CleanConeFirstPosition, AxisParameter.Instance.LXspeed);
                                     step = 410;//流程结束
                                 }
                                 break;
@@ -1234,6 +1348,20 @@ namespace desay.Flow
             catch { }
         }
         #endregion
+
+        /// <summary>
+        /// 两轴直线插补（绝对运动）
+        /// </summary>
+        public void MoveLine2Absolute(ServoAxis axis_a, ServoAxis axis_b, Point3D<double> point, VelocityCurve velParams)
+        {
+            int pulseNum1 = Convert.ToInt32(point.X / AxisParameter.Instance.LXTransParams.PulseEquivalent);
+            int pulseNum2 = Convert.ToInt32(point.Y / AxisParameter.Instance.LYTransParams.PulseEquivalent);
+            var velocity = velParams;
+            velocity.Maxvel = velParams.Maxvel * AxisParameter.Instance.LXTransParams.EquivalentPulse;
+            IoPoints.m_ApsController.MoveLine2Absolute(axis_a.NoId, axis_b.NoId, pulseNum1, pulseNum2, velocity);
+            velocity.Maxvel /= AxisParameter.Instance.LXTransParams.EquivalentPulse;
+        }
+
     }
 
 }

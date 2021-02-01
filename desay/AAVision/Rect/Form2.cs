@@ -64,7 +64,7 @@ namespace Vision_Assistant
             Position.Instance.MaxGlueArea = (double)numHiLimt.Value;
             Position.Instance.MinGlueArea=(double)numLowLimt.Value;
             SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
-            MessageBox.Show("±£¥ÊOK","Ã· æ");
+            MessageBox.Show("OK");
         }
 
         private void button1_Click(object sender, EventArgs e)

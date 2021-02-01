@@ -437,6 +437,24 @@ namespace desay.ProductData
         /// </summary>
         public double insideDistance = 0;
         /// <summary>
+        /// 圆形红色阈值
+        /// </summary>
+        public int RedMax_Threshold = 60;
+        /// <summary>
+        /// 圆形绿色阈值
+        /// </summary>
+        public int GreenMax_Threshold = 50;
+        /// <summary>
+        /// 圆形蓝色阈值
+        /// </summary>
+        public int BlueMax_Threshold = 255;
+        /// <summary>
+        /// FFT滤波
+        /// </summary>
+        public int FFT_Frequency = 7;
+
+
+        /// <summary>
         /// 矩形质心X轴偏移
         /// </summary>
         public double CenterOffset_X;
@@ -452,6 +470,10 @@ namespace desay.ProductData
         /// 矩形胶水面积下限
         /// </summary>
         public double MinGlueArea = 0;
+        /// <summary>
+        /// 矩形胶路阈值Min
+        /// </summary>
+        public int ManualThreshold = 160;
 
 
     }

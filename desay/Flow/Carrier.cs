@@ -458,8 +458,10 @@ namespace desay.Flow
                                     if (needAlarm)
                                     {
                                         needAlarm = false;
+                                        IoPoints.IDO31.Value = true;
                                         Marking.UVAfterAlarm = true;
                                         Thread.Sleep(Position.Instance.UVAfterAlarmTime);
+                                        IoPoints.IDO31.Value = false;
                                         Marking.UVAfterAlarm = false;
                                         //AlarmClean();
                                     }

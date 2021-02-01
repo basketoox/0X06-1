@@ -668,7 +668,7 @@ namespace desay
             //MachineAlarms.Add(new Alarm(() => Marking.UVAfterAlarm & !Marking.UVAfterRst)
             MachineAlarms.Add(new Alarm(() => Marking.UVAfterAlarm)
             {
-                AlarmLevel = AlarmLevels.Error,
+                AlarmLevel = AlarmLevels.Warrning,
                 Name = "AA工站结果NG！"
                 //Name = "UV后检测NG！"
             });

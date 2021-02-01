@@ -127,10 +127,7 @@ namespace desay
                 return;
             }
 
-            if (MessageBox.Show($"是否保存型号 {CurrentProductType} 的数据？", "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                m_Save?.Invoke();
-            }
+            m_Save?.Invoke();
 
             CurrentProductType = selectType;
             m_Load?.Invoke(); ;

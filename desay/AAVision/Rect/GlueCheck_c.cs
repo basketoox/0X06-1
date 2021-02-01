@@ -7,6 +7,7 @@ using NationalInstruments.Vision.WindowsForms;
 using NationalInstruments.Vision;
 using NationalInstruments.Vision.Analysis;
 using Vision_Assistant.Utilities;
+using desay.ProductData;
 
 namespace Vision_Assistant
 {
@@ -336,9 +337,9 @@ namespace Vision_Assistant
 			roi2.Dispose();
             
             // Color Threshold
-			Range plane1Range = new Range(0, 60);
-			Range plane2Range = new Range(0, 50);
-			Range plane3Range = new Range(0, 255);
+			Range plane1Range = new Range(0, Position.Instance.RedMax_Threshold);
+			Range plane2Range = new Range(0, Position.Instance.GreenMax_Threshold);
+			Range plane3Range = new Range(0, Position.Instance.BlueMax_Threshold);
 			using (VisionImage thresholdImage = new VisionImage(ImageType.U8, 7))
 			{
 				Algorithms.ColorThreshold(image, thresholdImage, ColorMode.Rgb, 1, plane1Range, plane2Range, plane3Range);
@@ -346,7 +347,7 @@ namespace Vision_Assistant
 			}
 			
 			// Truncates the frequencies of an image.
-			IVA_FFT_Truncate(image, TruncateMode.High, 7);
+			IVA_FFT_Truncate(image, TruncateMode.High, Position.Instance.FFT_Frequency);
 			
 			// Advanced Morphology: Remove Objects
 			int[] vaCoefficients = {1, 1, 1, 1, 1, 1, 1, 1, 1};

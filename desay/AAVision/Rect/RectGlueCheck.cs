@@ -204,7 +204,7 @@ namespace Vision_Assistant
 			roi2.Dispose();
             
             // Manual Threshold
-			Algorithms.Threshold(image, image, new Range(160, 255), true, 1);
+			Algorithms.Threshold(image, image, new Range(Position.Instance.ManualThreshold, 255), true, 1);
 			
 			// Advanced Morphology: Remove Objects
 			int[] vaCoefficients = {1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -258,14 +258,14 @@ namespace Vision_Assistant
             IVA_OverlayOval(image, vaCoords, vaColor1, DrawingMode.PaintValue);
 
             // Overlays the string of text onto the image.
-            string vaOverlayText = "胶路面积："+TotalAreas.ToString("");
+            string vaOverlayText = "Glue Area:"+TotalAreas.ToString("");
             byte[] vaColor2 = { 255, 255, 255, 0, 0, 0, 1 };
             string vaFontName = "Sys Font";
             int[] vaOptions = { 100, 0, 0, 0, 0 };
             IVA_OverlayText(image, 10, 100, vaOverlayText, vaColor2, vaFontName, vaOptions, HorizontalTextAlignment.Left, VerticalTextAlignment.Bottom, 0);
 
             // Overlays the string of text onto the image.
-            string vaOverlayText2 = "等效矩形：H:" + vaParticleReport.PixelMeasurements[MaxMassIndex, 2].ToString("") + ",W:" +
+            string vaOverlayText2 = "Equal Rect: H:" + vaParticleReport.PixelMeasurements[MaxMassIndex, 2].ToString("") + ",W:" +
                            vaParticleReport.PixelMeasurements[MaxMassIndex, 3].ToString("");
             IVA_OverlayText(image, 10, 200, vaOverlayText2, vaColor2, vaFontName, vaOptions, HorizontalTextAlignment.Left, VerticalTextAlignment.Bottom, 0);
 
