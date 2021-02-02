@@ -789,6 +789,7 @@ namespace desay.Flow
                         }
                     }
                     #endregion
+
                     #region 初始化运行流程
                     if (stationInitialize.Running)
                     {
@@ -916,11 +917,13 @@ namespace desay.Flow
                         }
                     }
                     #endregion
-                    //clean all the enum of alarm information
+
+                    #region 清除报警
                     if (AlarmReset.AlarmReset)
                     {
                         m_Alarm = PlateformAlarm.无消息;
                     }
+                    #endregion
                 }
             }
             catch (Exception ex)

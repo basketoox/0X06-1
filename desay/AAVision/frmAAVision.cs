@@ -178,7 +178,7 @@ namespace desay
 
         }
 
-        private void NeedleLocateTestAcquire()
+        public void NeedleLocateTestAcquire()
         {
             Marking.NeedleLocateTest = true;
             Marking.NeedleLocateTestSucceed = false;

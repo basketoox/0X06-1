@@ -308,11 +308,11 @@ namespace desay.ProductData
         /// </summary>
         public Point3D<double> GlueHeightPosition;
         /// <summary>
-        /// 点胶割胶起始位置
+        /// 自动对针位置1
         /// </summary>
         public Point3D<double> CutGlueStartPosition;
         /// <summary>
-        /// 点胶割胶结束位置
+        /// 自动对针位置2
         /// </summary>
         public Point3D<double> CutGlueEndPosition;
         #endregion

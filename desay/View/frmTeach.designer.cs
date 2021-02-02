@@ -44,6 +44,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnAutoNeedleCali = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnVIRect = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -248,6 +249,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnAutoNeedleCali);
             this.groupBox3.Controls.Add(this.groupBox1);
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.panel16);
@@ -260,6 +262,16 @@
             this.groupBox3.TabIndex = 38;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "轴操作面板";
+            // 
+            // btnAutoNeedleCali
+            // 
+            this.btnAutoNeedleCali.Location = new System.Drawing.Point(12, 425);
+            this.btnAutoNeedleCali.Name = "btnAutoNeedleCali";
+            this.btnAutoNeedleCali.Size = new System.Drawing.Size(102, 30);
+            this.btnAutoNeedleCali.TabIndex = 43;
+            this.btnAutoNeedleCali.Text = "自动对针";
+            this.btnAutoNeedleCali.UseVisualStyleBackColor = true;
+            this.btnAutoNeedleCali.Click += new System.EventHandler(this.btnAutoNeedleCali_Click);
             // 
             // groupBox1
             // 
@@ -660,9 +672,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 403);
+            this.button1.Location = new System.Drawing.Point(12, 389);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(81, 38);
+            this.button1.Size = new System.Drawing.Size(102, 30);
             this.button1.TabIndex = 41;
             this.button1.Text = "测高";
             this.button1.UseVisualStyleBackColor = true;
@@ -2398,5 +2410,6 @@
         private System.Windows.Forms.NumericUpDown nudRectY5;
         private System.Windows.Forms.NumericUpDown nudRectX5;
         private System.Windows.Forms.Button btnGoTorect5;
+        private System.Windows.Forms.Button btnAutoNeedleCali;
     }
 }

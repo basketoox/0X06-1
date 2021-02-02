@@ -377,7 +377,7 @@ namespace desay
                     "GotoZero"
                 });
             dgvGluePosition.Rows.Add(new object[] {
-                    "点胶割胶起始位置",
+                    "自动对针位置1",
                     Position.Instance.CutGlueStartPosition.X.ToString("0.000"),
                     Position.Instance.CutGlueStartPosition.Y.ToString("0.000"),
                     Position.Instance.CutGlueStartPosition.Z.ToString("0.000"),
@@ -386,7 +386,7 @@ namespace desay
                     "GotoZero"
                 });
             dgvGluePosition.Rows.Add(new object[] {
-                    "点胶割胶结束位置",
+                    "自动对针位置2",
                     Position.Instance.CutGlueEndPosition.X.ToString("0.000"),
                     Position.Instance.CutGlueEndPosition.Y.ToString("0.000"),
                     Position.Instance.CutGlueEndPosition.Z.ToString("0.000"),
@@ -646,7 +646,7 @@ namespace desay
                     break;
                 case 4:
                     dgvGluePosition.Rows[i].SetValues(new object[] {
-                        "点胶割胶起始位置",
+                        "自动对针位置1",
                         Position.Instance.CutGlueStartPosition.X.ToString("0.000"),
                         Position.Instance.CutGlueStartPosition.Y.ToString("0.000"),
                         Position.Instance.CutGlueStartPosition.Z.ToString("0.000"),
@@ -657,7 +657,7 @@ namespace desay
                     break;
                 case 5:
                     dgvGluePosition.Rows[i].SetValues(new object[] {
-                        "点胶割胶结束位置",
+                        "自动对针位置2",
                         Position.Instance.CutGlueEndPosition.X.ToString("0.000"),
                         Position.Instance.CutGlueEndPosition.Y.ToString("0.000"),
                         Position.Instance.CutGlueEndPosition.Z.ToString("0.000"),
@@ -1182,12 +1182,12 @@ namespace desay
                                 Position.Instance.GlueAdjustPinPosition.Y = m_GluePlateform.Yaxis.CurrentPos;
                                 Position.Instance.GlueAdjustPinPosition.Z = m_GluePlateform.Zaxis.CurrentPos;
                                 break;
-                            case 4://点胶割胶起始位置
+                            case 4://自动对针位置1
                                 Position.Instance.CutGlueStartPosition.X = m_GluePlateform.Xaxis.CurrentPos;
                                 Position.Instance.CutGlueStartPosition.Y = m_GluePlateform.Yaxis.CurrentPos;
                                 Position.Instance.CutGlueStartPosition.Z = m_GluePlateform.Zaxis.CurrentPos;
                                 break;
-                            case 5://点胶割胶结束位置
+                            case 5://自动对针位置2
                                 Position.Instance.CutGlueEndPosition.X = m_GluePlateform.Xaxis.CurrentPos;
                                 Position.Instance.CutGlueEndPosition.Y = m_GluePlateform.Yaxis.CurrentPos;
                                 Position.Instance.CutGlueEndPosition.Z = m_GluePlateform.Zaxis.CurrentPos;
@@ -1274,7 +1274,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 4://点胶割胶起始位置
+                            case 4://自动对针位置1
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
@@ -1284,7 +1284,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 5://点胶割胶结束位置
+                            case 5://自动对针位置2
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.CutGlueEndPosition.Z, Global.RZmanualSpeed,
@@ -1409,7 +1409,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 4://点胶割胶起始位置
+                            case 4://自动对针位置1
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
@@ -1419,7 +1419,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 5://点胶割胶结束位置
+                            case 5://自动对针位置2
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
@@ -2283,264 +2283,486 @@ namespace desay
             }
         }
 
-        #region 未引用（对针标定和胶重检查）
-        private void btnConfirmNeedle_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 自动对准XY对射Sensor
+        /// </summary>
+        private void NeedleCalib_First()
         {
-            if (MessageBox.Show($"是否更新对针数据", "确认", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
-                return;
-            Position.Instance.NeedleOffset.X = m_GluePlateform.Xaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.X;
-            Position.Instance.NeedleOffset.Y = m_GluePlateform.Yaxis.CurrentPos - Position.Instance.GlueAdjustPinPosition.Y;
-
-            SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
-        }
-
-        private void btnGlueWeight_Click(object sender, EventArgs e)
-        {
-            CalculateGlueCenter();
-            double offsetX = Position.Instance.WeightGluePosition.X - Position.Instance.GlueStartPosition.X;
-            double offsetY = Position.Instance.WeightGluePosition.Y - Position.Instance.GlueStartPosition.Y;
-            var step = 0;
-            bool itrue = true;
-            while (itrue)
+            try
             {
-                switch (step)
+                var vsstep = 0;
+                int Speed, Value;
+                double X0 = 0, X1 = 0, Y0 = 0, Y1 = 0;
+                while (true)
                 {
-                    case 0://移至胶重点检位
-                        MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.WeightGluePosition.X, Global.RXmanualSpeed,
-                                    m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition.Y, Global.RYmanualSpeed,
-                                    m_GluePlateform.Zaxis, Position.Instance.WeightGluePosition.Z, Global.RZmanualSpeed,
-                                    () =>
-                                    {
-                                        return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
-                                                 | m_GluePlateform.stationInitialize.InitializeDone;
-                                    });
-                        step = 5;
-                        break;
-                    case 5://起始空胶
-                        if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.WeightGluePosition.X)
-                            && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.WeightGluePosition.Y)
-                            && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.WeightGluePosition.Z))
-                        {
-                            APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                        { (int)((Position.Instance.GlueCenterPosition.X + offsetX) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                          (int)((Position.Instance.GlueCenterPosition.Y + offsetY) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                          (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.StartGlueAngle);
-                            Thread.Sleep(1);
-                            step = 10;
-                        }
-                        break;
-                    case 10://点胶第一圈
-                        if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
-                            && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
-                            && m_GluePlateform.Zaxis.CurrentSpeed == 0)
-                        {
-                            APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                            { (int)((Position.Instance.GlueCenterPosition.X + offsetX) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y + offsetY) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                            (int)Position.Instance.GluePathSpeed * 1000, 360);
-                            IoPoints.IDO19.Value = true;
-                            //Thread.Sleep(1);
-                            step = 20;
-                        }
-                        break;
-                    case 20://点胶第二圈
-                        if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
-                            && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
-                            && m_GluePlateform.Zaxis.CurrentSpeed == 0)
-                        {
-                            APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                            {  (int)((Position.Instance.GlueCenterPosition.X + offsetX) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y + offsetY) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                            (int)Position.Instance.GluePathSpeed * 1000, Position.Instance.SecondGlueAngle);
-                            Thread.Sleep((int)Position.Instance.StopGlueDelay);
-                            step = 30;
-                        }
-                        break;
-                    case 30://点胶拖胶
-                        if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone
-                            && m_GluePlateform.Xaxis.CurrentSpeed == 0 && m_GluePlateform.Yaxis.CurrentSpeed == 0
-                            && m_GluePlateform.Zaxis.CurrentSpeed == 0)
-                        {
-                            IoPoints.IDO19.Value = false;
-                            APS168.APS_absolute_move(m_GluePlateform.Zaxis.NoId, (int)((m_GluePlateform.Zaxis.CurrentPos - Position.Instance.DragGlueHeight) / AxisParameter.Instance.RYTransParams.PulseEquivalent),
-                                1000);
-                            APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
-                            { (int)((Position.Instance.GlueCenterPosition.X + offsetX) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
-                            (int)((Position.Instance.GlueCenterPosition.Y + offsetY) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
-                            (int)Position.Instance.DragGlueSpeed * 1000, Position.Instance.DragGlueAngle);
-                            Thread.Sleep(1);
-                            step = 40;
-                        }
-                        break;
-                    case 40://点胶结束
-                        if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone &&
-                            m_GluePlateform.Xaxis.CurrentSpeed == 0
-                            && m_GluePlateform.Yaxis.CurrentSpeed == 0 && m_GluePlateform.Zaxis.CurrentSpeed == 0)
-                        {
-                            IoPoints.IDO19.Value = false;
-                            itrue = false;
-                            step = 0;
-                        }
-                        break;
-
-                }
-            }
-        }
-
-        private void btnNeedleCalib_Click(object sender, EventArgs e)
-        {
-            var watchPointCT = new Stopwatch();
-            watchPointCT.Start();
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    var vsstep = 0;
-                    int Speed, Value, X0 = 0, X1 = 0, Y0 = 0, Y1 = 0, Z0 = 0;
-                    while (true)
+                    if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon)
                     {
-                        if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon)
-                        {
-                            m_GluePlateform.Xaxis.Stop();
-                            LogHelper.Debug("点胶X轴异常停止，请复位！");
-                            return;
-                        }
-                        if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon)
-                        {
-                            m_GluePlateform.Yaxis.Stop();
-                            LogHelper.Debug("点胶Y轴异常停止，请复位！");
-                            return;
-
-                        }
-                        if (m_GluePlateform.Zaxis.IsAlarmed || m_GluePlateform.Zaxis.IsEmg || !m_GluePlateform.Zaxis.IsServon)
-                        {
-                            m_GluePlateform.Zaxis.Stop();
-                            LogHelper.Debug("点胶Z轴异常停止，请复位！");
-                            return;
-
-                        }
-                        if (m_GluePlateform.stationOperate.Status == StationStatus.模组报警)
-                        {
-                            MessageBox.Show("模组报警中");
-                            return;
-                        }
-
-                        switch (vsstep)
-                        {
-
-                            case 0://移动到对针位置
-                                MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueAdjustPinPosition.X, Global.RXmanualSpeed,
-                                            m_GluePlateform.Yaxis, Position.Instance.GlueAdjustPinPosition.Y, Global.RYmanualSpeed,
-                                            m_GluePlateform.Zaxis, Position.Instance.GlueAdjustPinPosition.Z, Global.RZmanualSpeed,
-                                            () =>
-                                            {
-                                                return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
-                                                         | m_GluePlateform.stationInitialize.InitializeDone;
-                                            });
-                                vsstep = 1;
-                                break;
-                            case 1:
-
-                                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.X)
-                                    && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.Y)
-                                    && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.Z))
-                                {
-                                    vsstep = 5;
-                                }
-                                break;
-                            case 5://判断X方向是否位于感应区
-                                if (IoPoints.IDI27.Value)
-                                {
-                                    watchPointCT.Restart();
-                                    vsstep = 10;
-                                }
-                                else
-                                {
-                                    vsstep = 200;//判断Y方向是否在感应区
-                                }
-                                break;
-                            case 10:
-                                if (m_GluePlateform.Xaxis.CurrentPos < Position.Instance.GlueAdjustPinPosition.X + 5)
-                                {
-                                    Speed = 5000;
-                                    Value = 1;
-                                    Value *= 1;
-                                    APS168.APS_relative_move(0, Value, Speed);
-                                    vsstep = 20;
-                                }
-                                else
-                                {
-                                    LogHelper.Debug("点胶X轴正向偏移值不够,开始负向偏移！");
-                                    vsstep = 100;
-                                }
-                                break;
-                            case 20:
-                                if (!IoPoints.IDI27.Value)
-                                {
-
-                                }
-                                break;
-                            case 170://XY轴移到位对针OK
-                                break;
-                            case 180: //Z返回原位
-                                vsstep = 0;
-                                return;
-
-                            default:
-                                vsstep = 0;
-                                return;
-                        }
+                        m_GluePlateform.Xaxis.Stop();
+                        LogHelper.Debug("点胶X轴异常停止，请复位！");
+                        return;
                     }
+                    if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon)
+                    {
+                        m_GluePlateform.Yaxis.Stop();
+                        LogHelper.Debug("点胶Y轴异常停止，请复位！");
+                        return;
+                    }
+                    if (m_GluePlateform.Zaxis.IsAlarmed || m_GluePlateform.Zaxis.IsEmg || !m_GluePlateform.Zaxis.IsServon)
+                    {
+                        m_GluePlateform.Zaxis.Stop();
+                        LogHelper.Debug("点胶Z轴异常停止，请复位！");
+                        return;
+                    }
+                    if (m_GluePlateform.stationOperate.Status == StationStatus.模组报警)
+                    {
+                        MessageBox.Show("模组报警中");
+                        return;
+                    }
+                    switch (vsstep)
+                    {
 
+                        case 0://移动到自动对针位置1
+                            MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
+                                        m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
+                                        m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
+                                                     | m_GluePlateform.stationInitialize.InitializeDone;
+                                        });
+                            vsstep = 10;
+                            break;
+                        case 10:
+                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.CutGlueStartPosition.X)
+                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Y)
+                                && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Z))
+                            {
+                                vsstep = 20;
+                            }
+                            break;
+                        case 20://判断X方向是否位于感应区
+                            if (IoPoints.IDI27.Value)
+                            {
+                                vsstep = 30;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 30://寻找X向左边缘
+                            if (m_GluePlateform.Xaxis.CurrentPos < ( Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X )
+                                 && IoPoints.IDI27.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(4, Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (!IoPoints.IDI27.Value)
+                            {
+                                X0 = m_GluePlateform.Xaxis.CurrentPos;
+                                Speed = 1000;
+                                Value = 200;
+                                APS168.APS_relative_move(4, Value, Speed);
+                                Thread.Sleep(200);
+                                vsstep = 40;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 40://X前进0.1mm避免信息闪烁
+                            if (m_GluePlateform.Xaxis.IsDone)
+                            {
+                                vsstep = 50;
+                            }
+                            break;
+                        case 50://寻找X向右边缘
+                            if (m_GluePlateform.Xaxis.CurrentPos < ( Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X )
+                                 && !IoPoints.IDI27.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(4, Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (IoPoints.IDI27.Value)
+                            {
+                                X1 = m_GluePlateform.Xaxis.CurrentPos;
+                                double Value_X = (X0 + X1) / 2;
+                                m_GluePlateform.Xaxis.MoveTo(Value_X, Global.RXmanualSpeed);
+                                vsstep = 60;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 60:
+                            if (m_GluePlateform.Xaxis.IsDone)
+                            {
+                                vsstep = 100;
+                            }
+                            break;
+                        case 100://判断Y方向是否在感应区
+                            if (IoPoints.IDI26.Value)
+                            {
+                                vsstep = 110;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 110://寻找Y向下边缘
+                            if (m_GluePlateform.Yaxis.CurrentPos < ( Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y )
+                                 && IoPoints.IDI26.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(5, Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (!IoPoints.IDI26.Value)
+                            {
+                                Y0 = m_GluePlateform.Yaxis.CurrentPos;
+                                Speed = 1000;
+                                Value = 200;
+                                APS168.APS_relative_move(5, Value, Speed);
+                                Thread.Sleep(200);
+                                vsstep = 120;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 120://Y前进0.1mm避免信息闪烁
+                            if (m_GluePlateform.Yaxis.IsDone)
+                            {
+                                vsstep = 130;
+                            }
+                            break;
+                        case 130://寻找上向下边缘
+                            if (m_GluePlateform.Yaxis.CurrentPos < ( Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y )
+                                 && !IoPoints.IDI26.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(5, Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (IoPoints.IDI26.Value)
+                            {
+                                Y1 = m_GluePlateform.Yaxis.CurrentPos;
+                                double Value_Y = (Y0 + Y1) / 2;
+                                m_GluePlateform.Yaxis.MoveTo(Value_Y, Global.RYmanualSpeed);
+                                vsstep = 140;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置1异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 140:
+                            if (m_GluePlateform.Yaxis.IsDone)
+                            {
+                                vsstep = 150;
+                            }
+                            break;
+                        default:
+                            Position.Instance.GlueAdjustPinPosition.X = m_GluePlateform.Xaxis.CurrentPos;
+                            Position.Instance.GlueAdjustPinPosition.Y = m_GluePlateform.Yaxis.CurrentPos;
+                            m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                            vsstep = 0;
+                            return;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    LogHelper.Error(ex.ToString());
-                }
-            }, TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
-        }
 
-        private void btnTapping_Click(object sender, EventArgs e)
-        {
-            var step = 0;
-            bool itrue = true;
-            while (itrue)
+            }
+            catch (Exception ex)
             {
-                switch (step)
-                {
-                    case 0://移至胶重点检位
-                        MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueStartPosition.X, Global.RXmanualSpeed,
-                                    m_GluePlateform.Yaxis, Position.Instance.CutGlueStartPosition.Y, Global.RYmanualSpeed,
-                                    m_GluePlateform.Zaxis, Position.Instance.CutGlueStartPosition.Z, Global.RZmanualSpeed,
-                                    () =>
-                                    {
-                                        return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
-                                                 | m_GluePlateform.stationInitialize.InitializeDone;
-                                    });
-                        step = 5;
-                        break;
-                    case 5://起始空胶
-                        if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.CutGlueStartPosition.X)
-                            && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Y)
-                            && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.CutGlueStartPosition.Z))
-                        {
-                            m_GluePlateform.Xaxis.MoveTo(Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed);
-                            m_GluePlateform.Yaxis.MoveTo(Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed);
-                            Thread.Sleep(1);
-                            step = 10;
-                        }
-                        break;
-                    case 10:
-                        if (m_CleanPlateform.Xaxis.IsDone && m_CleanPlateform.Yaxis.IsDone)
-                        {
-                            itrue = false;
-                            step = 30;
-                        }
-                        break;
-                }
+                LogHelper.Error(ex.ToString());
             }
         }
-        #endregion
+
+        private void NeedleCalib_Third()
+        {
+            try
+            {
+                var vsstep = 0;
+                int Speed, Value;
+                double X0 = 0, X1 = 0, Y0 = 0, Y1 = 0;
+                while (true)
+                {
+                    if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon)
+                    {
+                        m_GluePlateform.Xaxis.Stop();
+                        LogHelper.Debug("点胶X轴异常停止，请复位！");
+                        return;
+                    }
+                    if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon)
+                    {
+                        m_GluePlateform.Yaxis.Stop();
+                        LogHelper.Debug("点胶Y轴异常停止，请复位！");
+                        return;
+                    }
+                    if (m_GluePlateform.Zaxis.IsAlarmed || m_GluePlateform.Zaxis.IsEmg || !m_GluePlateform.Zaxis.IsServon)
+                    {
+                        m_GluePlateform.Zaxis.Stop();
+                        LogHelper.Debug("点胶Z轴异常停止，请复位！");
+                        return;
+                    }
+                    if (m_GluePlateform.stationOperate.Status == StationStatus.模组报警)
+                    {
+                        MessageBox.Show("模组报警中");
+                        return;
+                    }
+                    switch (vsstep)
+                    {
+
+                        case 0://移动到自动对针位置1
+                            MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.CutGlueEndPosition.X, Global.RXmanualSpeed,
+                                        m_GluePlateform.Yaxis, Position.Instance.CutGlueEndPosition.Y, Global.RYmanualSpeed,
+                                        m_GluePlateform.Zaxis, Position.Instance.CutGlueEndPosition.Z, Global.RZmanualSpeed,
+                                        () =>
+                                        {
+                                            return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
+                                                     | m_GluePlateform.stationInitialize.InitializeDone;
+                                        });
+                            vsstep = 10;
+                            break;
+                        case 10:
+                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.CutGlueEndPosition.X)
+                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.CutGlueEndPosition.Y)
+                                && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.CutGlueEndPosition.Z))
+                            {
+                                vsstep = 20;
+                            }
+                            break;
+                        case 20://判断X方向是否位于感应区
+                            if (IoPoints.IDI27.Value)
+                            {
+                                vsstep = 30;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 30://寻找X向左边缘
+                            if (m_GluePlateform.Xaxis.CurrentPos > ( Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X )
+                                 && IoPoints.IDI27.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(4, -Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (!IoPoints.IDI27.Value)
+                            {
+                                X0 = m_GluePlateform.Xaxis.CurrentPos;
+                                Speed = 1000;
+                                Value = 200;
+                                APS168.APS_relative_move(4, -Value, Speed);
+                                Thread.Sleep(200);
+                                vsstep = 40;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 40://X前进0.1mm避免信息闪烁
+                            if (m_GluePlateform.Xaxis.IsDone)
+                            {
+                                vsstep = 50;
+                            }
+                            break;
+                        case 50://寻找X向右边缘
+                            if (m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
+                                 && !IoPoints.IDI27.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(4, -Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (IoPoints.IDI27.Value)
+                            {
+                                X1 = m_GluePlateform.Xaxis.CurrentPos;
+                                double Value_X = (X0 + X1) / 2;
+                                m_GluePlateform.Xaxis.MoveTo(Value_X, Global.RXmanualSpeed);
+                                vsstep = 60;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 60:
+                            if (m_GluePlateform.Xaxis.IsDone)
+                            {
+                                vsstep = 100;
+                            }
+                            break;
+                        case 100://判断Y方向是否在感应区
+                            if (IoPoints.IDI26.Value)
+                            {
+                                vsstep = 110;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 110://寻找Y向下边缘
+                            if (m_GluePlateform.Yaxis.CurrentPos > ( Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y )
+                                 && IoPoints.IDI26.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(5, -Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (!IoPoints.IDI26.Value)
+                            {
+                                Y0 = m_GluePlateform.Yaxis.CurrentPos;
+                                Speed = 1000;
+                                Value = 200;
+                                APS168.APS_relative_move(5, -Value, Speed);
+                                Thread.Sleep(200);
+                                vsstep = 120;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 120://Y前进0.1mm避免信息闪烁
+                            if (m_GluePlateform.Yaxis.IsDone)
+                            {
+                                vsstep = 130;
+                            }
+                            break;
+                        case 130://寻找上向下边缘
+                            if (m_GluePlateform.Yaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
+                                 && !IoPoints.IDI26.Value)
+                            {
+                                Speed = 1000;
+                                Value = 50;
+                                APS168.APS_relative_move(5, -Value, Speed);
+                                Thread.Sleep(100);
+                            }
+                            else if (IoPoints.IDI26.Value)
+                            {
+                                Y1 = m_GluePlateform.Yaxis.CurrentPos;
+                                double Value_Y = (Y0 + Y1) / 2;
+                                m_GluePlateform.Yaxis.MoveTo(Value_Y, Global.RYmanualSpeed);
+                                vsstep = 140;
+                            }
+                            else
+                            {
+                                MessageBox.Show("自动对针标定位置2异常，请确认！", "提示");
+                                return;
+                            }
+                            break;
+                        case 140:
+                            if (m_GluePlateform.Yaxis.IsDone)
+                            {
+                                vsstep = 150;
+                            }
+                            break;
+                        default:
+                            Position.Instance.GlueAdjustPinPosition.X = ( m_GluePlateform.Xaxis.CurrentPos + Position.Instance.GlueAdjustPinPosition.X )/2;
+                            Position.Instance.GlueAdjustPinPosition.Y = ( m_GluePlateform.Yaxis.CurrentPos + Position.Instance.GlueAdjustPinPosition.Y )/2;
+                            m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                            vsstep = 0;
+                            return;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.ToString());
+            }
+        }
+
+        private void NeedleCalib_Camera()
+        {
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                bool b = true;
+                var step = 0;
+                while (b)
+                {
+                    switch (step)
+                    {
+                        case 0:
+                            if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                            {
+                                MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.GlueCameraCalibPosition.X, Global.RXmanualSpeed,
+                                                        m_GluePlateform.Yaxis, Position.Instance.GlueCameraCalibPosition.Y, Global.RYmanualSpeed,
+                                                        m_GluePlateform.Zaxis, Position.Instance.GlueCameraCalibPosition.Z, Global.RZmanualSpeed,
+                                                        () =>
+                                                        {
+                                                            return !m_GluePlateform.stationInitialize.Running | !m_GluePlateform.stationOperate.Running
+                                                                     | m_GluePlateform.stationInitialize.InitializeDone;
+                                                        });
+                                Thread.Sleep(500);
+                                step = 10;
+                            }
+                            break;
+                        case 10:
+                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueCameraCalibPosition.X) 
+                                && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueCameraCalibPosition.Y)
+                                && m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueCameraCalibPosition.Z))
+                            {
+                                Thread.Sleep(500);
+                                step = 20;
+                            }
+                            break;
+                        case 20:
+                            frmAAVision.acq.NeedleLocateTestAcquire();
+                            sw.Restart();
+                            step = 30;
+                            break;
+                        case 30:
+                            if (Marking.NeedleLocateTestSucceed)
+                            {
+                                b = false;
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                MessageBox.Show("对针标定完成！", "提示");
+                                return;
+                            }
+                            break;
+                        default:
+                            b = false;
+                            MessageBox.Show("相机标定异常，请确认！", "提示");
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.ToString());
+            }
+        }
 
         private void btnCleanXHome_Click(object sender, EventArgs e)
         {
@@ -3447,6 +3669,13 @@ namespace desay
             }
             m_GluePlateform.Zaxis.MoveTo((double)nudRectZ.Value, Global.RZmanualSpeed);
             //});
+        }
+
+        private void btnAutoNeedleCali_Click(object sender, EventArgs e)
+        {
+            NeedleCalib_First();
+            NeedleCalib_Third();
+            NeedleCalib_Camera();
         }
 
 

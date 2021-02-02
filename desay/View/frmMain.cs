@@ -2009,8 +2009,8 @@ namespace desay
             {
                 Thread.Sleep(10);
                 if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon
-                    || (m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + 4 * Position.Instance.NeedleCalibOffset.X)
-                    && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X - 4 * Position.Instance.NeedleCalibOffset.X)))
+                    || (m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + 3 * Position.Instance.NeedleCalibOffset.X)
+                    && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X - 3 * Position.Instance.NeedleCalibOffset.X)))
                 {
                     m_GluePlateform.Xaxis.Stop();
                     AppendText("点胶X轴异常停止，请复位！");
@@ -2019,8 +2019,8 @@ namespace desay
                     return;
                 }
                 if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon
-               || (m_GluePlateform.Yaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Y + 4 * Position.Instance.NeedleCalibOffset.Y)
-               && m_GluePlateform.Yaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.Y - 4 * Position.Instance.NeedleCalibOffset.Y)))
+               || (m_GluePlateform.Yaxis.CurrentPos >= (Position.Instance.GlueAdjustPinPosition.Y + 3 * Position.Instance.NeedleCalibOffset.Y)
+               && m_GluePlateform.Yaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Y - 3 * Position.Instance.NeedleCalibOffset.Y)))
                 {
                     m_GluePlateform.Yaxis.Stop();
                     AppendText("点胶Y轴异常停止，请复位！");
@@ -2035,23 +2035,18 @@ namespace desay
                     {
                         case 0: //X轴正方向对针
                             Thread.Sleep(200);
-                            if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X * 2))
+                            if (IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X * 3))
                             {
                                 Speed = 5000;
                                 Value = 1000;
                                 Value *= 1;
                                 Thread.Sleep(200);
                                 APS168.APS_relative_move(0, Value, Speed);
-                                //cdm1031
-                                Position.Instance.NeedleCalibOffset.X = -1;
-                                Position.Instance.NeedleCalibOffset.Y = 1;
-                                Position.Instance.NeedleCalibOffset.Z = 1;
                             }
                             else
                             {
-                                if (IoPoints.IDI27.Value)
-                                {
-                                    // X0 = m_Pointform.Xaxis.CurrentPos;
+                                if (!IoPoints.IDI27.Value)
+                                {                                    
                                     NeedleStep = 1;
                                 }
 
@@ -2062,11 +2057,10 @@ namespace desay
                                 }
                             }
                             break;
-                        case 1:  //X轴小步左侧寻中心
+                        case 1:  //X轴小步左侧边缘
                             Speed = 1000;
                             Value = 100;
                             Value *= 1;
-                            Thread.Sleep(200);
                             APS168.APS_relative_move(0, Value, Speed);
                             Thread.Sleep(200);
                             if (!IoPoints.IDI27.Value || m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
