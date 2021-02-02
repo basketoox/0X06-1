@@ -422,7 +422,7 @@ namespace desay
                     "GotoZero"
                 });
             dgvGluePosition.Rows.Add(new object[] {
-                    "胶重点检位置",
+                    "排胶位置",
                     Position.Instance.WeightGluePosition.X.ToString("0.000"),
                     Position.Instance.WeightGluePosition.Y.ToString("0.000"),
                     Position.Instance.WeightGluePosition.Z.ToString("0.000"),
@@ -701,7 +701,7 @@ namespace desay
                     break;
                 case 9:
                     dgvGluePosition.Rows[i].SetValues(new object[] {
-                    "胶重点检位置",
+                    "排胶位置",
                     Position.Instance.WeightGluePosition.X.ToString("0.000"),
                     Position.Instance.WeightGluePosition.Y.ToString("0.000"),
                     Position.Instance.WeightGluePosition.Z.ToString("0.000"),
@@ -1208,7 +1208,7 @@ namespace desay
                                 Position.Instance.GlueThirdPositon.Z = m_GluePlateform.Zaxis.CurrentPos;
                                 CalculateGlueCenter();
                                 break;
-                            case 9://胶重点检位置
+                            case 9://排胶位置
                                 Position.Instance.WeightGluePosition.X = m_GluePlateform.Xaxis.CurrentPos;
                                 Position.Instance.WeightGluePosition.Y = m_GluePlateform.Yaxis.CurrentPos;
                                 Position.Instance.WeightGluePosition.Z = m_GluePlateform.Zaxis.CurrentPos;
@@ -1324,7 +1324,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 9://胶重点检位置
+                            case 9://排胶位置
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.WeightGluePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, Position.Instance.WeightGluePosition.Z, Global.RZmanualSpeed,
@@ -1459,7 +1459,7 @@ namespace desay
                                                  | m_GluePlateform.stationInitialize.InitializeDone;
                                     });
                                 break;
-                            case 9://胶重点检位置
+                            case 9://排胶位置
                                 ret = MoveToPoint(m_GluePlateform.Xaxis, Position.Instance.WeightGluePosition.X, Global.RXmanualSpeed,
                                     m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition.Y, Global.RYmanualSpeed,
                                     m_GluePlateform.Zaxis, 0.5, Global.RZmanualSpeed,
