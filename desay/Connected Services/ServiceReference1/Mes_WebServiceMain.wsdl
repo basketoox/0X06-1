@@ -1,0 +1,1626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://tempuri.org/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fCanIGoTest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchModelK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchTestIdK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchOperatorIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchStationIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="programCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fCanIGoTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fCanIGoTestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendDataLink">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchModelK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="WN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="WSN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchErrcdK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchPfmdataK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchOperatorIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchStationIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="programCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendDataLinkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fSendDataLinkResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchModelK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchTestIdK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchErrcdK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchPfmdataK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchOperatorIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchStationIDK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="programCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fSendDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendAOIData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RecNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="InspectionMachine" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InspectionProcess" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Program_Name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="BothSideCode" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="SavedDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PcbNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="CreateDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PersonRevisor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReviseEndDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TestResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ReviseResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ComponentTotal" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PinTotal" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ComponentBlockNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ComponentNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PartsName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PartsTypeNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="PartsVarNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="PartsArticleNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PinNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="FaultCode" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="RevisedFaultId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="BatName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ImageFilePath" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fSendAOIDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fSendAOIDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBarCodeList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pIp" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pUserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pBarType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBarCodeListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBarCodeListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpLoadFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fs" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="path" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpLoadFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpLoadFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DownloadFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strFilePath" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DownloadFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DownloadFileResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fUploadIcBurnResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pOrderType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pModelCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IcPartBarCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IcPartCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IcDateCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IcSupply" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="programCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="icId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pCheckSum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pBurnResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fUploadIcBurnResultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fUploadIcBurnResultResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fOrderJx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fOrderJxResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fOrderJxResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fCheckICSoft">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SPchICPartCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SPchSoftPartCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fCheckICSoftResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fCheckICSoftResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fPartLabelJx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fPartLabelJxResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fPartLabelJxResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fFixtureJx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fFixtureJxResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fFixtureJxResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fPanelWNLink">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fPanelWNLinkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fPanelWNLinkResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fFixtureJx2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pchIPK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="barCode5" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pchItemNameK" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pcName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OrderCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="str1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="fFixtureJx2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fFixtureJx2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="base64Binary" nillable="true" type="s:base64Binary" />
+    </s:schema>
+    <s:schema targetNamespace="http://tempuri.org/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestSoapIn">
+    <wsdl:part name="parameters" element="tns:fCanIGoTest" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestSoapOut">
+    <wsdl:part name="parameters" element="tns:fCanIGoTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkSoapIn">
+    <wsdl:part name="parameters" element="tns:fSendDataLink" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkSoapOut">
+    <wsdl:part name="parameters" element="tns:fSendDataLinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataSoapIn">
+    <wsdl:part name="parameters" element="tns:fSendData" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataSoapOut">
+    <wsdl:part name="parameters" element="tns:fSendDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataSoapIn">
+    <wsdl:part name="parameters" element="tns:fSendAOIData" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataSoapOut">
+    <wsdl:part name="parameters" element="tns:fSendAOIDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBarCodeList" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBarCodeListResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileSoapIn">
+    <wsdl:part name="parameters" element="tns:UpLoadFile" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileSoapOut">
+    <wsdl:part name="parameters" element="tns:UpLoadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileSoapIn">
+    <wsdl:part name="parameters" element="tns:DownloadFile" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileSoapOut">
+    <wsdl:part name="parameters" element="tns:DownloadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultSoapIn">
+    <wsdl:part name="parameters" element="tns:fUploadIcBurnResult" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultSoapOut">
+    <wsdl:part name="parameters" element="tns:fUploadIcBurnResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxSoapIn">
+    <wsdl:part name="parameters" element="tns:fOrderJx" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxSoapOut">
+    <wsdl:part name="parameters" element="tns:fOrderJxResponse" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftSoapIn">
+    <wsdl:part name="parameters" element="tns:fCheckICSoft" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftSoapOut">
+    <wsdl:part name="parameters" element="tns:fCheckICSoftResponse" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxSoapIn">
+    <wsdl:part name="parameters" element="tns:fPartLabelJx" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxSoapOut">
+    <wsdl:part name="parameters" element="tns:fPartLabelJxResponse" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxSoapIn">
+    <wsdl:part name="parameters" element="tns:fFixtureJx" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxSoapOut">
+    <wsdl:part name="parameters" element="tns:fFixtureJxResponse" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkSoapIn">
+    <wsdl:part name="parameters" element="tns:fPanelWNLink" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkSoapOut">
+    <wsdl:part name="parameters" element="tns:fPanelWNLinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2SoapIn">
+    <wsdl:part name="parameters" element="tns:fFixtureJx2" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2SoapOut">
+    <wsdl:part name="parameters" element="tns:fFixtureJx2Response" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldHttpGetIn" />
+  <wsdl:message name="HelloWorldHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="pchTestIdK" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="WN" type="s:string" />
+    <wsdl:part name="WSN" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchErrcdK" type="s:string" />
+    <wsdl:part name="pchPfmdataK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="pchTestIdK" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchErrcdK" type="s:string" />
+    <wsdl:part name="pchPfmdataK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataHttpGetIn">
+    <wsdl:part name="RecNo" type="s:string" />
+    <wsdl:part name="InspectionMachine" type="s:string" />
+    <wsdl:part name="InspectionProcess" type="s:string" />
+    <wsdl:part name="Program_Name" type="s:string" />
+    <wsdl:part name="BothSideCode" type="s:string" />
+    <wsdl:part name="SavedDate" type="s:string" />
+    <wsdl:part name="PcbNo" type="s:string" />
+    <wsdl:part name="CreateDate" type="s:string" />
+    <wsdl:part name="PersonRevisor" type="s:string" />
+    <wsdl:part name="ReviseEndDate" type="s:string" />
+    <wsdl:part name="TestResult" type="s:string" />
+    <wsdl:part name="ReviseResult" type="s:string" />
+    <wsdl:part name="Barcode" type="s:string" />
+    <wsdl:part name="ComponentTotal" type="s:string" />
+    <wsdl:part name="PinTotal" type="s:string" />
+    <wsdl:part name="ComponentBlockNo" type="s:string" />
+    <wsdl:part name="ComponentNo" type="s:string" />
+    <wsdl:part name="PartsName" type="s:string" />
+    <wsdl:part name="PartsTypeNo" type="s:string" />
+    <wsdl:part name="PartsVarNo" type="s:string" />
+    <wsdl:part name="PartsArticleNo" type="s:string" />
+    <wsdl:part name="PinNo" type="s:string" />
+    <wsdl:part name="FaultCode" type="s:string" />
+    <wsdl:part name="RevisedFaultId" type="s:string" />
+    <wsdl:part name="BatName" type="s:string" />
+    <wsdl:part name="ImageFilePath" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListHttpGetIn">
+    <wsdl:part name="pIp" type="s:string" />
+    <wsdl:part name="pPcName" type="s:string" />
+    <wsdl:part name="pUserCode" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="pBarType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileHttpGetIn">
+    <wsdl:part name="fs" type="s1:StringArray" />
+    <wsdl:part name="path" type="s:string" />
+    <wsdl:part name="fileName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileHttpGetIn">
+    <wsdl:part name="strFilePath" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileHttpGetOut">
+    <wsdl:part name="Body" element="tns:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="pModelCode" type="s:string" />
+    <wsdl:part name="IcPartBarCode" type="s:string" />
+    <wsdl:part name="IcPartCode" type="s:string" />
+    <wsdl:part name="IcDateCode" type="s:string" />
+    <wsdl:part name="IcSupply" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="icId" type="s:string" />
+    <wsdl:part name="pCheckSum" type="s:string" />
+    <wsdl:part name="pBurnResult" type="s:string" />
+    <wsdl:part name="Amount" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftHttpGetIn">
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="SPchICPartCode" type="s:string" />
+    <wsdl:part name="SPchSoftPartCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkHttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2HttpGetIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode1" type="s:string" />
+    <wsdl:part name="barCode2" type="s:string" />
+    <wsdl:part name="barCode3" type="s:string" />
+    <wsdl:part name="barCode4" type="s:string" />
+    <wsdl:part name="barCode5" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2HttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldHttpPostIn" />
+  <wsdl:message name="HelloWorldHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="pchTestIdK" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fCanIGoTestHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="WN" type="s:string" />
+    <wsdl:part name="WSN" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchErrcdK" type="s:string" />
+    <wsdl:part name="pchPfmdataK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataLinkHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="pchModelK" type="s:string" />
+    <wsdl:part name="pchTestIdK" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="pchErrcdK" type="s:string" />
+    <wsdl:part name="pchPfmdataK" type="s:string" />
+    <wsdl:part name="pchOperatorIDK" type="s:string" />
+    <wsdl:part name="pchStationIDK" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendDataHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataHttpPostIn">
+    <wsdl:part name="RecNo" type="s:string" />
+    <wsdl:part name="InspectionMachine" type="s:string" />
+    <wsdl:part name="InspectionProcess" type="s:string" />
+    <wsdl:part name="Program_Name" type="s:string" />
+    <wsdl:part name="BothSideCode" type="s:string" />
+    <wsdl:part name="SavedDate" type="s:string" />
+    <wsdl:part name="PcbNo" type="s:string" />
+    <wsdl:part name="CreateDate" type="s:string" />
+    <wsdl:part name="PersonRevisor" type="s:string" />
+    <wsdl:part name="ReviseEndDate" type="s:string" />
+    <wsdl:part name="TestResult" type="s:string" />
+    <wsdl:part name="ReviseResult" type="s:string" />
+    <wsdl:part name="Barcode" type="s:string" />
+    <wsdl:part name="ComponentTotal" type="s:string" />
+    <wsdl:part name="PinTotal" type="s:string" />
+    <wsdl:part name="ComponentBlockNo" type="s:string" />
+    <wsdl:part name="ComponentNo" type="s:string" />
+    <wsdl:part name="PartsName" type="s:string" />
+    <wsdl:part name="PartsTypeNo" type="s:string" />
+    <wsdl:part name="PartsVarNo" type="s:string" />
+    <wsdl:part name="PartsArticleNo" type="s:string" />
+    <wsdl:part name="PinNo" type="s:string" />
+    <wsdl:part name="FaultCode" type="s:string" />
+    <wsdl:part name="RevisedFaultId" type="s:string" />
+    <wsdl:part name="BatName" type="s:string" />
+    <wsdl:part name="ImageFilePath" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fSendAOIDataHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListHttpPostIn">
+    <wsdl:part name="pIp" type="s:string" />
+    <wsdl:part name="pPcName" type="s:string" />
+    <wsdl:part name="pUserCode" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="pBarType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetBarCodeListHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileHttpPostIn">
+    <wsdl:part name="fs" type="s1:StringArray" />
+    <wsdl:part name="path" type="s:string" />
+    <wsdl:part name="fileName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpLoadFileHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileHttpPostIn">
+    <wsdl:part name="strFilePath" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DownloadFileHttpPostOut">
+    <wsdl:part name="Body" element="tns:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="pOrderCode" type="s:string" />
+    <wsdl:part name="pOrderType" type="s:string" />
+    <wsdl:part name="pModelCode" type="s:string" />
+    <wsdl:part name="IcPartBarCode" type="s:string" />
+    <wsdl:part name="IcPartCode" type="s:string" />
+    <wsdl:part name="IcDateCode" type="s:string" />
+    <wsdl:part name="IcSupply" type="s:string" />
+    <wsdl:part name="programCode" type="s:string" />
+    <wsdl:part name="icId" type="s:string" />
+    <wsdl:part name="pCheckSum" type="s:string" />
+    <wsdl:part name="pBurnResult" type="s:string" />
+    <wsdl:part name="Amount" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fUploadIcBurnResultHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fOrderJxHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftHttpPostIn">
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="SPchICPartCode" type="s:string" />
+    <wsdl:part name="SPchSoftPartCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fCheckICSoftHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fPartLabelJxHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJxHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkHttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fPanelWNLinkHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2HttpPostIn">
+    <wsdl:part name="pchIPK" type="s:string" />
+    <wsdl:part name="barCode1" type="s:string" />
+    <wsdl:part name="barCode2" type="s:string" />
+    <wsdl:part name="barCode3" type="s:string" />
+    <wsdl:part name="barCode4" type="s:string" />
+    <wsdl:part name="barCode5" type="s:string" />
+    <wsdl:part name="pchItemNameK" type="s:string" />
+    <wsdl:part name="UserCode" type="s:string" />
+    <wsdl:part name="pcName" type="s:string" />
+    <wsdl:part name="OrderCode" type="s:string" />
+    <wsdl:part name="str1" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="fFixtureJx2HttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="Mes_WebServiceMainSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">CanIGo  返回检查结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCanIGoTestSoapIn" />
+      <wsdl:output message="tns:fCanIGoTestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData+pcb与外壳关联  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataLinkSoapIn" />
+      <wsdl:output message="tns:fSendDataLinkSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataSoapIn" />
+      <wsdl:output message="tns:fSendDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save AOIData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendAOIDataSoapIn" />
+      <wsdl:output message="tns:fSendAOIDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取需镭射的条码  返回条码内容</wsdl:documentation>
+      <wsdl:input message="tns:GetBarCodeListSoapIn" />
+      <wsdl:output message="tns:GetBarCodeListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">保存文件到远程服务器.</wsdl:documentation>
+      <wsdl:input message="tns:UpLoadFileSoapIn" />
+      <wsdl:output message="tns:UpLoadFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">下载文件.</wsdl:documentation>
+      <wsdl:input message="tns:DownloadFileSoapIn" />
+      <wsdl:output message="tns:DownloadFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录结果上传,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fUploadIcBurnResultSoapIn" />
+      <wsdl:output message="tns:fUploadIcBurnResultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析工单返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fOrderJxSoapIn" />
+      <wsdl:output message="tns:fOrderJxSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录软体比对,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCheckICSoftSoapIn" />
+      <wsdl:output message="tns:fCheckICSoftSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析标签返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPartLabelJxSoapIn" />
+      <wsdl:output message="tns:fPartLabelJxSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJxSoapIn" />
+      <wsdl:output message="tns:fFixtureJxSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">自动关联,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPanelWNLinkSoapIn" />
+      <wsdl:output message="tns:fPanelWNLinkSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码2,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJx2SoapIn" />
+      <wsdl:output message="tns:fFixtureJx2SoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Mes_WebServiceMainHttpGet">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldHttpGetIn" />
+      <wsdl:output message="tns:HelloWorldHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">CanIGo  返回检查结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCanIGoTestHttpGetIn" />
+      <wsdl:output message="tns:fCanIGoTestHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData+pcb与外壳关联  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataLinkHttpGetIn" />
+      <wsdl:output message="tns:fSendDataLinkHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataHttpGetIn" />
+      <wsdl:output message="tns:fSendDataHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save AOIData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendAOIDataHttpGetIn" />
+      <wsdl:output message="tns:fSendAOIDataHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取需镭射的条码  返回条码内容</wsdl:documentation>
+      <wsdl:input message="tns:GetBarCodeListHttpGetIn" />
+      <wsdl:output message="tns:GetBarCodeListHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">保存文件到远程服务器.</wsdl:documentation>
+      <wsdl:input message="tns:UpLoadFileHttpGetIn" />
+      <wsdl:output message="tns:UpLoadFileHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">下载文件.</wsdl:documentation>
+      <wsdl:input message="tns:DownloadFileHttpGetIn" />
+      <wsdl:output message="tns:DownloadFileHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录结果上传,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fUploadIcBurnResultHttpGetIn" />
+      <wsdl:output message="tns:fUploadIcBurnResultHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析工单返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fOrderJxHttpGetIn" />
+      <wsdl:output message="tns:fOrderJxHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录软体比对,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCheckICSoftHttpGetIn" />
+      <wsdl:output message="tns:fCheckICSoftHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析标签返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPartLabelJxHttpGetIn" />
+      <wsdl:output message="tns:fPartLabelJxHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJxHttpGetIn" />
+      <wsdl:output message="tns:fFixtureJxHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">自动关联,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPanelWNLinkHttpGetIn" />
+      <wsdl:output message="tns:fPanelWNLinkHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码2,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJx2HttpGetIn" />
+      <wsdl:output message="tns:fFixtureJx2HttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Mes_WebServiceMainHttpPost">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldHttpPostIn" />
+      <wsdl:output message="tns:HelloWorldHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">CanIGo  返回检查结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCanIGoTestHttpPostIn" />
+      <wsdl:output message="tns:fCanIGoTestHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData+pcb与外壳关联  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataLinkHttpPostIn" />
+      <wsdl:output message="tns:fSendDataLinkHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save testData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendDataHttpPostIn" />
+      <wsdl:output message="tns:fSendDataHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">save AOIData  返回保存结果,0为OK,其他NG</wsdl:documentation>
+      <wsdl:input message="tns:fSendAOIDataHttpPostIn" />
+      <wsdl:output message="tns:fSendAOIDataHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取需镭射的条码  返回条码内容</wsdl:documentation>
+      <wsdl:input message="tns:GetBarCodeListHttpPostIn" />
+      <wsdl:output message="tns:GetBarCodeListHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">保存文件到远程服务器.</wsdl:documentation>
+      <wsdl:input message="tns:UpLoadFileHttpPostIn" />
+      <wsdl:output message="tns:UpLoadFileHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">下载文件.</wsdl:documentation>
+      <wsdl:input message="tns:DownloadFileHttpPostIn" />
+      <wsdl:output message="tns:DownloadFileHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录结果上传,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fUploadIcBurnResultHttpPostIn" />
+      <wsdl:output message="tns:fUploadIcBurnResultHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析工单返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fOrderJxHttpPostIn" />
+      <wsdl:output message="tns:fOrderJxHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">IC烧录软体比对,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fCheckICSoftHttpPostIn" />
+      <wsdl:output message="tns:fCheckICSoftHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析标签返回解析结果,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPartLabelJxHttpPostIn" />
+      <wsdl:output message="tns:fPartLabelJxHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJxHttpPostIn" />
+      <wsdl:output message="tns:fFixtureJxHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">自动关联,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fPanelWNLinkHttpPostIn" />
+      <wsdl:output message="tns:fPanelWNLinkHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">解析载治具条码2,0为OK,其他NG[WebMethod]</wsdl:documentation>
+      <wsdl:input message="tns:fFixtureJx2HttpPostIn" />
+      <wsdl:output message="tns:fFixtureJx2HttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Mes_WebServiceMainSoap" type="tns:Mes_WebServiceMainSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <soap:operation soapAction="http://tempuri.org/fCanIGoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <soap:operation soapAction="http://tempuri.org/fSendDataLink" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <soap:operation soapAction="http://tempuri.org/fSendData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <soap:operation soapAction="http://tempuri.org/fSendAOIData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <soap:operation soapAction="http://tempuri.org/GetBarCodeList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <soap:operation soapAction="http://tempuri.org/UpLoadFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <soap:operation soapAction="http://tempuri.org/DownloadFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <soap:operation soapAction="http://tempuri.org/fUploadIcBurnResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <soap:operation soapAction="http://tempuri.org/fOrderJx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <soap:operation soapAction="http://tempuri.org/fCheckICSoft" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <soap:operation soapAction="http://tempuri.org/fPartLabelJx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <soap:operation soapAction="http://tempuri.org/fFixtureJx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <soap:operation soapAction="http://tempuri.org/fPanelWNLink" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <soap:operation soapAction="http://tempuri.org/fFixtureJx2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Mes_WebServiceMainSoap12" type="tns:Mes_WebServiceMainSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <soap12:operation soapAction="http://tempuri.org/fCanIGoTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <soap12:operation soapAction="http://tempuri.org/fSendDataLink" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <soap12:operation soapAction="http://tempuri.org/fSendData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <soap12:operation soapAction="http://tempuri.org/fSendAOIData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <soap12:operation soapAction="http://tempuri.org/GetBarCodeList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <soap12:operation soapAction="http://tempuri.org/UpLoadFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <soap12:operation soapAction="http://tempuri.org/DownloadFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <soap12:operation soapAction="http://tempuri.org/fUploadIcBurnResult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <soap12:operation soapAction="http://tempuri.org/fOrderJx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <soap12:operation soapAction="http://tempuri.org/fCheckICSoft" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <soap12:operation soapAction="http://tempuri.org/fPartLabelJx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <soap12:operation soapAction="http://tempuri.org/fFixtureJx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <soap12:operation soapAction="http://tempuri.org/fPanelWNLink" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <soap12:operation soapAction="http://tempuri.org/fFixtureJx2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Mes_WebServiceMainHttpGet" type="tns:Mes_WebServiceMainHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="HelloWorld">
+      <http:operation location="/HelloWorld" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <http:operation location="/fCanIGoTest" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <http:operation location="/fSendDataLink" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <http:operation location="/fSendData" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <http:operation location="/fSendAOIData" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <http:operation location="/GetBarCodeList" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <http:operation location="/UpLoadFile" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <http:operation location="/DownloadFile" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <http:operation location="/fUploadIcBurnResult" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <http:operation location="/fOrderJx" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <http:operation location="/fCheckICSoft" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <http:operation location="/fPartLabelJx" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <http:operation location="/fFixtureJx" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <http:operation location="/fPanelWNLink" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <http:operation location="/fFixtureJx2" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Mes_WebServiceMainHttpPost" type="tns:Mes_WebServiceMainHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="HelloWorld">
+      <http:operation location="/HelloWorld" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCanIGoTest">
+      <http:operation location="/fCanIGoTest" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendDataLink">
+      <http:operation location="/fSendDataLink" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendData">
+      <http:operation location="/fSendData" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fSendAOIData">
+      <http:operation location="/fSendAOIData" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBarCodeList">
+      <http:operation location="/GetBarCodeList" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpLoadFile">
+      <http:operation location="/UpLoadFile" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <http:operation location="/DownloadFile" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fUploadIcBurnResult">
+      <http:operation location="/fUploadIcBurnResult" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fOrderJx">
+      <http:operation location="/fOrderJx" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fCheckICSoft">
+      <http:operation location="/fCheckICSoft" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPartLabelJx">
+      <http:operation location="/fPartLabelJx" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx">
+      <http:operation location="/fFixtureJx" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fPanelWNLink">
+      <http:operation location="/fPanelWNLink" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fFixtureJx2">
+      <http:operation location="/fFixtureJx2" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Mes_WebServiceMain">
+    <wsdl:port name="Mes_WebServiceMainSoap" binding="tns:Mes_WebServiceMainSoap">
+      <soap:address location="http://172.16.1.235:8889/Mes_WebServiceMain.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Mes_WebServiceMainSoap12" binding="tns:Mes_WebServiceMainSoap12">
+      <soap12:address location="http://172.16.1.235:8889/Mes_WebServiceMain.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Mes_WebServiceMainHttpGet" binding="tns:Mes_WebServiceMainHttpGet">
+      <http:address location="http://172.16.1.235:8889/Mes_WebServiceMain.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Mes_WebServiceMainHttpPost" binding="tns:Mes_WebServiceMainHttpPost">
+      <http:address location="http://172.16.1.235:8889/Mes_WebServiceMain.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

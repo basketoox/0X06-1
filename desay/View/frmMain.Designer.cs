@@ -43,10 +43,10 @@
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnShowWindows = new System.Windows.Forms.ToolStripButton();
             this.btnAAImage = new System.Windows.Forms.ToolStripButton();
-            this.btnAAVision = new System.Windows.Forms.ToolStripButton();
-            this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.lblMachineStatus = new System.Windows.Forms.ToolStripButton();
-            this.btnTest = new System.Windows.Forms.ToolStripButton();
+            this.btnAAVision = new System.Windows.Forms.ToolStripButton();
+            this.btnMes = new System.Windows.Forms.ToolStripButton();
+            this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.tbcMain = new System.Windows.Forms.TabControl();
             this.tpgMain = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -335,10 +335,10 @@
             this.btnLogin,
             this.btnShowWindows,
             this.btnAAImage,
-            this.btnAAVision,
-            this.btnExit,
             this.lblMachineStatus,
-            this.btnTest});
+            this.btnAAVision,
+            this.btnMes,
+            this.btnExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1100, 30);
@@ -505,33 +505,6 @@
             this.btnAAImage.ToolTipText = "白板测试";
             this.btnAAImage.Click += new System.EventHandler(this.btnAAImage_Click);
             // 
-            // btnAAVision
-            // 
-            this.btnAAVision.BackColor = System.Drawing.Color.MediumBlue;
-            this.btnAAVision.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.btnAAVision.ForeColor = System.Drawing.Color.White;
-            this.btnAAVision.ImageTransparentColor = System.Drawing.Color.MediumBlue;
-            this.btnAAVision.Name = "btnAAVision";
-            this.btnAAVision.Size = new System.Drawing.Size(81, 27);
-            this.btnAAVision.Text = "视觉识别";
-            this.btnAAVision.Click += new System.EventHandler(this.btnAAVision_Click);
-            // 
-            // btnExit
-            // 
-            this.btnExit.AutoSize = false;
-            this.btnExit.BackColor = System.Drawing.Color.MediumBlue;
-            this.btnExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.ForeColor = System.Drawing.Color.White;
-            this.btnExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnExit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnExit.Margin = new System.Windows.Forms.Padding(1);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 28);
-            this.btnExit.Text = "退出";
-            this.btnExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
             // lblMachineStatus
             // 
             this.lblMachineStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -546,21 +519,45 @@
             this.lblMachineStatus.Size = new System.Drawing.Size(203, 35);
             this.lblMachineStatus.Text = "设备急停已按下";
             // 
-            // btnTest
+            // btnAAVision
             // 
-            this.btnTest.AutoSize = false;
-            this.btnTest.BackColor = System.Drawing.Color.MediumBlue;
-            this.btnTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnTest.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnTest.ForeColor = System.Drawing.Color.White;
-            this.btnTest.Image = ((System.Drawing.Image)(resources.GetObject("btnTest.Image")));
-            this.btnTest.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnTest.Margin = new System.Windows.Forms.Padding(1);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(90, 28);
-            this.btnTest.Text = "模块测试";
-            this.btnTest.Visible = false;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.btnAAVision.BackColor = System.Drawing.Color.MediumBlue;
+            this.btnAAVision.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.btnAAVision.ForeColor = System.Drawing.Color.White;
+            this.btnAAVision.ImageTransparentColor = System.Drawing.Color.MediumBlue;
+            this.btnAAVision.Name = "btnAAVision";
+            this.btnAAVision.Size = new System.Drawing.Size(81, 27);
+            this.btnAAVision.Text = "视觉识别";
+            this.btnAAVision.Click += new System.EventHandler(this.btnAAVision_Click);
+            // 
+            // btnMes
+            // 
+            this.btnMes.AutoSize = false;
+            this.btnMes.BackColor = System.Drawing.Color.MediumBlue;
+            this.btnMes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMes.ForeColor = System.Drawing.Color.White;
+            this.btnMes.ImageTransparentColor = System.Drawing.Color.MidnightBlue;
+            this.btnMes.Margin = new System.Windows.Forms.Padding(1);
+            this.btnMes.Name = "btnMes";
+            this.btnMes.Size = new System.Drawing.Size(75, 27);
+            this.btnMes.Text = "MES";
+            this.btnMes.Click += new System.EventHandler(this.btnMes_Click);
+            // 
+            // btnExit
+            // 
+            this.btnExit.AutoSize = false;
+            this.btnExit.BackColor = System.Drawing.Color.MediumBlue;
+            this.btnExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnExit.ForeColor = System.Drawing.Color.White;
+            this.btnExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExit.Margin = new System.Windows.Forms.Padding(1);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 27);
+            this.btnExit.Text = "退出";
+            this.btnExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // tbcMain
             // 
@@ -3067,7 +3064,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblCarrierReady;
-        private System.Windows.Forms.ToolStripButton btnTest;
+        private System.Windows.Forms.ToolStripButton btnMes;
         private System.Windows.Forms.ToolStripLabel lblTotalNum;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         private System.Windows.Forms.ToolStripLabel lblTotalCycleTime;

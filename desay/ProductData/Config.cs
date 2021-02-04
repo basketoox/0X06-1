@@ -96,5 +96,18 @@ namespace desay.ProductData
         /// 治具库
         /// </summary>
         public string[] FNLibrary = { "0X06-1-01", "0X06-1-02", "0X06-1-03", "0X06-1-04", "0X06-1-05", "0X06-1-06" };
+
+        /// <summary>
+        /// MES名称
+        /// </summary>
+        public string MesName="Mes_WebServiceMainSoap";
+        /// <summary>
+        /// MES地址
+        /// </summary>
+        public string MesIPAddress = "http://172.16.1.235:8889/Mes_WebServiceMain.asmx";
+        /// <summary>
+        /// 本机IP地址
+        /// </summary>
+        public string LocalIP;
     }
 }

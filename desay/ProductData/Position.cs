@@ -83,7 +83,6 @@ namespace desay.ProductData
         /// </summary>
         public double DetectHeightOffsetUp=10;
 
-
         /// <summary>
         /// 测高偏差下限
         /// </summary>
@@ -315,12 +314,11 @@ namespace desay.ProductData
         /// 自动对针位置2
         /// </summary>
         public Point3D<double> CutGlueEndPosition;
-        #endregion
+
         /// <summary>
         /// 胶针偏移
         /// </summary>
         public Point3D<double> NeedleOffset;
-
 
         /// <summary>
         /// 记录CCD到胶针的偏差值，Z轴暂不用
@@ -330,8 +328,6 @@ namespace desay.ProductData
         /// 产品圆心到相机视野中心的偏差值，Z轴暂不用
         /// </summary>
         public Point3D<double> PCB2CCDOffset;
-
-
 
         public double MaxNeedleOffsetX=41.0;
         public double MaxNeedleOffsetY=-105.0;
@@ -345,6 +341,8 @@ namespace desay.ProductData
         /// 自动对针中心位置
         /// </summary>
         public Point3D<double> NeedleCalibCenter;
+        #endregion
+
         #region 通讯相关
         /// <summary>
         /// 网口通讯超时时间
@@ -410,6 +408,8 @@ namespace desay.ProductData
                                    UVBefore_MTF_C,UVBefore_MTF_TL,UVBefore_MTF_TR,UVBefore_MTF_BR,UVBefore_MTF_BL,UVAfter_OC_X,
                                    UVAfter_OC_Y,UVAfter_MTF_C,UVAfter_MTF_TL,UVAfter_MTF_TR,UVAfter_MTF_BR,UVAfter_MTF_BL";
         #endregion
+
+        #region 配置相关
         /// <summary>
         /// 图片保存的天数
         /// </summary>
@@ -418,8 +418,6 @@ namespace desay.ProductData
         /// 启用矩形点胶
         /// </summary>
         public bool UseRectGlue = false;
-
-
         /// <summary>
         /// 白板光源气缸 不动作0，动作1
         /// </summary>
@@ -428,6 +426,10 @@ namespace desay.ProductData
         /// 清洗上下气缸 不动作0，动作1
         /// </summary>
         public int CleanUpDownCylinder = 0;
+
+        #endregion
+
+        #region 胶水识别
         /// <summary>
         /// 圆形胶水外边缘溢胶/少胶的距离
         /// </summary>
@@ -452,8 +454,6 @@ namespace desay.ProductData
         /// FFT滤波
         /// </summary>
         public int FFT_Frequency = 7;
-
-
         /// <summary>
         /// 矩形质心X轴偏移
         /// </summary>
@@ -474,7 +474,52 @@ namespace desay.ProductData
         /// 矩形胶路阈值Min
         /// </summary>
         public int ManualThreshold = 160;
+        #endregion
 
+        #region MES字段
+
+        /// <summary>
+        /// 机台名称
+        /// </summary>
+        public string pchStationIDK = "AA";
+        /// <summary>
+        /// 机台型号
+        /// </summary>
+        public string pchModelK = "0X06-1";
+        /// <summary>
+        /// 程序代码
+        /// </summary>
+        public string programCode = "Desay";
+        /// <summary>
+        /// 测试结果代码
+        /// </summary>
+        public string pchErrcdk;
+        /// <summary>
+        /// 测试数据
+        /// </summary>
+        public string pchPfmdataK;
+        /// <summary>
+        /// 工单
+        /// </summary>
+        public string pOrderCode;
+        /// <summary>
+        /// 单别
+        /// </summary>
+        public string pOrderType;
+        /// <summary>
+        /// 条码
+        /// </summary>
+        public string pchTestIdK;
+        /// <summary>
+        /// 测试关卡
+        /// </summary>
+        public string pchItemNameK;
+        /// <summary>
+        /// 员工工号
+        /// </summary>
+        public string pchOperatorIDK;
+
+        #endregion
 
     }
 }

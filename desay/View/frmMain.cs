@@ -18,6 +18,7 @@ using System.Toolkit.Helpers;
 using System.Text;
 using Motion.AdlinkAps;
 using desay.View;
+using desay.ServiceReference1;
 
 namespace desay
 {
@@ -25,6 +26,7 @@ namespace desay
     {
         #region field  
         public static frmMain main;
+        public frmMES m_frmMES;
         private AlarmType LplateformIsAlarm, RplateformIsAlarm, CarrierIsAlarm, MachineIsAlarm, MesIsAlarm;
         private External m_External = new External();
         private MachineOperate MachineOperation;
@@ -36,7 +38,7 @@ namespace desay
         private frmAAVision m_AAVision;
         //private frmWhiteBorad m_WB;
         public MES m_Mes;
-
+        
         Encryption hasp;
         Registered haspRegistered;
 
@@ -169,11 +171,10 @@ namespace desay
         }
        
         private void frmMain_Load(object sender, EventArgs e)
-        {
+        {            
             UserLevelChangeEvent += UserLevelChange;
             StopEvent += new Action(StopStatus);
             Config.Instance.userLevel = UserLevel.操作员;
-
 
             //调试方便暂时开放权限
             Config.Instance.userLevel = UserLevel.工程师;
@@ -264,10 +265,10 @@ namespace desay
             #endregion
 
             #region 通讯初始化操作
-            OpenScanner();     //扫码枪
-            OpenTcpServer();   //创建TCP 服务器，连接 AA，CCD,白板
-            OpenDetectHeight(); //测高模块
-            OpenPower();//白板电源
+            OpenScanner();       //扫码枪
+            OpenTcpServer();     //创建TCP 服务器，连接 AA，CCD,白板
+            OpenDetectHeight();  //测高模块
+            OpenPower();         //白板电源
 
             #endregion
 
@@ -784,14 +785,6 @@ namespace desay
    
         #endregion
 
-
-        /// <summary>
-        /// receive flow information displayed to the mainview
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="result">return result</param>
-        private void DealWithReceiveData(object sender, string result) => AppendText(result);
-
         #region 窗体关闭
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -950,6 +943,8 @@ namespace desay
             aa.frmAAVision_Load(this, null);
             aa.Visible = true;
             aa.WindowState = FormWindowState.Minimized;
+
+            m_frmMES = new frmMES();
         }
 
         /// <summary>
@@ -1545,6 +1540,14 @@ namespace desay
         #endregion
 
         #region 消息显示
+
+        /// <summary>
+        /// receive flow information displayed to the mainview
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="result">return result</param>
+        private void DealWithReceiveData(object sender, string result) => AppendText(result);
+
         /// <summary>
         /// 使用委托方式更新AppendText显示
         /// </summary>
@@ -1696,7 +1699,7 @@ namespace desay
         }
         #endregion
 
-        #region 设备操作按钮
+        #region 按键操作
 
         private void btnStart_MouseDown(object sender, EventArgs e)
         {
@@ -1902,11 +1905,6 @@ namespace desay
             }
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            new frmStationDebug(m_CleanPlateform, m_GluePlateform, m_Carrier).ShowDialog();
-        }
-
         private void btnCarrier1_Click(object sender, EventArgs e)
         {
             if (IoPoints.IDO9.Value)
@@ -1997,397 +1995,397 @@ namespace desay
         /// </summary>
         private void MoveToNeedlePointP()
         {
-            var Speed = 0;
-            var Value = 0;
-            double X0 = 0;
-            double Y0 = 0;
-            double Z0 = 0;
-            double X1 = 0;
-            double Y1 = 0;
+            //var Speed = 0;
+            //var Value = 0;
+            //double X0 = 0;
+            //double Y0 = 0;
+            //double Z0 = 0;
+            //double X1 = 0;
+            //double Y1 = 0;
 
-            while (!ManualAutoMode && !MachineOperation.Resetting && AutoNeedleStatus && AutoNeedleStatusRun)
-            {
-                Thread.Sleep(10);
-                if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon
-                    || (m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + 3 * Position.Instance.NeedleCalibOffset.X)
-                    && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X - 3 * Position.Instance.NeedleCalibOffset.X)))
-                {
-                    m_GluePlateform.Xaxis.Stop();
-                    AppendText("点胶X轴异常停止，请复位！");
-                    AutoNeedleStatus = false;
-                    AutoNeedleStatusRun = false;
-                    return;
-                }
-                if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon
-               || (m_GluePlateform.Yaxis.CurrentPos >= (Position.Instance.GlueAdjustPinPosition.Y + 3 * Position.Instance.NeedleCalibOffset.Y)
-               && m_GluePlateform.Yaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Y - 3 * Position.Instance.NeedleCalibOffset.Y)))
-                {
-                    m_GluePlateform.Yaxis.Stop();
-                    AppendText("点胶Y轴异常停止，请复位！");
-                    AutoNeedleStatus = false;
-                    AutoNeedleStatusRun = false;
-                    return;
+            //while (!ManualAutoMode && !MachineOperation.Resetting && AutoNeedleStatus && AutoNeedleStatusRun)
+            //{
+            //    Thread.Sleep(10);
+            //    if (m_GluePlateform.Xaxis.IsAlarmed || m_GluePlateform.Xaxis.IsEmg || !m_GluePlateform.Xaxis.IsServon
+            //        || (m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + 3 * Position.Instance.NeedleCalibOffset.X)
+            //        && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X - 3 * Position.Instance.NeedleCalibOffset.X)))
+            //    {
+            //        m_GluePlateform.Xaxis.Stop();
+            //        AppendText("点胶X轴异常停止，请复位！");
+            //        AutoNeedleStatus = false;
+            //        AutoNeedleStatusRun = false;
+            //        return;
+            //    }
+            //    if (m_GluePlateform.Yaxis.IsAlarmed || m_GluePlateform.Yaxis.IsEmg || !m_GluePlateform.Yaxis.IsServon
+            //   || (m_GluePlateform.Yaxis.CurrentPos >= (Position.Instance.GlueAdjustPinPosition.Y + 3 * Position.Instance.NeedleCalibOffset.Y)
+            //   && m_GluePlateform.Yaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Y - 3 * Position.Instance.NeedleCalibOffset.Y)))
+            //    {
+            //        m_GluePlateform.Yaxis.Stop();
+            //        AppendText("点胶Y轴异常停止，请复位！");
+            //        AutoNeedleStatus = false;
+            //        AutoNeedleStatusRun = false;
+            //        return;
 
-                }
-                if (AutoNeedleStatus)
-                {
-                    switch (NeedleStep)
-                    {
-                        case 0: //X轴正方向对针
-                            Thread.Sleep(200);
-                            if (IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X * 3))
-                            {
-                                Speed = 5000;
-                                Value = 1000;
-                                Value *= 1;
-                                Thread.Sleep(200);
-                                APS168.APS_relative_move(0, Value, Speed);
-                            }
-                            else
-                            {
-                                if (!IoPoints.IDI27.Value)
-                                {                                    
-                                    NeedleStep = 1;
-                                }
+            //    }
+            //    if (AutoNeedleStatus)
+            //    {
+            //        switch (NeedleStep)
+            //        {
+            //            case 0: //X轴正方向对针
+            //                Thread.Sleep(200);
+            //                if (IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X * 3))
+            //                {
+            //                    Speed = 5000;
+            //                    Value = 1000;
+            //                    Value *= 1;
+            //                    Thread.Sleep(200);
+            //                    APS168.APS_relative_move(0, Value, Speed);
+            //                }
+            //                else
+            //                {
+            //                    if (!IoPoints.IDI27.Value)
+            //                    {                                    
+            //                        NeedleStep = 1;
+            //                    }
 
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶X轴左侧寻针失败，请重新执行对针确认！");
-                                }
-                            }
-                            break;
-                        case 1:  //X轴小步左侧边缘
-                            Speed = 1000;
-                            Value = 100;
-                            Value *= 1;
-                            APS168.APS_relative_move(0, Value, Speed);
-                            Thread.Sleep(200);
-                            if (!IoPoints.IDI27.Value || m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
-                            {
-                                if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
-                                {
-                                    X0 = m_GluePlateform.Xaxis.CurrentPos;
-                                    AppendText("点胶X轴向左寻针成功！");
-                                    NeedleStep = 20;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶X轴向左寻针失败，请重新执行对针确认！");
-                                }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶X轴左侧寻针失败，请重新执行对针确认！");
+            //                    }
+            //                }
+            //                break;
+            //            case 1:  //X轴小步左侧边缘
+            //                Speed = 1000;
+            //                Value = 100;
+            //                Value *= 1;
+            //                APS168.APS_relative_move(0, Value, Speed);
+            //                Thread.Sleep(200);
+            //                if (!IoPoints.IDI27.Value || m_GluePlateform.Xaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
+            //                {
+            //                    if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
+            //                    {
+            //                        X0 = m_GluePlateform.Xaxis.CurrentPos;
+            //                        AppendText("点胶X轴向左寻针成功！");
+            //                        NeedleStep = 20;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶X轴向左寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 10:  //移至第二相限
-                            if (!IoPoints.IDI27.Value)
-                            {
-                                Thread.Sleep(200);
-                                m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X, AxisParameter.Instance.RXspeed);
-                                NeedleStep = 11;
-                            }
-                            break;
-                        case 11://X轴移到位
-                            Thread.Sleep(200);
-                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
-                                NeedleStep = 20;
-                            break;
-                        case 20: //X轴负方向对针
-                            if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
-                            {
-                                Speed = 5000;
-                                Value = 1000;
-                                Value *= -1;
-                                Thread.Sleep(200);
-                                APS168.APS_relative_move(0, Value, Speed);
-                            }
-                            else
-                            {
-                                if (IoPoints.IDI27.Value)
-                                {
-                                    NeedleStep = 21;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶X轴向右寻针失败，请重新执行对针确认！");
-                                }
-                            }
-                            break;
-                        case 21:  //X轴小步右侧寻中心
-                            Speed = 1000;
-                            Value = 100;
-                            Value *= -1;
-                            Thread.Sleep(200);
-                            APS168.APS_relative_move(0, Value, Speed);
-                            Thread.Sleep(200);
-                            if (!IoPoints.IDI27.Value || m_GluePlateform.Xaxis.CurrentPos < Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
-                            {
-                                if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
-                                {
-                                    X1 = m_GluePlateform.Xaxis.CurrentPos;
-                                    AppendText("点胶X轴向右寻针成功！");
-                                    NeedleStep = 40;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶X轴向右寻针失败，请重新执行对针确认！");
-                                }
+            //                }
+            //                break;
+            //            case 10:  //移至第二相限
+            //                if (!IoPoints.IDI27.Value)
+            //                {
+            //                    Thread.Sleep(200);
+            //                    m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X, AxisParameter.Instance.RXspeed);
+            //                    NeedleStep = 11;
+            //                }
+            //                break;
+            //            case 11://X轴移到位
+            //                Thread.Sleep(200);
+            //                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X))
+            //                    NeedleStep = 20;
+            //                break;
+            //            case 20: //X轴负方向对针
+            //                if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
+            //                {
+            //                    Speed = 5000;
+            //                    Value = 1000;
+            //                    Value *= -1;
+            //                    Thread.Sleep(200);
+            //                    APS168.APS_relative_move(0, Value, Speed);
+            //                }
+            //                else
+            //                {
+            //                    if (IoPoints.IDI27.Value)
+            //                    {
+            //                        NeedleStep = 21;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶X轴向右寻针失败，请重新执行对针确认！");
+            //                    }
+            //                }
+            //                break;
+            //            case 21:  //X轴小步右侧寻中心
+            //                Speed = 1000;
+            //                Value = 100;
+            //                Value *= -1;
+            //                Thread.Sleep(200);
+            //                APS168.APS_relative_move(0, Value, Speed);
+            //                Thread.Sleep(200);
+            //                if (!IoPoints.IDI27.Value || m_GluePlateform.Xaxis.CurrentPos < Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
+            //                {
+            //                    if (!IoPoints.IDI27.Value && m_GluePlateform.Xaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.X - Position.Instance.NeedleCalibOffset.X)
+            //                    {
+            //                        X1 = m_GluePlateform.Xaxis.CurrentPos;
+            //                        AppendText("点胶X轴向右寻针成功！");
+            //                        NeedleStep = 40;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶X轴向右寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
+            //                }
+            //                break;
 
-                        case 30:  //移回第一相限
-                            Thread.Sleep(200);
-                            m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.X, AxisParameter.Instance.RYspeed);
-                            Thread.Sleep(200);
-                            NeedleStep = 31;
-                            break;
-                        case 31://X轴移到位
-                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.X))
-                                NeedleStep = 40;
-                            break;
-                        case 40: //Y轴正方向对针
-                            if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
-                            {
-                                Speed = 5000;
-                                Value = 1000;
-                                Value *= 1;
-                                Thread.Sleep(200);
-                                APS168.APS_relative_move(0, Value, Speed);
-                            }
-                            else
-                            {
-                                if (IoPoints.IDI26.Value)
-                                {
-                                    NeedleStep = 41;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Y轴向前寻针失败，请重新执行对针确认！");
-                                }
-                            }
-                            break;
-                        case 41:  //Y轴小步向前寻中心
-                            Speed = 1000;
-                            Value = 500;
-                            Value *= 1;
-                            Thread.Sleep(200);
-                            APS168.APS_relative_move(1, Value, Speed);
-                            Thread.Sleep(200);
-                            if (!IoPoints.IDI26.Value || m_GluePlateform.Yaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
-                            {
-                                if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
-                                {
-                                    Y0 = m_GluePlateform.Yaxis.CurrentPos;
-                                    AppendText("点胶Y轴向前寻针成功！");
-                                    NeedleStep = 60;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Y轴向前寻针失败，请重新执行对针确认！");
-                                }
+            //            case 30:  //移回第一相限
+            //                Thread.Sleep(200);
+            //                m_GluePlateform.Xaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.X, AxisParameter.Instance.RYspeed);
+            //                Thread.Sleep(200);
+            //                NeedleStep = 31;
+            //                break;
+            //            case 31://X轴移到位
+            //                if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.X))
+            //                    NeedleStep = 40;
+            //                break;
+            //            case 40: //Y轴正方向对针
+            //                if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos < (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
+            //                {
+            //                    Speed = 5000;
+            //                    Value = 1000;
+            //                    Value *= 1;
+            //                    Thread.Sleep(200);
+            //                    APS168.APS_relative_move(0, Value, Speed);
+            //                }
+            //                else
+            //                {
+            //                    if (IoPoints.IDI26.Value)
+            //                    {
+            //                        NeedleStep = 41;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Y轴向前寻针失败，请重新执行对针确认！");
+            //                    }
+            //                }
+            //                break;
+            //            case 41:  //Y轴小步向前寻中心
+            //                Speed = 1000;
+            //                Value = 500;
+            //                Value *= 1;
+            //                Thread.Sleep(200);
+            //                APS168.APS_relative_move(1, Value, Speed);
+            //                Thread.Sleep(200);
+            //                if (!IoPoints.IDI26.Value || m_GluePlateform.Yaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
+            //                {
+            //                    if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y))
+            //                    {
+            //                        Y0 = m_GluePlateform.Yaxis.CurrentPos;
+            //                        AppendText("点胶Y轴向前寻针成功！");
+            //                        NeedleStep = 60;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Y轴向前寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 50:  //移至第四相限  
-                            Thread.Sleep(200);
-                            m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y * 2, AxisParameter.Instance.RYspeed);
-                            Thread.Sleep(200);
-                            NeedleStep = 51;
-                            break;
-                        case 51://Y轴移到位                      
-                            if (m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y * 2))
-                                NeedleStep = 60;
-                            break;
-                        case 60: //Y轴负方向对针
-                            if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos > Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
-                            {
-                                Speed = 5000;
-                                Value = 1000;
-                                Value *= -1;
-                                Thread.Sleep(200);
-                                APS168.APS_relative_move(1, Value, Speed);
-                            }
-                            else
-                            {
-                                if (IoPoints.IDI26.Value)
-                                {
-                                    NeedleStep = 61;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
-                                }
+            //                }
+            //                break;
+            //            case 50:  //移至第四相限  
+            //                Thread.Sleep(200);
+            //                m_GluePlateform.Yaxis.MoveTo(Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y * 2, AxisParameter.Instance.RYspeed);
+            //                Thread.Sleep(200);
+            //                NeedleStep = 51;
+            //                break;
+            //            case 51://Y轴移到位                      
+            //                if (m_GluePlateform.Yaxis.IsInPosition(Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y * 2))
+            //                    NeedleStep = 60;
+            //                break;
+            //            case 60: //Y轴负方向对针
+            //                if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos > Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
+            //                {
+            //                    Speed = 5000;
+            //                    Value = 1000;
+            //                    Value *= -1;
+            //                    Thread.Sleep(200);
+            //                    APS168.APS_relative_move(1, Value, Speed);
+            //                }
+            //                else
+            //                {
+            //                    if (IoPoints.IDI26.Value)
+            //                    {
+            //                        NeedleStep = 61;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 61:  //Y轴小步向前寻中心
-                            Speed = 1000;
-                            Value = 500;
-                            Value *= -1;
-                            Thread.Sleep(200);
-                            APS168.APS_relative_move(1, Value, Speed);
-                            Thread.Sleep(200);
-                            if (!IoPoints.IDI26.Value || m_GluePlateform.Yaxis.CurrentPos < Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
-                            {
-                                if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
-                                {
-                                    Y1 = m_GluePlateform.Yaxis.CurrentPos;
-                                    AppendText("点胶Y轴向后寻针成功！");
-                                    NeedleStep = 70;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
-                                }
+            //                }
+            //                break;
+            //            case 61:  //Y轴小步向前寻中心
+            //                Speed = 1000;
+            //                Value = 500;
+            //                Value *= -1;
+            //                Thread.Sleep(200);
+            //                APS168.APS_relative_move(1, Value, Speed);
+            //                Thread.Sleep(200);
+            //                if (!IoPoints.IDI26.Value || m_GluePlateform.Yaxis.CurrentPos < Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
+            //                {
+            //                    if (!IoPoints.IDI26.Value && m_GluePlateform.Yaxis.CurrentPos >= Position.Instance.GlueAdjustPinPosition.Y - Position.Instance.NeedleCalibOffset.Y)
+            //                    {
+            //                        Y1 = m_GluePlateform.Yaxis.CurrentPos;
+            //                        AppendText("点胶Y轴向后寻针成功！");
+            //                        NeedleStep = 70;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 70: //移动到对针坐标位置
-                            if (X0 > 0 && X1 > 0 & Y0 > 0 && Y1 > 0)
-                            {
-                                Position.Instance.NeedleCalibCenter.X = ((X0 + X1) / 2);
-                                Position.Instance.NeedleCalibCenter.Y = (Y0 + Y1) / 2;
-                                m_GluePlateform.Xaxis.MoveTo(Position.Instance.NeedleCalibCenter.X, AxisParameter.Instance.RXspeed);
-                                m_GluePlateform.Yaxis.MoveTo(Position.Instance.NeedleCalibCenter.Y, AxisParameter.Instance.RYspeed);
-                                Thread.Sleep(200);
-                                NeedleStep = 71;
-                            }
-                            else
-                            {
-                                NeedleStep = -1;
-                                AppendText("点胶XY轴寻针失败，请重新执行对针确认！");
-                            }
+            //                }
+            //                break;
+            //            case 70: //移动到对针坐标位置
+            //                if (X0 > 0 && X1 > 0 & Y0 > 0 && Y1 > 0)
+            //                {
+            //                    Position.Instance.NeedleCalibCenter.X = ((X0 + X1) / 2);
+            //                    Position.Instance.NeedleCalibCenter.Y = (Y0 + Y1) / 2;
+            //                    m_GluePlateform.Xaxis.MoveTo(Position.Instance.NeedleCalibCenter.X, AxisParameter.Instance.RXspeed);
+            //                    m_GluePlateform.Yaxis.MoveTo(Position.Instance.NeedleCalibCenter.Y, AxisParameter.Instance.RYspeed);
+            //                    Thread.Sleep(200);
+            //                    NeedleStep = 71;
+            //                }
+            //                else
+            //                {
+            //                    NeedleStep = -1;
+            //                    AppendText("点胶XY轴寻针失败，请重新执行对针确认！");
+            //                }
 
-                            break;
-                        case 71://XY轴移到位
-                            if ((m_GluePlateform.Xaxis.IsInPosition(Position.Instance.NeedleCalibCenter.X) || IoPoints.IDI27.Value)
-                                && (m_GluePlateform.Yaxis.IsInPosition(Position.Instance.NeedleCalibCenter.Y) || IoPoints.IDI26.Value))
-                                NeedleStep = 80;
-                            break;
-                        case 80: //Z上移离开对针坐标位置                           
-                            if (IoPoints.IDI27.Value || IoPoints.IDI26.Value || m_GluePlateform.Zaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Z - Position.Instance.NeedleCalibOffset.Z))
-                            {
-                                Speed = 5000;
-                                Value = 1000;
-                                Value *= -1;
-                                Thread.Sleep(200);
-                                APS168.APS_relative_move(2, Value, Speed);
-                            }
-                            else
-                            {
-                                if (!IoPoints.IDI27.Value && !IoPoints.IDI26.Value && m_GluePlateform.Zaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Z - Position.Instance.NeedleCalibOffset.Z))
-                                {
-                                    NeedleStep = 81;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
-                                }
+            //                break;
+            //            case 71://XY轴移到位
+            //                if ((m_GluePlateform.Xaxis.IsInPosition(Position.Instance.NeedleCalibCenter.X) || IoPoints.IDI27.Value)
+            //                    && (m_GluePlateform.Yaxis.IsInPosition(Position.Instance.NeedleCalibCenter.Y) || IoPoints.IDI26.Value))
+            //                    NeedleStep = 80;
+            //                break;
+            //            case 80: //Z上移离开对针坐标位置                           
+            //                if (IoPoints.IDI27.Value || IoPoints.IDI26.Value || m_GluePlateform.Zaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Z - Position.Instance.NeedleCalibOffset.Z))
+            //                {
+            //                    Speed = 5000;
+            //                    Value = 1000;
+            //                    Value *= -1;
+            //                    Thread.Sleep(200);
+            //                    APS168.APS_relative_move(2, Value, Speed);
+            //                }
+            //                else
+            //                {
+            //                    if (!IoPoints.IDI27.Value && !IoPoints.IDI26.Value && m_GluePlateform.Zaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Z - Position.Instance.NeedleCalibOffset.Z))
+            //                    {
+            //                        NeedleStep = 81;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Y轴向后寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 81: //Z上移小步对针坐标位置  
-                            Speed = 1000;
-                            Value = 100;
-                            Value *= 1;
-                            Thread.Sleep(200);
-                            APS168.APS_relative_move(2, Value, Speed);
-                            Thread.Sleep(200);
-                            if ((IoPoints.IDI27.Value && IoPoints.IDI26.Value) || m_GluePlateform.Zaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z))
-                            {
-                                if (IoPoints.IDI27.Value && IoPoints.IDI26.Value && m_GluePlateform.Zaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z))
-                                {
-                                    Z0 = m_GluePlateform.Zaxis.CurrentPos;
-                                    Position.Instance.NeedleCalibCenter.Z = Z0;
-                                    AppendText("点胶Z轴寻针成功！");
-                                    NeedleStep = 100;
-                                }
-                                else
-                                {
-                                    NeedleStep = -1;
-                                    AppendText("点胶Z轴寻针失败，请重新执行对针确认！");
-                                }
+            //                }
+            //                break;
+            //            case 81: //Z上移小步对针坐标位置  
+            //                Speed = 1000;
+            //                Value = 100;
+            //                Value *= 1;
+            //                Thread.Sleep(200);
+            //                APS168.APS_relative_move(2, Value, Speed);
+            //                Thread.Sleep(200);
+            //                if ((IoPoints.IDI27.Value && IoPoints.IDI26.Value) || m_GluePlateform.Zaxis.CurrentPos > (Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z))
+            //                {
+            //                    if (IoPoints.IDI27.Value && IoPoints.IDI26.Value && m_GluePlateform.Zaxis.CurrentPos <= (Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z))
+            //                    {
+            //                        Z0 = m_GluePlateform.Zaxis.CurrentPos;
+            //                        Position.Instance.NeedleCalibCenter.Z = Z0;
+            //                        AppendText("点胶Z轴寻针成功！");
+            //                        NeedleStep = 100;
+            //                    }
+            //                    else
+            //                    {
+            //                        NeedleStep = -1;
+            //                        AppendText("点胶Z轴寻针失败，请重新执行对针确认！");
+            //                    }
 
-                            }
-                            break;
-                        case 100: //Z上移离开对针坐标位置    
-                            Thread.Sleep(200);
-                            if (X0 > 0 && X1 > 0 & Y0 > 0 && Y1 > 0 && Z0 > 0)//IO10Points.DI24.Value && IO10Points.DI25.Value &&
-                            {
-                                double GlueOffsetX = Position.Instance.NeedleCalibCenter.X - Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X;
-                                double GlueOffsetY = Position.Instance.NeedleCalibCenter.Y - Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y;
-                                double GlueOffsetZ = Position.Instance.NeedleCalibCenter.Z - Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z;
-                                if (GlueOffsetX > 0)
-                                {
-                                    Position.Instance.GlueOffsetX = Position.Instance.GlueOffsetX + GlueOffsetX;
-                                }
-                                else
-                                {
-                                    Position.Instance.GlueOffsetX = Position.Instance.GlueOffsetX - GlueOffsetX;
-                                }
-                                if (GlueOffsetY > 0)
-                                {
-                                    Position.Instance.GlueOffsetY = Position.Instance.GlueOffsetY - GlueOffsetY;
-                                }
-                                else
-                                {
-                                    Position.Instance.GlueOffsetY = Position.Instance.GlueOffsetY + GlueOffsetY;
-                                }
-                                if (GlueOffsetZ > 0)
-                                    Position.Instance.GlueHeight = Position.Instance.GlueHeight + GlueOffsetZ;
-                                else
-                                    Position.Instance.GlueHeight = Position.Instance.GlueHeight - GlueOffsetZ;
-                                AppendText("自动对针成功！");
-                                NeedleStep = 90;
-                            }
-                            else
-                            {
-                                NeedleStep = 90;
-                                AppendText("自动对针失败！");
-                            }
-                            break;
-                        case 90: //Z返回原位       
-                            Thread.Sleep(3000);
-                            IoPoints.m_ApsController.BackHome(m_GluePlateform.Zaxis.NoId);
-                            NeedleStep = 91;
-                            break;
-                        case 91:  //XY返回原位 
-                            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 10.0) == 0)
-                            {
-                                IoPoints.m_ApsController.BackHome(m_GluePlateform.Xaxis.NoId);
-                                IoPoints.m_ApsController.BackHome(m_GluePlateform.Yaxis.NoId);
-                                NeedleStep = 92;
-                            }
-                            else
-                            {
-                                m_GluePlateform.Zaxis.Stop();
-                            }
-                            break;
-                        case 92://判断Z轴是否动作完成
-                            if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Xaxis.NoId, 10.0) == 0 &&
-                                IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Yaxis.NoId, 10.0) == 0)
-                            {
-                                AutoNeedleStatus = false;
-                                AutoNeedleStatusRun = false;
-                                NeedleStep = 0;
-                            }
-                            break;
-                        default:
-                            NeedleStep = 0;
-                            AutoNeedleStatus = false;
-                            AutoNeedleStatusRun = false;
-                            break;
-                    }
-                }
-            }
+            //                }
+            //                break;
+            //            case 100: //Z上移离开对针坐标位置    
+            //                Thread.Sleep(200);
+            //                if (X0 > 0 && X1 > 0 & Y0 > 0 && Y1 > 0 && Z0 > 0)//IO10Points.DI24.Value && IO10Points.DI25.Value &&
+            //                {
+            //                    double GlueOffsetX = Position.Instance.NeedleCalibCenter.X - Position.Instance.GlueAdjustPinPosition.X + Position.Instance.NeedleCalibOffset.X;
+            //                    double GlueOffsetY = Position.Instance.NeedleCalibCenter.Y - Position.Instance.GlueAdjustPinPosition.Y + Position.Instance.NeedleCalibOffset.Y;
+            //                    double GlueOffsetZ = Position.Instance.NeedleCalibCenter.Z - Position.Instance.GlueAdjustPinPosition.Z + Position.Instance.NeedleCalibOffset.Z;
+            //                    if (GlueOffsetX > 0)
+            //                    {
+            //                        Position.Instance.GlueOffsetX = Position.Instance.GlueOffsetX + GlueOffsetX;
+            //                    }
+            //                    else
+            //                    {
+            //                        Position.Instance.GlueOffsetX = Position.Instance.GlueOffsetX - GlueOffsetX;
+            //                    }
+            //                    if (GlueOffsetY > 0)
+            //                    {
+            //                        Position.Instance.GlueOffsetY = Position.Instance.GlueOffsetY - GlueOffsetY;
+            //                    }
+            //                    else
+            //                    {
+            //                        Position.Instance.GlueOffsetY = Position.Instance.GlueOffsetY + GlueOffsetY;
+            //                    }
+            //                    if (GlueOffsetZ > 0)
+            //                        Position.Instance.GlueHeight = Position.Instance.GlueHeight + GlueOffsetZ;
+            //                    else
+            //                        Position.Instance.GlueHeight = Position.Instance.GlueHeight - GlueOffsetZ;
+            //                    AppendText("自动对针成功！");
+            //                    NeedleStep = 90;
+            //                }
+            //                else
+            //                {
+            //                    NeedleStep = 90;
+            //                    AppendText("自动对针失败！");
+            //                }
+            //                break;
+            //            case 90: //Z返回原位       
+            //                Thread.Sleep(3000);
+            //                IoPoints.m_ApsController.BackHome(m_GluePlateform.Zaxis.NoId);
+            //                NeedleStep = 91;
+            //                break;
+            //            case 91:  //XY返回原位 
+            //                if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Zaxis.NoId, 10.0) == 0)
+            //                {
+            //                    IoPoints.m_ApsController.BackHome(m_GluePlateform.Xaxis.NoId);
+            //                    IoPoints.m_ApsController.BackHome(m_GluePlateform.Yaxis.NoId);
+            //                    NeedleStep = 92;
+            //                }
+            //                else
+            //                {
+            //                    m_GluePlateform.Zaxis.Stop();
+            //                }
+            //                break;
+            //            case 92://判断Z轴是否动作完成
+            //                if (IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Xaxis.NoId, 10.0) == 0 &&
+            //                    IoPoints.m_ApsController.CheckHomeDone(m_GluePlateform.Yaxis.NoId, 10.0) == 0)
+            //                {
+            //                    AutoNeedleStatus = false;
+            //                    AutoNeedleStatusRun = false;
+            //                    NeedleStep = 0;
+            //                }
+            //                break;
+            //            default:
+            //                NeedleStep = 0;
+            //                AutoNeedleStatus = false;
+            //                AutoNeedleStatusRun = false;
+            //                break;
+            //        }
+            //    }
+            //}
         }
 
         private void btnAAImage_Click(object sender, EventArgs e)
@@ -2492,13 +2490,24 @@ namespace desay
             LoadagainWb();
         }
 
+        private void btnMes_Click(object sender, EventArgs e)
+        {
+            if (m_frmMES == null || m_frmMES.IsDisposed)
+            {
+                new frmMES().ShowDialog();
+            }
+            else
+            {
+                m_frmMES.ShowDialog();
+            }
+            //new frmStationDebug(m_CleanPlateform, m_GluePlateform, m_Carrier).ShowDialog();
+        }
+
         private void btnStopVoice_Click(object sender, EventArgs e)
         {
             Marking.VoiceClosed = !Marking.VoiceClosed;
             //layerLight.VoiceClosed = !layerLight.VoiceClosed;
         }
-
-        #endregion
 
         private bool ServoAxisIsReady(ApsAxis axis)
         {
@@ -2561,6 +2570,8 @@ namespace desay
             }
             return 0;
         }
+
+        #endregion
 
         #region 串口通讯
         public void OpenDetectHeight()

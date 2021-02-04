@@ -39,24 +39,27 @@ namespace desay
                     Config.Instance = SerializerManager<Config>.Instance.Load(AppConfig.ConfigFileName);
                 }
                 catch { MessageBox.Show("Config.xml出错"); Application.Exit(); }
-                try {
+                try
+                {
                     AxisParameter.Instance = SerializerManager<AxisParameter>.Instance.Load(AppConfig.ConfigAxisName);
                 }
                 catch { MessageBox.Show("AxisParameter.xml出错"); Application.Exit(); }
                 Thread.Sleep(200);
-                try {
+                try
+                {
                     Position.Instance = SerializerManager<Position>.Instance.Load(AppConfig.ConfigPositionName);
                 }
                 catch { MessageBox.Show("Position.xml出错"); Application.Exit(); }
-                try { 
-                Delay.Instance = SerializerManager<Delay>.Instance.Load(AppConfig.ConfigDelayName);
+                try
+                {
+                    Delay.Instance = SerializerManager<Delay>.Instance.Load(AppConfig.ConfigDelayName);
                 }
                 catch { MessageBox.Show("Delay.xml出错"); Application.Exit(); }
 
                 //SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
                 //SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName,Position.Instance);
                 Application.Run(new frmMain());
-                
+
             }
             else
             {
@@ -82,7 +85,7 @@ namespace desay
         static void UI_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Global.isErrorExit = true;
-           // SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
+            // SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
 
             //Thread.Sleep(200);
             //SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);

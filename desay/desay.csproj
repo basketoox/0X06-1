@@ -114,6 +114,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -192,6 +194,11 @@
     <Compile Include="CallAA\CallAA.cs" />
     <Compile Include="CallAA\CallAAControl.cs" />
     <Compile Include="CallAA\CallWb.cs" />
+    <Compile Include="Connected Services\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Flow\MES.cs" />
     <Compile Include="ProductData\AppConfig.cs" />
     <Compile Include="ProductData\AxisParameter.cs" />
@@ -241,6 +248,12 @@
     </Compile>
     <Compile Include="View\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\frmMES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\frmMES.Designer.cs">
+      <DependentUpon>frmMES.cs</DependentUpon>
     </Compile>
     <Compile Include="View\frmParameter.cs">
       <SubType>Form</SubType>
@@ -348,6 +361,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\frmMES.resx">
+      <DependentUpon>frmMES.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\frmParameter.resx">
       <DependentUpon>frmParameter.cs</DependentUpon>
@@ -380,6 +397,13 @@
       <DependentUpon>frmWhiteBorad.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Connected Services\ServiceReference1\desay.ServiceReference1.DownloadFileResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\desay.ServiceReference1.UpLoadFileResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Mes_WebServiceMain.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -513,6 +537,13 @@
     <None Include="Resources\yahe.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\ServiceReference1\Mes_WebServiceMain.disco" />
+    <None Include="Connected Services\ServiceReference1\configuration91.svcinfo" />
+    <None Include="Connected Services\ServiceReference1\configuration.svcinfo" />
+    <None Include="Connected Services\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="logo.ico" />
     <None Include="Resources\MB_WMP_64px_559727_easyicon.net.png" />
     <None Include="Resources\MB_photo_64px_559754_easyicon.net.png" />
@@ -550,7 +581,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ServiceReference1\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
