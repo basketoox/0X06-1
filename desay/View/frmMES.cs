@@ -79,19 +79,76 @@ namespace desay
             }
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+
+        /// <summary>
+        /// 通讯测试
+        /// </summary>
+        public string HelloWord()
         {
             try
             {
-                string test = MesClient.HelloWorld();
-                string Tip = (test == "Hello World") ? "通讯正常！" : "通讯异常！";
-                MessageBox.Show(Tip,"提示");
+                return MesClient.HelloWorld();
             }
             catch
             {
-                MessageBox.Show("通讯异常！","提示");
+                return "";
             }
         }
+
+        /// <summary>
+        /// 解析工单返回解析结果
+        /// </summary>
+        public string fOrderJx()
+        {
+            try
+            {
+                return MesClient.fOrderJx(Config.Instance.LocalIP, Position.Instance.pOrderCode,
+                           Position.Instance.pchItemNameK, Position.Instance.pchOperatorIDK, "", "");
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// 返回数据检查结果
+        /// </summary>
+        public string fCanIGoTest(string pchTestIdK)
+        {
+            try
+            {
+                return MesClient.fCanIGoTest(Config.Instance.LocalIP, Position.Instance.pchModelK, pchTestIdK,
+                                             Position.Instance.pchItemNameK, Position.Instance.pchOperatorIDK, Position.Instance.pchStationIDK, 
+                                             Position.Instance.pOrderCode, Position.Instance.pOrderType, Position.Instance.programCode, "");
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// 上传数据并返回保存结果
+        /// </summary>
+        /// <param name="pchErrcdK">结果代码 OK:00 NG:不良代码</param>
+        /// <param name="pchPfmdataK">备注，测试数据</param>
+        public string fSendData(string pchErrcdK, string pchPfmdataK)
+        {
+            try
+            {
+                return MesClient.fSendData(Config.Instance.LocalIP, Position.Instance.pchModelK, Position.Instance.pchTestIdK,
+                                           Position.Instance.pchItemNameK, pchErrcdK, pchPfmdataK, 
+                                           Position.Instance.pchOperatorIDK, Position.Instance.pchStationIDK, Position.Instance.pOrderCode, 
+                                           Position.Instance.pOrderType, Position.Instance.programCode, "");
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        #region UI界面操作
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -107,95 +164,32 @@ namespace desay
             Position.Instance.programCode = programCode.Text;
             Position.Instance.pchErrcdk = pchErrcdk.Text;
             Position.Instance.pchPfmdataK = pchPfmdataK.Text;
-            SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
-            SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName,Position.Instance);
+            SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
+            SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
             MessageBox.Show("参数保存成功", "提示");
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string test = MesClient.HelloWorld();
+                string Tip = (test == "Hello World") ? "通讯正常！" : "通讯异常！";
+                MessageBox.Show(Tip, "提示");
+            }
+            catch
+            {
+                MessageBox.Show("通讯异常！", "提示");
+            }
         }
 
         private void btnGetInfo_Click(object sender, EventArgs e)
         {
-            //解析工单
-            //string str = fOrderJx(IPAddress.Text, pOrderCode.Text, pchItemNameK.Text, pchOperatorIDK.Text, "");
-            string str = fOrderJx(IPAddress.Text, pOrderCode.Text, "", "", "");
+            //解析工单            
+            string str = fOrderJx();
             if (str != "")
             {
                 pchPfmdataK.Text = str;
-            }
-        }
-
-        /// <summary>
-        /// 解析工单返回解析结果
-        /// </summary>
-        /// <param name="pchIPK">本机IP</param>
-        /// <param name="barcode">工单</param>
-        /// <param name="pchItemNameK">测试关卡</param>
-        /// <param name="UserCode">工号</param>
-        /// <param name="pcName">电脑名称</param>
-        /// <param name="str">预留</param>
-        /// <returns></returns>
-        public string fOrderJx(string pchIPK, string barcode, string pchItemNameK, string UserCode, string pcName, string str="")
-        {
-            try
-            {
-                return MesClient.fOrderJx(pchIPK, barcode, pchItemNameK, UserCode, pcName, str);
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// 返回检查结果
-        /// </summary>
-        /// <param name="pchIPK">本机IP</param>
-        /// <param name="pchModelK">机型</param>
-        /// <param name="pchTestIdK">条码</param>
-        /// <param name="pchItemNameK">测试关卡</param>
-        /// <param name="pchOperatorIDK">员工工号</param>
-        /// <param name="pchStationIDK">机台名称</param>
-        /// <param name="pOrderCode">工单</param>
-        /// <param name="pOrderType">单别</param>
-        /// <param name="programCode">程序代码</param>
-        /// <param name="str1">预留</param>
-        /// <returns></returns>
-        public string fCanIGoTest(string pchIPK, string pchModelK, string pchTestIdK, string pchItemNameK, string pchOperatorIDK, string pchStationIDK, string pOrderCode, string pOrderType, string programCode, string str1 = "")
-        {
-            try
-            {
-                return MesClient.fCanIGoTest(pchIPK, pchModelK, pchTestIdK, pchItemNameK, pchOperatorIDK, pchStationIDK, pOrderCode, pOrderType, programCode, str1);
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// 上传数据并返回保存结果
-        /// </summary>
-        /// <param name="pchIPK">本机IP</param>
-        /// <param name="pchModelK">机型</param>
-        /// <param name="pchTestIdK">条码</param>
-        /// <param name="pchItemNameK">测试关卡</param>
-        /// <param name="pchErrcdK">结果代码 OK:00 NG:不良代码</param>
-        /// <param name="pchPfmdataK">备注，测试数据</param>
-        /// <param name="pchOperatorIDK">测试员工工号</param>
-        /// <param name="pchStationIDK">测试机台名称</param>
-        /// <param name="pOrderCode">工单</param>
-        /// <param name="pOrderType">单别</param>
-        /// <param name="programCode">程序代码</param>
-        /// <param name="str1">预留</param>
-        /// <returns></returns>
-        public string fSendData(string pchIPK, string pchModelK, string pchTestIdK, string pchItemNameK, string pchErrcdK, string pchPfmdataK, string pchOperatorIDK, string pchStationIDK, string pOrderCode, string pOrderType, string programCode, string str1 = "")
-        {
-            try
-            {
-                return MesClient.fSendData(pchIPK, pchModelK, pchTestIdK, pchItemNameK, pchErrcdK, pchPfmdataK, pchOperatorIDK, pchStationIDK, pOrderCode, pOrderType, programCode, "");
-            }
-            catch
-            {
-                return "";
             }
         }
 
@@ -203,10 +197,12 @@ namespace desay
         {
             if (pchErrcdk.Text != "" && pchPfmdataK.Text != "")
             {
-                string testresult = fCanIGoTest(IPAddress.Text, pchModelK.Text, pchTestIdK.Text, pchItemNameK.Text, pchOperatorIDK.Text, pchStationIDK.Text, pOrderCode.Text, pOrderType.Text, programCode.Text);
+                //检查数据
+                string testresult = fCanIGoTest(pchTestIdK.Text);
                 if (testresult.Trim(' ') == "0")
                 {
-                    string sendresult = fSendData(IPAddress.Text, pchModelK.Text, pchTestIdK.Text, pchItemNameK.Text, pchErrcdk.Text, pchPfmdataK.Text, pchOperatorIDK.Text, pchStationIDK.Text, pOrderCode.Text, pOrderType.Text, programCode.Text);
+                    //上传数据
+                    string sendresult = fSendData(pchErrcdk.Text, pchPfmdataK.Text);
                     if (sendresult.Trim(' ') == "0")
                     {
                         MessageBox.Show("数据上传成功！", "提示");
@@ -227,5 +223,8 @@ namespace desay
             }
             
         }
+
+        #endregion
+
     }
 }

@@ -221,11 +221,8 @@ namespace desay.Flow
                                 {
                                     step = 100;
                                 }
-
-                                //IoPoints.IDO6.Value = true;
                                 break;
-
-                            case 70://等待人工扫产品码SN
+                            case 70://等待人工扫产品码SN       
                                 Marking.BeginTriggerSN = true;
                                 //SendRequest(2);//霍尼韦尔1900
                                 _watch.Restart();
@@ -293,8 +290,7 @@ namespace desay.Flow
                                 }
                                 break;
 
-                            case 105://判断是否有回流到位信号,无则发送入料请求
-                                //w无用代码
+                            case 105://判断是否有回流到位信号,无则发送入料请求——无用代码
                                 if (!IoPoints.IDI18.Value)
                                 {
                                     //允许放料
@@ -392,7 +388,7 @@ namespace desay.Flow
                                     step = 210;
                                 }
                                 break;
-                            case 200:
+                            case 200://无用代码
                                 if (!IoPoints.IDI18.Value)
                                 {
                                     //允许放料
@@ -468,8 +464,7 @@ namespace desay.Flow
                                     step = 0;
                                 }
                                 break;
-                            case 300://通知AA允许放料
-                                     //w代码无用
+                            case 300://通知AA允许放料——无用代码
                                 if (Marking.CarrierCallIn)
                                 {
                                     Marking.AaAllowPassFlg = true;

@@ -26,7 +26,7 @@ namespace desay
     {
         #region field  
         public static frmMain main;
-        public frmMES m_frmMES;
+        public frmMES m_frmMES = new frmMES();
         private AlarmType LplateformIsAlarm, RplateformIsAlarm, CarrierIsAlarm, MachineIsAlarm, MesIsAlarm;
         private External m_External = new External();
         private MachineOperate MachineOperation;
@@ -171,11 +171,10 @@ namespace desay
         }
        
         private void frmMain_Load(object sender, EventArgs e)
-        {            
+        {
             UserLevelChangeEvent += UserLevelChange;
             StopEvent += new Action(StopStatus);
             Config.Instance.userLevel = UserLevel.操作员;
-
             //调试方便暂时开放权限
             Config.Instance.userLevel = UserLevel.工程师;
 
@@ -460,7 +459,8 @@ namespace desay
                 AutoScanner = autoScanner,
                 SnScanner = snScanner,
                 aaServer = aaServer,
-                HeightDectector = heightDetector
+                HeightDectector = heightDetector,
+                FrmMES = m_frmMES
             };
             m_Mes.AddPart();
             m_Mes.StationAppendTextReceive += new System.Toolkit.Interfaces.DataReceiveCompleteEventHandler(DealWithReceiveData);
@@ -943,8 +943,7 @@ namespace desay
             aa.frmAAVision_Load(this, null);
             aa.Visible = true;
             aa.WindowState = FormWindowState.Minimized;
-
-            m_frmMES = new frmMES();
+            
         }
 
         /// <summary>
@@ -2762,6 +2761,7 @@ namespace desay
                 MessageBox.Show("电源端口关闭异常:" + ex.ToString());
             }
         }
+
         #endregion
     }
 }

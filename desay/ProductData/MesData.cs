@@ -56,6 +56,7 @@ namespace desay.ProductData
             public bool haveLensRst;        // 有无料检测结果
             public bool whiteBoardRst;      // 白板检测结果
             public bool glueCheckRst;       // 点胶检测结果
+            public string ResultCode;       // AA结果代码
         }
         
         public static CarrierData carrierData = new CarrierData();

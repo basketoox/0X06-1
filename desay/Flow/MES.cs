@@ -7,6 +7,7 @@ using System.Device;
 using System.Threading;
 using desay.ProductData;
 using System.IO;
+using System.Windows;
 
 namespace desay.Flow
 {
@@ -23,6 +24,8 @@ namespace desay.Flow
         public Panasonic HeightDectector { get; set; }
         /// <summary>Mes的AA数据</summary>
         public MesData.AAData MesAAData = new MesData.AAData();
+        /// <summary>frmMES对象</summary>
+        public frmMES FrmMES;
 
 
         public Thread threadDealMsg = null;
@@ -41,14 +44,14 @@ namespace desay.Flow
             {
                 try
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(100);
 
                     #region 扫码                
                     if (FNResult != null && FNResult.IsCompleted && Marking.BeginTriggerFN)
                     {
                         Marking.FN = AutoScanner.ReceiveString;
                         //if (Marking.FN == null || Marking.FN == "" || Marking.FN.Length <= 5 || Marking.FN.Contains("Error") /*|| !Marking.FN.Substring(0, 4).Equals("0X06")*/ )
-                        if(!((IList<string>)Config.Instance.FNLibrary).Contains(Marking.FN.Substring(0,9)))
+                        if (!((IList<string>)Config.Instance.FNLibrary).Contains(Marking.FN.Substring(0, 9)))
                         {
                             if (FNScanTimes > 10)
                             {
@@ -132,7 +135,7 @@ namespace desay.Flow
                                 aaServer.strResultTCP = null;
                                 Marking.AaClientOpenFlg = false;
                                 Marking.AaClientCloseFlg = true;
-                                
+
                             }
                             else if (aaServer.strResultTCP.Contains("$HAR")) //HAR是AA结果
                             {
@@ -150,6 +153,7 @@ namespace desay.Flow
                                 if (aaServer.strResultTCP.Contains("$HAR01")) //HAR01代表AA OK
                                 {
                                     MesAAData.aaResult = true;
+                                    MesAAData.ResultCode = "00";
                                     Config.Instance.AAProductOkTotal++;
                                 }
                                 if (aaServer.strResultTCP.Contains("$HAR10")) //HAR10代表AA NG
@@ -157,36 +161,65 @@ namespace desay.Flow
                                     MesAAData.aaResult = false;
                                     Config.Instance.AAProductNgTotal++;
                                     if (aaServer.strResultTCP.Contains("NG10"))
+                                    {
                                         MesAAData.uvAfterRst = false;
+                                        MesAAData.ResultCode = "10";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG1"))
+                                    {
                                         MesAAData.haveLensRst = false;
+                                        MesAAData.ResultCode = "01";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG2"))
+                                    {
                                         MesAAData.whiteBoardRst = false;
+                                        MesAAData.ResultCode = "02";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG3"))
+                                    {
                                         MesAAData.glueCheckRst = false;
+                                        MesAAData.ResultCode = "03";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG4"))
+                                    {
                                         MesAAData.lightCameraRst = false;
+                                        MesAAData.ResultCode = "04";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG5"))
+                                    {
                                         MesAAData.preAAPosRst = false;
+                                        MesAAData.ResultCode = "05";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG6"))
+                                    {
                                         MesAAData.searchPosRst = false;
+                                        MesAAData.ResultCode = "06";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG7"))
+                                    {
                                         MesAAData.ocAdjustRst = false;
+                                        MesAAData.ResultCode = "07";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG8"))
+                                    {
                                         MesAAData.tiltAdjustRst = false;
+                                        MesAAData.ResultCode = "08";
+                                    }
                                     else if (aaServer.strResultTCP.Contains("NG9"))
+                                    {
                                         MesAAData.uvBeforeRst = false;
+                                        MesAAData.ResultCode = "09";
+                                    }
                                 }
+
                                 string fn = aaServer.strResultTCP.Substring(aaServer.strResultTCP.LastIndexOf('*') + 1);
-                                //lock (MesData.NeedShowFNLock)
-                                //{
-                                //    MesData.NeedShowFNList.Add(fn);
-                                //}
                                 lock (MesData.AADataLock)
                                 {
                                     MesData.NeedShowFN = fn;
                                     if (MesData.ResultList.ContainsKey(fn))
+                                    {
                                         MesData.ResultList.Remove(fn);
+                                    }
                                     MesData.ResultList.Add(fn, MesAAData);
                                     MesData.AADataList.Add(MesAAData);
                                 }
@@ -197,17 +230,11 @@ namespace desay.Flow
                             {
                                 string[] temp = aaServer.strResultTCP.Split('$');
                                 Marking.AAData = temp[temp.Length - 1].Substring(6);
-                                //Marking.AAData = aaServer.strResultTCP.Substring(7);
                                 //整理并上传
                                 Marking.AaGetDataFlg = true;
                                 aaServer.strResultTCP = null;
                                 EndTime = DateTime.Now.ToString("yyyyMMdd HH:mm:ss.fff");
                             }
-                            //else
-                            //{
-                            //    m_Alarm = PlateformAlarm.接收到错误字符;
-                            //    Marking.AaGetResultFlg = false;
-                            //}
                         }
                     }
                     #endregion
@@ -464,7 +491,7 @@ namespace desay.Flow
             {
                 if (Marking.BeginTriggerSN)//后台持续读取
                 {
-                    AppendText("触发扫产品码！");                    
+                    AppendText("触发扫产品码！");
                 }
                 if (Marking.BeginTriggerFN)//指令触发读取
                 {
@@ -529,8 +556,8 @@ namespace desay.Flow
                                     {
                                         Marking.GlueResult = false;
                                     }
-                                    
-                                }               
+
+                                }
                                 strMsg = (MesData.glueData.cleanData.HaveLens.Equals("OK")        //有无镜头
                                             && MesData.glueData.cleanData.CleanResult             //清洗结果
                                             && MesData.glueData.cleanData.WbResult.Equals("OK")   //白板结果
@@ -584,117 +611,170 @@ namespace desay.Flow
             #endregion
         }
 
+        /// <summary>
+        /// 保存生产数据，上传MES
+        /// </summary>
         public void WriteFile()
         {
-            if (Marking.SnScannerShield)
-                return;
-            try
+            if (Marking.SnScannerShield)    //无产品码
             {
-                log.Debug("开始解析AA数据");
-                string[] temp1 = Marking.AAData.Split(':');
-                if (temp1.Length < 2)
+                log.Debug(FrmMES.HelloWord());
+                return;
+            }
+            else                            //有产品码
+            {
+                try
                 {
-                    m_Alarm = PlateformAlarm.AA返回的结果数据缺失;
-                    return;
-                }
-                string[] code = temp1[0].Split(',', ';');
-                if (code.Length < 2)
-                {
-                    m_Alarm = PlateformAlarm.AA返回结果码数据缺失;
-                    return;
-                }
-                string fn = code[0];
-                log.Debug("从AA数据中获取治具码");
-                MesData.GlueData data = new MesData.GlueData();
-                lock (MesData.MesDataLock)
-                {
-                    if (!MesData.MesDataList.ContainsKey(fn))
+                    log.Debug("开始解析AA数据");
+                    string[] temp1 = Marking.AAData.Split(':');
+                    if (temp1.Length < 2)
                     {
-                        m_Alarm = PlateformAlarm.未找到当前治具码数据;
+                        m_Alarm = PlateformAlarm.AA返回的结果数据缺失;
                         return;
                     }
-                    data = MesData.MesDataList[fn];
+                    string[] code = temp1[0].Split(',', ';');
+                    if (code.Length < 2)
+                    {
+                        m_Alarm = PlateformAlarm.AA返回结果码数据缺失;
+                        return;
+                    }
+                    //治具码
+                    string fn = code[0];
+                    log.Debug("从AA数据中获取治具码:" + fn);
+                    MesData.GlueData data = new MesData.GlueData();
+                    lock (MesData.MesDataLock)
+                    {
+                        if (!MesData.MesDataList.ContainsKey(fn))
+                        {
+                            m_Alarm = PlateformAlarm.未找到当前治具码数据;
+                            return;
+                        }
+                        data = MesData.MesDataList[fn];
+                    }
+
+                    //产品码
+                    string sn = data.cleanData.carrierData.SN;
+                    Position.Instance.pchTestIdK = sn;
+                    log.Debug("从AA数据中获取产品码:" + sn);
+
+                    //整合数据
+                    string ResultCode = MesData.ResultList[fn].ResultCode; //AA结果代码
+                    Position.Instance.pchErrcdk = ResultCode;
+                    log.Debug("从AA数据中获取结果:" + ResultCode);
+
+                    string ResultItems = string.Empty;                     //AA数据内容
+
+
+                    log.Debug("MES数据组合完成");
+                    //检查数据
+                    string result = FrmMES.fCanIGoTest(sn);
+                    if (result.Trim(' ') == "0")
+                    {
+                        //数据上传
+                        string sendresult = FrmMES.fSendData(ResultCode, ResultItems);
+                        if (sendresult.Trim(' ') == "0")
+                        {
+                            log.Debug("数据上传成功！");
+                        }
+                        else
+                        {
+                            log.Debug("数据上传失败！");
+                            MessageBox.Show("数据上传失败！", "提示");
+                        }
+                    }
                 }
-                //log.Debug("根据治具码获取对应的数据信息");
-                //string FileName = AppConfig.MesShareFileFolderName + data.cleanData.carrierData.SN.Trim() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
-                //log.Debug("写入文件路径为："+FileName);
-                //string Header = "\"" + data.cleanData.carrierData.SN.Trim() + "\";\"" + data.cleanData.carrierData.StartTime.Trim() + "\";\"" + EndTime.Trim() + "\";\""
-                //    + (MesAAData.aaResult ? "OK" : "NG") + "\""/* + "\r\n"*/;
-                //string Body = "\"1\";\"HaveLens\";;;\"" + data.cleanData.HaveLens.Trim() + "\";;\"T\";\"" + data.cleanData.HaveLens.Trim() + "\";\r\n"
-                //    + data.cleanData.WbData.Trim() + "\r\n";
-                //if (!data.cleanData.HaveLens.Trim().Contains("NG") && !data.cleanData.WbData.Trim().Contains("NG"))
-                //{
-                //    Body += "\"1\";\"GlueCheck\";;;\"" + data.GlueResult.Trim() + "\";;\"T\";\"" + data.GlueResult.Trim() + "\";\r\n"
-                //            + "\"1\";\"LightCamera\";;;\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";\r\n"
-                //            + "\"1\";\"PreAAPos\";;;\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";\r\n"
-                //            + "\"1\";\"SearchPos\";;;\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";\r\n"
-                //            + "\"1\";\"OCAdjust\";;;\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";\r\n"
-                //            + "\"1\";\"Tiltadjust\";;;\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";\r\n";
-                //}
-                //for (int i = 1; i < temp1.Length - 1; i++)
-                //{
-                //    Body += temp1[i];
-                //}
-                //string Footer = "##\r\n";
-                //log.Debug("MES数据组合完成");
-                //lock (MesData.MesDataLock)
-                //{
-                //    MesData.MesDataList.Remove(fn);
-                //}
-                log.Debug("根据治具码获取对应的数据信息");
-                if (data.cleanData.carrierData.SN == null)
+                catch
                 {
 
-                    data.cleanData.carrierData.SN = "12345678";
-                }
-
-                string FileName = AppConfig.MesShareFileFolderName + data.cleanData.carrierData.SN.Trim() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
-                string Header = "\"" + data.cleanData.carrierData.SN.Trim() + "\";\"" + data.cleanData.carrierData.StartTime.Trim() + "\";\"" + EndTime.Trim() + "\";\""
-                    + (MesAAData.aaResult ? "OK" : "NG") + "\""/* + "\r\n"*/;
-                string Body = $"\"{Config.Instance.MesWorkNum}\";\"HaveLens\";;;\"" + data.cleanData.HaveLens.Trim() + "\";;\"T\";\"" + data.cleanData.HaveLens.Trim() + "\";\r\n";
-
-                if (!data.cleanData.HaveLens.Trim().Contains("NG") && !data.cleanData.WbData.Trim().Contains("NG"))
-                {
-                    Body += $"\"{Config.Instance.MesWorkNum}\";\"GlueCheck\";;;\"" + data.GlueResult.Trim() + "\";;\"T\";\"" + data.GlueResult.Trim() + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"LightCamera\";;;\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"PreAAPos\";;;\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"SearchPos\";;;\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"OCAdjust\";;;\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"Tiltadjust\";;;\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";\r\n"
-                            + $"\"{Config.Instance.MesWorkNum}\";\"FN\";;;\"" + (data.cleanData.carrierData.FN) + "\";;\"T\";\"" + ("OK") + "\";\r\n";
-                }
-                for (int i = 1; i < temp1.Length - 1; i++)
-                {
-                    Body += temp1[i];
-                }
-                string Footer = "##\r\n";
-                log.Debug("MES数据组合完成");
-                lock (MesData.MesDataLock)
-                {
-                    MesData.MesDataList.Remove(fn);
-                }
-                if (!Marking.SnScannerShield)
-                {
-                    FileStream fs = new FileStream(FileName.Trim(), FileMode.Create);
-                    StreamWriter sw = new StreamWriter(fs);
-                    //写入数据
-                    sw.WriteLine(Header);
-                    sw.WriteLine(Body + Footer);
-                    //sw.WriteLine(Footer);
-                    //清空缓冲区
-                    sw.Flush();
-                    //关闭流
-                    sw.Close();
-                    fs.Close();
-                    log.Debug("MES数据写入完成！");
                 }
             }
-            catch (Exception e)
-            {
-                log.Error(e.Message);
-                log.Error(e.StackTrace);
-                m_Alarm = PlateformAlarm.写入MES数据文件失败;
-            }
+
+
+            #region 注释代码
+
+            //try
+            //{
+            //    log.Debug("开始解析AA数据");
+            //    string[] temp1 = Marking.AAData.Split(':');
+            //    if (temp1.Length < 2)
+            //    {
+            //        m_Alarm = PlateformAlarm.AA返回的结果数据缺失;
+            //        return;
+            //    }
+            //    string[] code = temp1[0].Split(',', ';');
+            //    if (code.Length < 2)
+            //    {
+            //        m_Alarm = PlateformAlarm.AA返回结果码数据缺失;
+            //        return;
+            //    }
+            //    string fn = code[0];
+            //    log.Debug("从AA数据中获取治具码");
+            //    MesData.GlueData data = new MesData.GlueData();
+            //    lock (MesData.MesDataLock)
+            //    {
+            //        if (!MesData.MesDataList.ContainsKey(fn))
+            //        {
+            //            m_Alarm = PlateformAlarm.未找到当前治具码数据;
+            //            return;
+            //        }
+            //        data = MesData.MesDataList[fn];
+            //    }
+            //    log.Debug("根据治具码获取对应的数据信息");
+            //    if (data.cleanData.carrierData.SN == null)
+            //    {
+
+            //        data.cleanData.carrierData.SN = "12345678";
+            //    }
+            //    string FileName = AppConfig.MesShareFileFolderName + data.cleanData.carrierData.SN.Trim() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+            //    string Header = "\"" + data.cleanData.carrierData.SN.Trim() + "\";\"" + data.cleanData.carrierData.StartTime.Trim() + "\";\"" + EndTime.Trim() + "\";\""
+            //        + (MesAAData.aaResult ? "OK" : "NG") + "\""/* + "\r\n"*/;
+            //    string Body = $"\"{Config.Instance.MesWorkNum}\";\"HaveLens\";;;\"" + data.cleanData.HaveLens.Trim() + "\";;\"T\";\"" + data.cleanData.HaveLens.Trim() + "\";\r\n";
+
+            //    if (!data.cleanData.HaveLens.Trim().Contains("NG") && !data.cleanData.WbData.Trim().Contains("NG"))
+            //    {
+            //        Body += $"\"{Config.Instance.MesWorkNum}\";\"GlueCheck\";;;\"" + data.GlueResult.Trim() + "\";;\"T\";\"" + data.GlueResult.Trim() + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"LightCamera\";;;\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.lightCameraRst ? "OK" : "NG") + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"PreAAPos\";;;\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.preAAPosRst ? "OK" : "NG") + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"SearchPos\";;;\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.searchPosRst ? "OK" : "NG") + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"OCAdjust\";;;\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.ocAdjustRst ? "OK" : "NG") + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"Tiltadjust\";;;\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";;\"T\";\"" + (MesAAData.tiltAdjustRst ? "OK" : "NG") + "\";\r\n"
+            //                + $"\"{Config.Instance.MesWorkNum}\";\"FN\";;;\"" + (data.cleanData.carrierData.FN) + "\";;\"T\";\"" + ("OK") + "\";\r\n";
+            //    }
+            //    for (int i = 1; i < temp1.Length - 1; i++)
+            //    {
+            //        Body += temp1[i];
+            //    }
+            //    string Footer = "##\r\n";
+            //    log.Debug("MES数据组合完成");
+            //    lock (MesData.MesDataLock)
+            //    {
+            //        MesData.MesDataList.Remove(fn);
+            //    }
+            //    if (!Marking.SnScannerShield)
+            //    {
+            //        FileStream fs = new FileStream(FileName.Trim(), FileMode.Create);
+            //        StreamWriter sw = new StreamWriter(fs);
+            //        //写入数据
+            //        sw.WriteLine(Header);
+            //        sw.WriteLine(Body + Footer);
+            //        //sw.WriteLine(Footer);
+            //        //清空缓冲区
+            //        sw.Flush();
+            //        //关闭流
+            //        sw.Close();
+            //        fs.Close();
+            //        log.Debug("MES数据写入完成！");
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e.Message);
+            //    log.Error(e.StackTrace);
+            //    m_Alarm = PlateformAlarm.写入MES数据文件失败;
+            //}
+
+            #endregion
+
         }
     }
 }
