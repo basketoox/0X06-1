@@ -419,7 +419,9 @@ namespace desay.Flow
                                             Marking.UVBeforeRst = MesData.ResultList[MesData.NeedShowFN].uvBeforeRst;
                                             Marking.UVAfterRst = MesData.ResultList[MesData.NeedShowFN].uvAfterRst;
                                             Marking.HaveLensRst = MesData.ResultList[MesData.NeedShowFN].haveLensRst;
+                                            Marking.WhiteLightRst = MesData.ResultList[MesData.NeedShowFN].whiteLightRst;
                                             Marking.WhiteBoardRst = MesData.ResultList[MesData.NeedShowFN].whiteBoardRst;
+                                            Marking.GluePosRst = MesData.ResultList[MesData.NeedShowFN].gluePosRst;
                                             Marking.GlueCheckRst = MesData.ResultList[MesData.NeedShowFN].glueCheckRst;
                                             MesData.ResultList.Remove(MesData.NeedShowFN);
                                             if (!Marking.AAResult && !Marking.DryRun)//(!Marking.UVAfterRst)

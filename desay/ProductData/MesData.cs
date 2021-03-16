@@ -27,6 +27,8 @@ namespace desay.ProductData
 
             public string WbResult;
 
+            public string WbLResult;
+
             public string HaveLens;
 
             public bool CleanResult;
@@ -38,7 +40,9 @@ namespace desay.ProductData
 
             public string GlueParam;
 
-            public string GlueResult;
+            public string GluePosResult;
+
+            public string GlueCheckResult;
 
             public bool glueResult;
         }
@@ -54,7 +58,9 @@ namespace desay.ProductData
             public bool uvBeforeRst;        // UV前结果
             public bool uvAfterRst;         // UV后结果
             public bool haveLensRst;        // 有无料检测结果
+            public bool whiteLightRst;      // 白板点亮结果
             public bool whiteBoardRst;      // 白板检测结果
+            public bool gluePosRst;         // 点胶定位结果
             public bool glueCheckRst;       // 点胶检测结果
             public string ResultCode;       // AA结果代码
         }

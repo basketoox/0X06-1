@@ -46,18 +46,21 @@ namespace Vision_Assistant
             this.numCenterX = new System.Windows.Forms.NumericUpDown();
             this.CheckResult = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numThreshold = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHiLimt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLowLimt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCenterY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCenterX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThreshold)).BeginInit();
             this.SuspendLayout();
             // 
             // imageViewer
             // 
-            resources.ApplyResources(this.imageViewer, "imageViewer");
             this.imageViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.imageViewer, "imageViewer");
             this.imageViewer.Name = "imageViewer";
             this.imageViewer.ZoomToFit = true;
             // 
@@ -85,18 +88,18 @@ namespace Vision_Assistant
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
-            resources.ApplyResources(this.openFileDialog, "openFileDialog");
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.imageViewer);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.numThreshold);
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.numHiLimt);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.numLowLimt);
@@ -110,6 +113,7 @@ namespace Vision_Assistant
             this.groupBox2.Controls.Add(this.RunButton);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.LoadImageButton);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -175,8 +179,8 @@ namespace Vision_Assistant
             // 
             // CheckResult
             // 
-            resources.ApplyResources(this.CheckResult, "CheckResult");
             this.CheckResult.BackColor = System.Drawing.Color.Silver;
+            resources.ApplyResources(this.CheckResult, "CheckResult");
             this.CheckResult.Name = "CheckResult";
             this.CheckResult.UseVisualStyleBackColor = false;
             // 
@@ -186,6 +190,21 @@ namespace Vision_Assistant
             this.button1.Name = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // numThreshold
+            // 
+            resources.ApplyResources(this.numThreshold, "numThreshold");
+            this.numThreshold.Maximum = new decimal(new int[] {
+            254,
+            0,
+            0,
+            0});
+            this.numThreshold.Name = "numThreshold";
             // 
             // Form2
             // 
@@ -203,6 +222,7 @@ namespace Vision_Assistant
             ((System.ComponentModel.ISupportInitialize)(this.numLowLimt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCenterY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCenterX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThreshold)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -226,6 +246,8 @@ namespace Vision_Assistant
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numLowLimt;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numThreshold;
+        private System.Windows.Forms.Label label5;
     }
 }
 

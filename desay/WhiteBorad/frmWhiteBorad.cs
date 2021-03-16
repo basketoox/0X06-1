@@ -317,17 +317,20 @@ namespace desay
             if (res == 0)
             {
                 Marking.WbCheckAgainFlg = true;
+                Marking.WhiteLightResult = false;
                 Marking.WhiteBoardResult = false;
 
             }
             else if (res == 1)
             {
                 Marking.WbCheckAgainFlg = false;
+                Marking.WhiteLightResult = true;
                 Marking.WhiteBoardResult = false;
             }
             else if (res == 2)
             {
                 Marking.WbCheckAgainFlg = false;
+                Marking.WhiteLightResult = true;
                 Marking.WhiteBoardResult = true;
             }
         }

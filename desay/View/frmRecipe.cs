@@ -132,7 +132,7 @@ namespace desay
             CurrentProductType = selectType;
             m_Load?.Invoke(); ;
             RefreshInfo();
-            MessageBox.Show("切换成功！", "提示", MessageBoxButtons.OK);
+            MessageBox.Show("切换成功！\n\r请注意切换点胶机胶量！", "提示", MessageBoxButtons.OK);
             this.Close();
         }
         private void lstProductType_SelectedIndexChanged(object sender, EventArgs e)

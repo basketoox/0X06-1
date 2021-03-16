@@ -1988,7 +1988,7 @@ namespace desay
                                 && m_CleanPlateform.Zaxis.IsInPosition(Position.Instance.CleanConeFirstPosition.Z))
                             {
                                 IoPoints.IDO7.Value = true;
-                                APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, Max_Arc_Speed, Angle);
+                                APS168.APS_absolute_arc_move(Dimension, Axis_ID_Array_For_2Axes_ArcMove, Center_Pos_Array, (int)Position.Instance.CleanPathSpeed * 1000, Angle);
                                 Thread.Sleep(200);
                                 step = 20;
                             }

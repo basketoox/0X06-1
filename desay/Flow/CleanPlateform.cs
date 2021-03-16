@@ -117,29 +117,30 @@ namespace desay.Flow
                             case 0: //判断平台是否在原点，顶升是否在原位
                                 Marking.HaveLens = false;
                                 Marking.WhiteBoardResult = false;
+                                Marking.WhiteLightResult = false;
                                 Marking.OnceCleanFinish = false;
                                 Marking.TwiceCleanFinish = false;
                                 Marking.CleanWorking = true;
                                 Marking.CleanWorkFinish = false;
                                 Marking.WbCheckAgainFlg = false;
                                 IoPoints.IDO16.Value = false;
-                                if (Marking.CleanHaveProduct && !Marking.CleanShield && !Marking.CleanFinishBit)
+                                if (Marking.CleanHaveProduct && !Marking.CleanFinishBit)
                                 {
                                     Marking.CleanCallIn = false;
                                     if (CleanHomeBit)
-                                        step = 50;
-                                    else
-                                        step = 10;
+                                    { step = 50; }
+                                    else 
+                                    { step = 10; }
                                 }
                                 else
                                 {
-                                    if (Marking.CleanHaveProduct && (Marking.CleanFinishBit || Marking.CleanShield)
-                                        && Marking.CarrierCallOut)
+                                    if (Marking.CleanHaveProduct && Marking.CleanFinishBit && Marking.CarrierCallOut)
                                     {
                                         Config.Instance.CleanProductOkTotal++;
                                         Marking.CleanResult = true;
                                         Marking.HaveLens = true;
                                         Marking.WhiteBoardResult = true;
+                                        Marking.WhiteLightResult = true;
                                         Marking.CleanCallIn = false;
                                         Marking.CleanCallOut = true;
                                         step = 410;//直接跳过清洗
@@ -257,9 +258,9 @@ namespace desay.Flow
 
 
                             case 105://判断Plasma是否启用
-                                if (Marking.PlasmaShield)
+                                if (Marking.CleanRun || Marking.CleanShield)
                                 {
-                                    Thread.Sleep(1000);
+                                    Thread.Sleep(500);
                                     step = 310;//判断是否进行白板检测
                                 }
 
@@ -305,7 +306,7 @@ namespace desay.Flow
                                             switch (rectstep)
                                             {
                                                 case 0:
-                                                    if (Marking.CleanRun)
+                                                    if (Marking.PlasmaShield)
                                                     { IoPoints.IDO16.Value = false; }
                                                     else
                                                     { IoPoints.IDO16.Value = true; }
@@ -374,7 +375,7 @@ namespace desay.Flow
                                         Convert.ToInt32(Position.Instance.CleanConeCenterPositionReal.Y/ AxisParameter.Instance.LYTransParams.PulseEquivalent) };
                                         //Int32 Max_Arc_Speed = 20000;
                                         Int32 Angle = 360;
-                                        if (Marking.CleanRun)
+                                        if (Marking.PlasmaShield)
                                             IoPoints.IDO16.Value = false;
                                         else
                                             IoPoints.IDO16.Value = true;
@@ -506,7 +507,7 @@ namespace desay.Flow
                                             switch (rectstep)
                                             {
                                                 case 0:
-                                                    if (Marking.CleanRun)
+                                                    if (Marking.PlasmaShield)
                                                     { IoPoints.IDO16.Value = false; }
                                                     else
                                                     { IoPoints.IDO16.Value = true; }
@@ -575,7 +576,7 @@ namespace desay.Flow
                                         Convert.ToInt32(Position.Instance.CleanLensCenterPositionReal.Y/ AxisParameter.Instance.LYTransParams.PulseEquivalent) };
                                         Int32 Max_Arc_Speed2 = 20000;
                                         Int32 Angle2 = 360;
-                                        if (Marking.CleanRun)
+                                        if (Marking.PlasmaShield)
                                             IoPoints.IDO16.Value = false;
                                         else
                                             IoPoints.IDO16.Value = true;
@@ -658,7 +659,7 @@ namespace desay.Flow
                                 }
                                 break;
                             case 310: //判断白板检测是否屏蔽
-                                if (!Marking.WhiteShield)
+                                if (!Marking.WhiteShield && !Marking.CleanShield)
                                 {
                                     step = 320;//移至白板检测位
                                 }
@@ -669,6 +670,7 @@ namespace desay.Flow
                                     Marking.CleanHoming = true;
                                     Marking.CleanFinishBit = true;
                                     Marking.WhiteBoardResult = true;
+                                    Marking.WhiteLightResult = true;
                                     step = 410;//清洗结束
                                 }
                                 break;
@@ -723,6 +725,7 @@ namespace desay.Flow
                                             Config.Instance.CleanProductOkTotal++;
                                             Marking.CleanResult = true;
                                             Marking.WhiteBoardResult = true;
+                                            Marking.WhiteLightResult = true;
                                             Marking.WbGetResultFlg = true;
                                             step = 370;
                                         }
@@ -733,6 +736,7 @@ namespace desay.Flow
                                         AppendText($"白板程序异常！{ex}");
                                         Config.Instance.CleanProductNgTotal++;
                                         Marking.WhiteBoardResult = false;
+                                        Marking.WhiteLightResult = false;
                                         Marking.WbGetResultFlg = true;
                                         step = 360;
                                     }
@@ -742,6 +746,7 @@ namespace desay.Flow
                                         _watch.Restart();
                                         step = 360;
                                         Marking.WhiteBoardResult = false;
+                                        Marking.WhiteLightResult = false;
                                         Marking.WbGetResultFlg = true;
                                     }
                                 }
@@ -762,6 +767,7 @@ namespace desay.Flow
                                     AppendText("AA工位报警");
                                     step = 360;//报警
                                     Marking.WhiteBoardResult = false;
+                                    Marking.WhiteLightResult = false;
                                     Marking.WbGetResultFlg = true;
                                 }
                                 if (_watch.ElapsedMilliseconds / 1000 > 20)
@@ -770,6 +776,7 @@ namespace desay.Flow
                                     _watch.Restart();
                                     step = 360;
                                     Marking.WhiteBoardResult = false;
+                                    Marking.WhiteLightResult = false;
                                     Marking.WbGetResultFlg = true;
                                 }
                                 break;
@@ -777,18 +784,22 @@ namespace desay.Flow
                             case 846://获取测试结果
                                 if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AAIamge_PASS)
                                 {
+                                    Marking.WhiteLightResult = true;
                                     Marking.WhiteBoardResult = true;
                                 }
                                 else if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AAImage_LightON_NG)
                                 {
+                                    Marking.WhiteLightResult = true;//存疑
                                     Marking.WhiteBoardResult = false;
                                 }
                                 else if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AAImage_Particle_NG)
                                 {
+                                    Marking.WhiteLightResult = true;
                                     Marking.WhiteBoardResult = false;
                                 }
                                 else if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AA_SN_NG)
                                 {
+                                    Marking.WhiteLightResult = true;
                                     Marking.WhiteBoardResult = false;
                                 }
                                 log.Info(buf);
@@ -796,17 +807,16 @@ namespace desay.Flow
                                 break;
 
                             case 360://白板测试结果
-                                if (Marking.WhiteBoardResult)
+                                if (Marking.WhiteLightResult && Marking.WhiteBoardResult)
                                 {
                                     log.Debug("点亮成功OK");
                                     AppendText("点亮成功，识别结果为：OK");
                                     Config.Instance.CleanProductOkTotal++;
                                     Marking.CleanResult = true;
-                                    Marking.WhiteBoardResult = true;
                                     Marking.WbGetResultFlg = true;
                                     step = 370;
                                 }
-                                else
+                                else if(!Marking.WhiteLightResult)
                                 {
                                     if (Marking.WbCheckAgainFlg && wbCheckCount < 1)
                                     {
@@ -820,33 +830,30 @@ namespace desay.Flow
                                         log.Debug("再次点亮失败");
                                         Config.Instance.CleanProductNgTotal++;
                                         Marking.CleanResult = false;
-                                        Marking.WhiteBoardResult = false;
                                         Marking.WbGetResultFlg = true;
                                         step = 370;
-                                    }
-                                    else
-                                    {
-                                        wbCheckCount = 0;
-                                        AppendText("点亮成功，识别结果为：NG");
-                                        Config.Instance.CleanProductNgTotal++;
-                                        Marking.CleanResult = false;
-                                        Marking.WhiteBoardResult = false;
-                                        Marking.WbGetResultFlg = true;
-                                        step = 370;
-                                        log.Debug("点亮成功结果NG");
-                                    }
+                                    }                              
+                                }
+                                else
+                                {
+                                    wbCheckCount = 0;
+                                    AppendText("点亮成功，识别结果为：NG");
+                                    log.Debug("点亮成功,结果NG");
+                                    Config.Instance.CleanProductNgTotal++;
+                                    Marking.CleanResult = false;
+                                    Marking.WbGetResultFlg = true;
+                                    step = 370;
                                 }
                                 break;
                             case 361://点亮失败重新顶升
                                 IoPoints.IDO9.Value = false;
                                 Thread.Sleep(1000);
-                                log.Debug("点亮失败，复位顶升气缸");
                                 CleanUpCylinder.Reset();
 
                                 Thread.Sleep(1000);
                                 log.Debug("点亮失败，重新顶升气缸");
                                 CleanUpCylinder.Set();
-                                Thread.Sleep(1000);
+                                Thread.Sleep(500);
                                 IoPoints.IDO9.Value = true;
                                 step = 362;
                                 break;
@@ -892,6 +899,7 @@ namespace desay.Flow
                                             MesData.cleanData.HaveLens = Marking.HaveLens ? "OK" : "NG";
                                             MesData.cleanData.WbData = Marking.WbData;
                                             Marking.WbData = "";
+                                            MesData.cleanData.WbLResult = Marking.WhiteLightResult ? "OK" : "NG";
                                             MesData.cleanData.WbResult = Marking.WhiteBoardResult ? "OK" : "NG";
                                             MesData.cleanData.CleanResult = Marking.CleanResult;
                                             lock (MesData.GlueDataLock)
@@ -901,7 +909,8 @@ namespace desay.Flow
                                                 MesData.glueData.cleanData.carrierData.StartTime = MesData.cleanData.carrierData.StartTime;
                                                 MesData.glueData.cleanData.HaveLens = MesData.cleanData.HaveLens;
                                                 MesData.glueData.cleanData.WbData = MesData.cleanData.WbData;
-                                                MesData.glueData.cleanData.WbResult = MesData.cleanData.WbResult;
+                                                MesData.glueData.cleanData.WbLResult = MesData.cleanData.WbLResult;
+                                                MesData.glueData.cleanData.WbResult = MesData.cleanData.WbResult;                                                
                                                 MesData.glueData.cleanData.CleanResult = MesData.cleanData.CleanResult;
                                             }
                                             MesData.cleanData.carrierData.SN = "";
@@ -909,7 +918,8 @@ namespace desay.Flow
                                             MesData.cleanData.carrierData.StartTime = "";
                                             MesData.cleanData.HaveLens = "";
                                             MesData.cleanData.WbData = "";
-                                            MesData.cleanData.WbResult = "";
+                                            MesData.cleanData.WbLResult = "";
+                                            MesData.cleanData.WbResult = "";                                            
                                             MesData.cleanData.CleanResult = false;
                                         }
                                         step = 420;
@@ -992,6 +1002,7 @@ namespace desay.Flow
                                 //Marking.WbCheckAgainFlg = false;
                                 Marking.WbRequestResultFlg = false;
                                 Marking.WhiteBoardResult = false;
+                                Marking.WhiteLightResult = false;
                                 step = 0;
                                 Xaxis.Stop();
                                 Yaxis.Stop();

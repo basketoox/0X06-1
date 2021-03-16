@@ -194,9 +194,9 @@ namespace desay.Flow
                                         }
                                         else
                                         {
-                                            glueHeightOffset = -9;
+                                            glueHeightOffset = Position.Instance.GlueOffset_DryMode;
                                         }
-                                            
+
                                         Marking.GetHeightFlg = false;
                                         step = 60;
                                     }
@@ -212,7 +212,7 @@ namespace desay.Flow
                                 break;
                             case 60:// Z轴返回安全位
                                 Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                if ((glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown)&& !Marking.DryRun)
+                                if ((glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown) && !Marking.DryRun)
                                 {
                                     AppendText("测高偏差过大异常");
                                     log.Debug("测高偏差过大异常");
@@ -229,7 +229,7 @@ namespace desay.Flow
                                     {
                                         step = 65;
                                     }
-                                }                                
+                                }
                                 break;
                             case 65://XY模组移至相机拍照位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
@@ -245,7 +245,7 @@ namespace desay.Flow
                                 if (Yaxis.IsInPosition(Position.Instance.GlueCameraPosition.Y)
                                     && Xaxis.IsInPosition(Position.Instance.GlueCameraPosition.X))
                                 {
-                                    Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, AxisParameter.Instance.RZspeed);   
+                                    Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, AxisParameter.Instance.RZspeed);
                                     step = 80;
                                 }
                                 break;
@@ -254,23 +254,17 @@ namespace desay.Flow
                                 {
                                     if (Zaxis.IsInPosition(Position.Instance.GlueCameraPosition.Z))
                                     {
-                                        Marking.GlueResult = false;//结果复位
-                                        if (!Marking.CCDShield)
-                                        {
-                                            AppendText("点胶定位识别");
-                                            Marking.CenterLocateTestFinish = false;
-                                            Marking.CenterLocateTestSucceed = false;
-                                            frmAAVision.acq.CenterLocateTestAcquire();
-                                            _watch.Restart();
-                                            step = 90;
-                                        }
-                                        else
-                                        {
-                                            step = 120;//Z轴返回安全位
-                                        }
+                                        Marking.GluePosResult = false;     //CCD定位结果复位
+
+                                        AppendText("点胶定位识别");
+                                        Marking.CenterLocateTestFinish = false;
+                                        Marking.CenterLocateTestSucceed = false;
+                                        frmAAVision.acq.CenterLocateTestAcquire();
+                                        _watch.Restart();
+                                        step = 90;
                                     }
                                 }
-                                catch (Exception ex)
+                                catch 
                                 {
                                     AppendText("点胶定位识别异常，拍照异常01");
                                     Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
@@ -283,6 +277,7 @@ namespace desay.Flow
                                     Marking.CenterLocateTestFinish = false;
                                     if (Marking.CenterLocateTestSucceed)
                                     {
+                                        Marking.GluePosResult = true;  //圆形
                                         AppendText("点胶定位识别完成");
                                         Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                         step = 100;//计算点胶位置
@@ -343,6 +338,7 @@ namespace desay.Flow
                                     Marking.CenterLocateTestFinish = false;
                                     if (Marking.CenterLocateTestSucceed)
                                     {
+                                        Marking.GluePosResult = true;   //矩形
                                         Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
                                         step = 540;
                                     }
@@ -408,7 +404,7 @@ namespace desay.Flow
                                 {
                                     if (Marking.CCDShield)
                                     {
-                                        Marking.GlueResult = true;
+                                        Marking.GlueCheckResult = true;    //CCD屏蔽 矩形
                                         Marking.CcdGetResultFlg = true;
                                         Marking.CcdGetResultFailFlg = false;
                                         step = 180;//结束
@@ -455,7 +451,7 @@ namespace desay.Flow
                                     Zaxis.MoveTo(glueHeightOffset + Position.Instance.GlueHeight, AxisParameter.Instance.RZspeed);
                                     //Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z + Position.Instance.DetectHeight2BaseHeight + Position.Instance.GlueHeight, AxisParameter.Instance.RZspeed);
                                     Marking.GlueHeight_value = glueHeightOffset + Position.Instance.GlueHeight;
-                                    
+
                                     //取平均值
                                     //if (glueHeightTotalTimes < 10) glueHeightTotal += Marking.GlueHeight_value;
                                     //else Marking.GlueHeight_value = glueHeightTotal / 10;
@@ -468,7 +464,7 @@ namespace desay.Flow
                                 break;
                             case 130://XYZ前往点胶圆形轨迹起点
                                 if (Zaxis.IsInPosition(glueHeightOffset + Position.Instance.GlueHeight))
-                                {                                    
+                                {
                                     Thread.Sleep(10);
                                     int step1 = 0;
                                     bool istrue = true;
@@ -545,7 +541,7 @@ namespace desay.Flow
                                     step = 133;
                                 }
                                 break;
-                            case 133: 
+                            case 133:
                                 if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                 {
                                     Marking.GlueFinish = true;
@@ -560,7 +556,7 @@ namespace desay.Flow
                                 }
                                 else if (Marking.GlueFinish && Marking.CCDShield)
                                 {
-                                    Marking.GlueResult = true;
+                                    Marking.GlueCheckResult = true;   //CCD屏蔽 圆形
                                     //Config.Instance.GlueProductOkTotal++;
                                     step = 180;//流程结束
                                 }
@@ -586,19 +582,19 @@ namespace desay.Flow
                                 {
                                     Zaxis.MoveTo(Position.Instance.GlueCameraPosition.Z, AxisParameter.Instance.RZspeed);
                                     step = 144;
-                                }                               
+                                }
                                 break;
                             case 144://CCD拍照检测
                                 if (Xaxis.IsInPosition(Position.Instance.GlueCameraPosition.X)
                                     && Yaxis.IsInPosition(Position.Instance.GlueCameraPosition.Y)
                                      && Zaxis.IsInPosition(Position.Instance.GlueCameraPosition.Z))
-                                {                          
+                                {
                                     step = 160;
                                 }
                                 break;
                             case 160:
                                 Marking.GlueCheckTestFinish = false;
-                                Marking.GlueResult = false;
+                                Marking.GlueCheckResult = false;         //CCD识别结果复位
                                 frmAAVision.acq.GlueCheckTestAcquire();
                                 step = 170;
                                 _watch.Restart();
@@ -607,11 +603,9 @@ namespace desay.Flow
                                 if (Marking.GlueCheckTestFinish)
                                 {
                                     Marking.GlueCheckTestFinish = false;
-                                    if (Marking.GlueResult)
+                                    if (Marking.GlueCheckResult)
                                     {
                                         AppendText("点胶识别:" + "OK");
-
-                                        Marking.GlueResult = true;
                                         Marking.CcdGetResultFlg = true;
                                         Marking.CcdGetResultFailFlg = false;
                                         step = 180;
@@ -622,7 +616,6 @@ namespace desay.Flow
                                         GlueCheckCount++;
                                         if (GlueCheckCount > 1)
                                         {
-                                            Marking.GlueResult = false;
                                             Marking.CcdGetResultFlg = true;
                                             Marking.CcdGetResultFailFlg = true;
                                             step = 180;
@@ -647,7 +640,8 @@ namespace desay.Flow
                             case 175://各种原因判定为NG
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
                                 {
-                                    Marking.GlueResult = false;
+                                    Marking.GluePosResult = false;
+                                    Marking.GlueCheckResult = false;
                                     Marking.CcdGetResultFlg = false;
                                     Marking.CcdGetResultFailFlg = true;
                                     step = 180;
@@ -710,22 +704,25 @@ namespace desay.Flow
                                     {
                                         lock (MesData.GlueDataLock)
                                         {
-                                            MesData.glueData.GlueResult = Marking.GlueResult ? "OK" : "NG";
-                                            MesData.glueData.glueResult = Marking.GlueResult;
+                                            MesData.glueData.GluePosResult = Marking.GluePosResult ? "OK" : "NG";
+                                            MesData.glueData.GlueCheckResult = Marking.GlueCheckResult ? "OK" : "NG";
+                                            MesData.glueData.glueResult = Marking.GlueCheckResult;
                                             lock (MesData.MesDataLock)
                                             {
                                                 if (MesData.MesDataList.ContainsKey(MesData.glueData.cleanData.carrierData.FN))
                                                     MesData.MesDataList.Remove(MesData.glueData.cleanData.carrierData.FN);
                                                 MesData.MesDataList.Add(MesData.glueData.cleanData.carrierData.FN, MesData.glueData);
                                             }
-                                            MesData.glueData.GlueResult = "";
+                                            MesData.glueData.GluePosResult = "";
+                                            MesData.glueData.GlueCheckResult = "";
                                             MesData.glueData.glueResult = false;
                                             MesData.glueData.cleanData.carrierData.SN = "";
                                             MesData.glueData.cleanData.carrierData.FN = "";
                                             MesData.glueData.cleanData.carrierData.StartTime = "";
                                             MesData.glueData.cleanData.HaveLens = "";
                                             MesData.glueData.cleanData.WbData = "";
-                                            MesData.glueData.cleanData.WbResult = "";
+                                            MesData.glueData.cleanData.WbLResult = "";
+                                            MesData.glueData.cleanData.WbResult = "";                                            
                                             MesData.glueData.cleanData.CleanResult = false;
                                         }
                                     }
@@ -736,7 +733,7 @@ namespace desay.Flow
                                     GlueStopCylinder.Set();
                                     Thread.Sleep(500);
                                     step = 240;
-                                }                                
+                                }
                                 break;
                             case 240://顶升气缸下降，电机正转
                                 if (GlueUpCylinder.OutMoveStatus/* && (Marking.AACallIn || Marking.GlueRecycleRun)*/)

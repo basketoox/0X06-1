@@ -53,6 +53,8 @@
             this.gbxStationStatusSetting = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.label65 = new System.Windows.Forms.Label();
             this.label63 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
@@ -62,12 +64,14 @@
             this.label62 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
+            this.picGluePos = new System.Windows.Forms.PictureBox();
             this.picGlueCheck = new System.Windows.Forms.PictureBox();
             this.WhiteBoard = new System.Windows.Forms.Label();
             this.label60 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
             this.picSearchPos = new System.Windows.Forms.PictureBox();
             this.picHaveLens = new System.Windows.Forms.PictureBox();
+            this.picWhiteLight = new System.Windows.Forms.PictureBox();
             this.picWhiteBoard = new System.Windows.Forms.PictureBox();
             this.label20 = new System.Windows.Forms.Label();
             this.picOCAdjust = new System.Windows.Forms.PictureBox();
@@ -86,9 +90,9 @@
             this.gbxGlueSetting = new System.Windows.Forms.GroupBox();
             this.lblneed = new System.Windows.Forms.Label();
             this.chkGlueRecycleRun = new System.Windows.Forms.CheckBox();
+            this.chkLensShield = new System.Windows.Forms.CheckBox();
             this.lblGlueNGTotal = new System.Windows.Forms.Label();
             this.chkGlueShiled = new System.Windows.Forms.CheckBox();
-            this.chkWhiteShiled = new System.Windows.Forms.CheckBox();
             this.label49 = new System.Windows.Forms.Label();
             this.lblGlueOKTotal = new System.Windows.Forms.Label();
             this.chkCCDShiled = new System.Windows.Forms.CheckBox();
@@ -121,9 +125,9 @@
             this.gbxCleanSetting = new System.Windows.Forms.GroupBox();
             this.chkCleanRecycleRun = new System.Windows.Forms.CheckBox();
             this.chkCleanShiled = new System.Windows.Forms.CheckBox();
-            this.chkLensShield = new System.Windows.Forms.CheckBox();
             this.chkPlasmaShield = new System.Windows.Forms.CheckBox();
             this.chkCleanRun = new System.Windows.Forms.CheckBox();
+            this.chkWhiteShiled = new System.Windows.Forms.CheckBox();
             this.lblCleanNGTotal = new System.Windows.Forms.Label();
             this.lblCleanOKTotal = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -267,9 +271,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.picUVAfter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUVBefore)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTiltAdjust)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picGluePos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGlueCheck)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSearchPos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHaveLens)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picWhiteLight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picWhiteBoard)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOCAdjust)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPreAAPos)).BeginInit();
@@ -635,6 +641,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label66);
+            this.groupBox4.Controls.Add(this.label65);
             this.groupBox4.Controls.Add(this.label63);
             this.groupBox4.Controls.Add(this.label59);
             this.groupBox4.Controls.Add(this.label41);
@@ -644,12 +652,14 @@
             this.groupBox4.Controls.Add(this.label62);
             this.groupBox4.Controls.Add(this.label64);
             this.groupBox4.Controls.Add(this.label56);
+            this.groupBox4.Controls.Add(this.picGluePos);
             this.groupBox4.Controls.Add(this.picGlueCheck);
             this.groupBox4.Controls.Add(this.WhiteBoard);
             this.groupBox4.Controls.Add(this.label60);
             this.groupBox4.Controls.Add(this.label58);
             this.groupBox4.Controls.Add(this.picSearchPos);
             this.groupBox4.Controls.Add(this.picHaveLens);
+            this.groupBox4.Controls.Add(this.picWhiteLight);
             this.groupBox4.Controls.Add(this.picWhiteBoard);
             this.groupBox4.Controls.Add(this.label20);
             this.groupBox4.Controls.Add(this.picOCAdjust);
@@ -661,11 +671,29 @@
             this.groupBox4.TabIndex = 102;
             this.groupBox4.TabStop = false;
             // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(33, 117);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(77, 12);
+            this.label66.TabIndex = 115;
+            this.label66.Text = "点胶定位结果";
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(33, 51);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(77, 12);
+            this.label65.TabIndex = 114;
+            this.label65.Text = "白板点亮结果";
+            // 
             // label63
             // 
             this.label63.AutoSize = true;
             this.label63.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label63.Location = new System.Drawing.Point(171, 186);
+            this.label63.Location = new System.Drawing.Point(158, 183);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(53, 12);
             this.label63.TabIndex = 112;
@@ -675,7 +703,7 @@
             // 
             this.label59.AutoSize = true;
             this.label59.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label59.Location = new System.Drawing.Point(171, 146);
+            this.label59.Location = new System.Drawing.Point(158, 150);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(53, 12);
             this.label59.TabIndex = 112;
@@ -685,7 +713,7 @@
             // 
             this.label41.AutoSize = true;
             this.label41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label41.Location = new System.Drawing.Point(171, 106);
+            this.label41.Location = new System.Drawing.Point(158, 84);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(77, 12);
             this.label41.TabIndex = 112;
@@ -693,7 +721,7 @@
             // 
             // picUVAfter
             // 
-            this.picUVAfter.Location = new System.Drawing.Point(152, 184);
+            this.picUVAfter.Location = new System.Drawing.Point(140, 182);
             this.picUVAfter.Name = "picUVAfter";
             this.picUVAfter.Size = new System.Drawing.Size(16, 16);
             this.picUVAfter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -702,7 +730,7 @@
             // 
             // picUVBefore
             // 
-            this.picUVBefore.Location = new System.Drawing.Point(152, 144);
+            this.picUVBefore.Location = new System.Drawing.Point(140, 149);
             this.picUVBefore.Name = "picUVBefore";
             this.picUVBefore.Size = new System.Drawing.Size(16, 16);
             this.picUVBefore.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -711,7 +739,7 @@
             // 
             // picTiltAdjust
             // 
-            this.picTiltAdjust.Location = new System.Drawing.Point(152, 104);
+            this.picTiltAdjust.Location = new System.Drawing.Point(140, 83);
             this.picTiltAdjust.Name = "picTiltAdjust";
             this.picTiltAdjust.Size = new System.Drawing.Size(16, 16);
             this.picTiltAdjust.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -722,7 +750,7 @@
             // 
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label62.Location = new System.Drawing.Point(171, 26);
+            this.label62.Location = new System.Drawing.Point(158, 18);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(77, 12);
             this.label62.TabIndex = 112;
@@ -732,7 +760,7 @@
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label64.Location = new System.Drawing.Point(33, 106);
+            this.label64.Location = new System.Drawing.Point(33, 150);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(77, 12);
             this.label64.TabIndex = 112;
@@ -742,15 +770,24 @@
             // 
             this.label56.AutoSize = true;
             this.label56.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label56.Location = new System.Drawing.Point(33, 28);
+            this.label56.Location = new System.Drawing.Point(33, 18);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(77, 12);
             this.label56.TabIndex = 112;
             this.label56.Text = "有无检测结果";
             // 
+            // picGluePos
+            // 
+            this.picGluePos.Location = new System.Drawing.Point(15, 116);
+            this.picGluePos.Name = "picGluePos";
+            this.picGluePos.Size = new System.Drawing.Size(16, 16);
+            this.picGluePos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picGluePos.TabIndex = 113;
+            this.picGluePos.TabStop = false;
+            // 
             // picGlueCheck
             // 
-            this.picGlueCheck.Location = new System.Drawing.Point(15, 104);
+            this.picGlueCheck.Location = new System.Drawing.Point(15, 149);
             this.picGlueCheck.Name = "picGlueCheck";
             this.picGlueCheck.Size = new System.Drawing.Size(16, 16);
             this.picGlueCheck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -761,7 +798,7 @@
             // 
             this.WhiteBoard.AutoSize = true;
             this.WhiteBoard.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.WhiteBoard.Location = new System.Drawing.Point(33, 68);
+            this.WhiteBoard.Location = new System.Drawing.Point(33, 84);
             this.WhiteBoard.Name = "WhiteBoard";
             this.WhiteBoard.Size = new System.Drawing.Size(77, 12);
             this.WhiteBoard.TabIndex = 112;
@@ -771,7 +808,7 @@
             // 
             this.label60.AutoSize = true;
             this.label60.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label60.Location = new System.Drawing.Point(171, 66);
+            this.label60.Location = new System.Drawing.Point(158, 51);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(77, 12);
             this.label60.TabIndex = 112;
@@ -781,7 +818,7 @@
             // 
             this.label58.AutoSize = true;
             this.label58.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label58.Location = new System.Drawing.Point(33, 186);
+            this.label58.Location = new System.Drawing.Point(158, 117);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(53, 12);
             this.label58.TabIndex = 112;
@@ -789,7 +826,7 @@
             // 
             // picSearchPos
             // 
-            this.picSearchPos.Location = new System.Drawing.Point(152, 24);
+            this.picSearchPos.Location = new System.Drawing.Point(140, 17);
             this.picSearchPos.Name = "picSearchPos";
             this.picSearchPos.Size = new System.Drawing.Size(16, 16);
             this.picSearchPos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -798,16 +835,25 @@
             // 
             // picHaveLens
             // 
-            this.picHaveLens.Location = new System.Drawing.Point(15, 26);
+            this.picHaveLens.Location = new System.Drawing.Point(15, 17);
             this.picHaveLens.Name = "picHaveLens";
             this.picHaveLens.Size = new System.Drawing.Size(16, 16);
             this.picHaveLens.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picHaveLens.TabIndex = 113;
             this.picHaveLens.TabStop = false;
             // 
+            // picWhiteLight
+            // 
+            this.picWhiteLight.Location = new System.Drawing.Point(15, 50);
+            this.picWhiteLight.Name = "picWhiteLight";
+            this.picWhiteLight.Size = new System.Drawing.Size(16, 16);
+            this.picWhiteLight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picWhiteLight.TabIndex = 113;
+            this.picWhiteLight.TabStop = false;
+            // 
             // picWhiteBoard
             // 
-            this.picWhiteBoard.Location = new System.Drawing.Point(15, 66);
+            this.picWhiteBoard.Location = new System.Drawing.Point(15, 83);
             this.picWhiteBoard.Name = "picWhiteBoard";
             this.picWhiteBoard.Size = new System.Drawing.Size(16, 16);
             this.picWhiteBoard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -818,7 +864,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label20.Location = new System.Drawing.Point(33, 146);
+            this.label20.Location = new System.Drawing.Point(33, 183);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(53, 12);
             this.label20.TabIndex = 112;
@@ -826,7 +872,7 @@
             // 
             // picOCAdjust
             // 
-            this.picOCAdjust.Location = new System.Drawing.Point(152, 64);
+            this.picOCAdjust.Location = new System.Drawing.Point(140, 50);
             this.picOCAdjust.Name = "picOCAdjust";
             this.picOCAdjust.Size = new System.Drawing.Size(16, 16);
             this.picOCAdjust.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -835,7 +881,7 @@
             // 
             // picPreAAPos
             // 
-            this.picPreAAPos.Location = new System.Drawing.Point(15, 184);
+            this.picPreAAPos.Location = new System.Drawing.Point(140, 116);
             this.picPreAAPos.Name = "picPreAAPos";
             this.picPreAAPos.Size = new System.Drawing.Size(16, 16);
             this.picPreAAPos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -844,7 +890,7 @@
             // 
             // picLightCamera
             // 
-            this.picLightCamera.Location = new System.Drawing.Point(15, 144);
+            this.picLightCamera.Location = new System.Drawing.Point(15, 182);
             this.picLightCamera.Name = "picLightCamera";
             this.picLightCamera.Size = new System.Drawing.Size(16, 16);
             this.picLightCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -975,9 +1021,9 @@
             // 
             this.gbxGlueSetting.Controls.Add(this.lblneed);
             this.gbxGlueSetting.Controls.Add(this.chkGlueRecycleRun);
+            this.gbxGlueSetting.Controls.Add(this.chkLensShield);
             this.gbxGlueSetting.Controls.Add(this.lblGlueNGTotal);
             this.gbxGlueSetting.Controls.Add(this.chkGlueShiled);
-            this.gbxGlueSetting.Controls.Add(this.chkWhiteShiled);
             this.gbxGlueSetting.Controls.Add(this.label49);
             this.gbxGlueSetting.Controls.Add(this.lblGlueOKTotal);
             this.gbxGlueSetting.Controls.Add(this.chkCCDShiled);
@@ -992,7 +1038,7 @@
             // lblneed
             // 
             this.lblneed.AutoSize = true;
-            this.lblneed.Location = new System.Drawing.Point(0, 132);
+            this.lblneed.Location = new System.Drawing.Point(4, 136);
             this.lblneed.Name = "lblneed";
             this.lblneed.Size = new System.Drawing.Size(47, 12);
             this.lblneed.TabIndex = 107;
@@ -1009,6 +1055,20 @@
             this.chkGlueRecycleRun.TabIndex = 113;
             this.chkGlueRecycleRun.Text = "循环模式";
             this.chkGlueRecycleRun.UseVisualStyleBackColor = true;
+            // 
+            // chkLensShield
+            // 
+            this.chkLensShield.AutoSize = true;
+            this.chkLensShield.Checked = true;
+            this.chkLensShield.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLensShield.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkLensShield.ForeColor = System.Drawing.Color.Black;
+            this.chkLensShield.Location = new System.Drawing.Point(14, 114);
+            this.chkLensShield.Name = "chkLensShield";
+            this.chkLensShield.Size = new System.Drawing.Size(96, 16);
+            this.chkLensShield.TabIndex = 82;
+            this.chkLensShield.Text = "镜头有无屏蔽";
+            this.chkLensShield.UseVisualStyleBackColor = true;
             // 
             // lblGlueNGTotal
             // 
@@ -1030,24 +1090,12 @@
             this.chkGlueShiled.AutoSize = true;
             this.chkGlueShiled.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chkGlueShiled.ForeColor = System.Drawing.Color.Black;
-            this.chkGlueShiled.Location = new System.Drawing.Point(14, 28);
+            this.chkGlueShiled.Location = new System.Drawing.Point(14, 30);
             this.chkGlueShiled.Name = "chkGlueShiled";
             this.chkGlueShiled.Size = new System.Drawing.Size(72, 16);
             this.chkGlueShiled.TabIndex = 82;
             this.chkGlueShiled.Text = "平台屏蔽";
             this.chkGlueShiled.UseVisualStyleBackColor = true;
-            // 
-            // chkWhiteShiled
-            // 
-            this.chkWhiteShiled.AutoSize = true;
-            this.chkWhiteShiled.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkWhiteShiled.ForeColor = System.Drawing.Color.Black;
-            this.chkWhiteShiled.Location = new System.Drawing.Point(14, 113);
-            this.chkWhiteShiled.Name = "chkWhiteShiled";
-            this.chkWhiteShiled.Size = new System.Drawing.Size(96, 16);
-            this.chkWhiteShiled.TabIndex = 82;
-            this.chkWhiteShiled.Text = "白板检测关闭";
-            this.chkWhiteShiled.UseVisualStyleBackColor = true;
             // 
             // label49
             // 
@@ -1101,7 +1149,7 @@
             this.chkGlueRun.AutoSize = true;
             this.chkGlueRun.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chkGlueRun.ForeColor = System.Drawing.Color.Black;
-            this.chkGlueRun.Location = new System.Drawing.Point(14, 57);
+            this.chkGlueRun.Location = new System.Drawing.Point(14, 58);
             this.chkGlueRun.Name = "chkGlueRun";
             this.chkGlueRun.Size = new System.Drawing.Size(72, 16);
             this.chkGlueRun.TabIndex = 84;
@@ -1367,9 +1415,9 @@
             // 
             this.gbxCleanSetting.Controls.Add(this.chkCleanRecycleRun);
             this.gbxCleanSetting.Controls.Add(this.chkCleanShiled);
-            this.gbxCleanSetting.Controls.Add(this.chkLensShield);
             this.gbxCleanSetting.Controls.Add(this.chkPlasmaShield);
             this.gbxCleanSetting.Controls.Add(this.chkCleanRun);
+            this.gbxCleanSetting.Controls.Add(this.chkWhiteShiled);
             this.gbxCleanSetting.Controls.Add(this.lblCleanNGTotal);
             this.gbxCleanSetting.Controls.Add(this.lblCleanOKTotal);
             this.gbxCleanSetting.Controls.Add(this.label3);
@@ -1404,20 +1452,6 @@
             this.chkCleanShiled.Text = "平台屏蔽";
             this.chkCleanShiled.UseVisualStyleBackColor = true;
             // 
-            // chkLensShield
-            // 
-            this.chkLensShield.AutoSize = true;
-            this.chkLensShield.Checked = true;
-            this.chkLensShield.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLensShield.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkLensShield.ForeColor = System.Drawing.Color.Black;
-            this.chkLensShield.Location = new System.Drawing.Point(14, 117);
-            this.chkLensShield.Name = "chkLensShield";
-            this.chkLensShield.Size = new System.Drawing.Size(96, 16);
-            this.chkLensShield.TabIndex = 82;
-            this.chkLensShield.Text = "镜头有无屏蔽";
-            this.chkLensShield.UseVisualStyleBackColor = true;
-            // 
             // chkPlasmaShield
             // 
             this.chkPlasmaShield.AutoSize = true;
@@ -1441,6 +1475,18 @@
             this.chkCleanRun.TabIndex = 83;
             this.chkCleanRun.Text = "清洗关闭";
             this.chkCleanRun.UseVisualStyleBackColor = true;
+            // 
+            // chkWhiteShiled
+            // 
+            this.chkWhiteShiled.AutoSize = true;
+            this.chkWhiteShiled.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkWhiteShiled.ForeColor = System.Drawing.Color.Black;
+            this.chkWhiteShiled.Location = new System.Drawing.Point(14, 121);
+            this.chkWhiteShiled.Name = "chkWhiteShiled";
+            this.chkWhiteShiled.Size = new System.Drawing.Size(72, 16);
+            this.chkWhiteShiled.TabIndex = 82;
+            this.chkWhiteShiled.Text = "白板屏蔽";
+            this.chkWhiteShiled.UseVisualStyleBackColor = true;
             // 
             // lblCleanNGTotal
             // 
@@ -1756,7 +1802,7 @@
             // 
             // lblSwPath
             // 
-            this.lblSwPath.Location = new System.Drawing.Point(78, 124);
+            this.lblSwPath.Location = new System.Drawing.Point(78, 126);
             this.lblSwPath.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSwPath.Name = "lblSwPath";
             this.lblSwPath.Size = new System.Drawing.Size(163, 12);
@@ -1766,7 +1812,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(2, 124);
+            this.label61.Location = new System.Drawing.Point(2, 126);
             this.label61.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(83, 12);
@@ -2856,9 +2902,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.picUVAfter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUVBefore)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTiltAdjust)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picGluePos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGlueCheck)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSearchPos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHaveLens)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picWhiteLight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picWhiteBoard)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOCAdjust)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPreAAPos)).EndInit();
@@ -3153,6 +3201,10 @@
         private System.Windows.Forms.Button btnWb;
         private System.Windows.Forms.Label lblGlueShape;
         private System.Windows.Forms.Label lblneed;
+        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.PictureBox picGluePos;
+        private System.Windows.Forms.PictureBox picWhiteLight;
     }
 }
 

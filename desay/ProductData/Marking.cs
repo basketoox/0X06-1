@@ -104,7 +104,11 @@ namespace desay.ProductData
         /// <summary>
         /// 白板检测结果
         /// </summary>
-        public static bool WhiteBoardResult;   
+        public static bool WhiteBoardResult; 
+        /// <summary>
+        /// 白板点亮结果
+        /// </summary>
+        public static bool WhiteLightResult;
      
         public static bool WbCheckAgainFlg;
        
@@ -199,11 +203,15 @@ namespace desay.ProductData
         /// <summary>
         /// 点胶完成
         /// </summary>
-        public static bool GlueFinish;         
+        public static bool GlueFinish;
         /// <summary>
-        /// 点胶工位结果标志
+        /// 点胶识别结果标志
         /// </summary>
-        public static bool GlueResult;       
+        public static bool GluePosResult;
+        /// <summary>
+        /// 点胶识别结果标志
+        /// </summary>
+        public static bool GlueCheckResult;       
         /// <summary>
         /// 点胶周期运行
         /// </summary>
@@ -228,7 +236,15 @@ namespace desay.ProductData
         /// <summary>
         /// 白板检测结果
         /// </summary>
-        public static bool WhiteBoardRst;     
+        public static bool WhiteBoardRst;
+        /// <summary>
+        /// 白板点亮结果
+        /// </summary>
+        public static bool WhiteLightRst;
+        /// <summary>
+        /// 点胶定位结果
+        /// </summary>
+        public static bool GluePosRst;
         /// <summary>
         /// 点胶检测结果
         /// </summary>
@@ -501,5 +517,21 @@ namespace desay.ProductData
         /// 空跑模式
         /// </summary>
         public static bool DryRun = false;
+        /// <summary>
+        /// 白板点检模式
+        /// </summary>
+        public static bool WhiteMode = false;
+        /// <summary>
+        /// 点胶点检模式
+        /// </summary>
+        public static bool GlueMode = false;
+        /// <summary>
+        /// AA点检模式
+        /// </summary>
+        public static bool AAMode = false;
+        /// <summary>
+        /// 称重点检模式
+        /// </summary>
+        public static bool WeighMode = false;
     }
 }

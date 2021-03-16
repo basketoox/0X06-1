@@ -65,6 +65,9 @@ namespace Vision_Assistant
         {
             Position.Instance.OutsideDistance = (double)numoutside.Value;
             Position.Instance.insideDistance = (double)numinside.Value;
+            Position.Instance.RedMax_Threshold = (int)numRedMax.Value;
+            Position.Instance.GreenMax_Threshold = (int)numGreenMax.Value;
+            Position.Instance.BlueMax_Threshold = (int)numBlueMax.Value; 
             SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
             MessageBox.Show("OK");
         }
@@ -106,6 +109,9 @@ namespace Vision_Assistant
             numinside.Location = new Point(19, 169);
             numoutside.Value = (decimal)Position.Instance.OutsideDistance;
             numinside.Value = (decimal)Position.Instance.insideDistance;
+            numRedMax.Value = Position.Instance.RedMax_Threshold;
+            numGreenMax.Value = Position.Instance.GreenMax_Threshold;
+            numBlueMax.Value = Position.Instance.BlueMax_Threshold;
         }
     }
 }

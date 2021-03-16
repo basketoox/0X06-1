@@ -35,8 +35,6 @@ namespace desay
         private Carrier m_Carrier;
         public frmWb Wb;
         public frmTeach frmt;
-        private frmAAVision m_AAVision;
-        //private frmWhiteBorad m_WB;
         public MES m_Mes;
         
         Encryption hasp;
@@ -68,6 +66,7 @@ namespace desay
         public int NeedleStep;
         IntPtr DlgHandle_wb;
         public frmAAVision aa;
+        public static bool DailyCheck;//点检
         //public frmWhiteBorad wb1;
 
         #endregion
@@ -179,7 +178,6 @@ namespace desay
             Config.Instance.userLevel = UserLevel.工程师;
 
             //运行设置
-            Marking.DryRun = false;
             Marking.DoorShield = Config.Instance.DoorShield == 1;
             Marking.AAShield = Config.Instance.AAShield == 1;
             Marking.CurtainShield = Config.Instance.CurtainShield == 1;
@@ -1317,15 +1315,11 @@ namespace desay
             }
         }
 
-        private double Okpercent;
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
             lblneed.Text = $"X={Position.Instance.CCD2NeedleOffset.X.ToString("0.00")}Y={Position.Instance.CCD2NeedleOffset.Y.ToString("0.00")}";
-            //this.Text = hasp.Nature ? "AA点胶设备控制系统（永久版）" : $"AA点胶设备控制系统（试用版）到期还剩{hasp.Duetime}天";
-            //btnShowWindows.Visible = !hasp.Nature;
-            this.LAB_VER.Text = "v20200804";
+            this.LAB_VER.Text = "v20210312";
             lblGlueShape.Text = Position.Instance.UseRectGlue?"点胶形状：矩形": "点胶形状：圆形";
             #region 文本显示
             lblMachineStatus.Text = MachineOperation.Status.ToString();
@@ -1387,12 +1381,12 @@ namespace desay
             picGlueCallOutFinish.Image = Marking.GlueCallOutFinish ? Properties.Resources.LedGreen : Properties.Resources.LedNone;
             //AA工位信号显示
             picAACallIn.Image = Marking.AACallIn ? Properties.Resources.LedGreen : Properties.Resources.LedNone;
-
             picCleanResult.Image = Marking.CleanResult ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
-            picGlueResult.Image = Marking.GlueResult ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
-            //picAAResult.Image = Marking.AAResult ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
+            picGlueResult.Image = Marking.GlueCheckResult ? Properties.Resources.LedGreen : Properties.Resources.LedRed;          
             picHaveLens.Image = Marking.HaveLensRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
+            picWhiteLight.Image = Marking.WhiteLightRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
             picWhiteBoard.Image = Marking.WhiteBoardRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
+            picGluePos.Image = Marking.GluePosRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
             picGlueCheck.Image = Marking.GlueCheckRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
             picLightCamera.Image = Marking.LightCameraRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
             picPreAAPos.Image = Marking.PreAAPosRst ? Properties.Resources.LedGreen : Properties.Resources.LedRed;
@@ -1462,12 +1456,62 @@ namespace desay
             RefreshCommMsg();
             #endregion
 
+            #region 点检
+            if (DailyCheck)
+            {
+                DailyCheck = false;
+                if (Marking.WhiteMode)     //白板点检
+                {
+                    chkCleanShiled.Checked = false;  //清洗平台屏蔽
+                    chkCleanRun.Checked = true;      //清洗动作关闭
+                    chkWhiteShiled.Checked = false;  //白板检测关闭
+
+                    chkGlueShiled.Checked = true;    //点胶平台屏蔽
+                    chkGlueRun.Checked = false;      //点胶出胶关闭
+                    chkCCDShiled.Checked = false;    //CCD功能关闭
+                    chkLensShield.Checked = true;                    
+                }
+                else if (Marking.GlueMode) //胶水点检
+                {
+                    chkCleanShiled.Checked = true;   //清洗平台屏蔽
+                    chkCleanRun.Checked = false;     //清洗动作关闭
+                    chkWhiteShiled.Checked = false;  //白板检测关闭
+
+                    chkGlueShiled.Checked = false;   //点胶平台屏蔽
+                    chkGlueRun.Checked = false;      //点胶出胶关闭
+                    chkCCDShiled.Checked = false;    //CCD功能关闭
+                    chkLensShield.Checked = true;
+                }
+                else if (Marking.AAMode)   //AA点检
+                {
+                    chkCleanShiled.Checked = true;   //清洗平台屏蔽
+                    chkCleanRun.Checked = false;     //清洗动作关闭
+                    chkWhiteShiled.Checked = false;  //白板检测关闭
+
+                    chkGlueShiled.Checked = true;    //点胶平台屏蔽
+                    chkGlueRun.Checked = false;      //点胶出胶关闭
+                    chkCCDShiled.Checked = false;    //CCD功能关闭
+                    chkLensShield.Checked = true;
+                }
+                else                       //胶重点检
+                {
+                    chkCleanShiled.Checked = true;   //清洗平台屏蔽
+                    chkCleanRun.Checked = false;     //清洗动作关闭
+                    chkWhiteShiled.Checked = false;  //白板检测关闭
+
+                    chkGlueShiled.Checked = false;   //点胶平台屏蔽
+                    chkGlueRun.Checked = false;      //点胶出胶关闭
+                    chkCCDShiled.Checked = true;     //CCD功能关闭
+                    chkLensShield.Checked = true;
+                }
+            }
+
+            #endregion
+
             if (Marking.CarrierWorking && IoPoints.IDI18.Value)
             {
                 IoPoints.IDO8.Value = false;
-            }
-            SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName, Config.Instance);
-
+            }            
             timer1.Enabled = true;
         }
 

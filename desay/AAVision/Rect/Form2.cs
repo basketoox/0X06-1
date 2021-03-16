@@ -62,7 +62,8 @@ namespace Vision_Assistant
             Position.Instance.CenterOffset_X = (double)numCenterX.Value;
             Position.Instance.CenterOffset_Y = (double)numCenterY.Value;
             Position.Instance.MaxGlueArea = (double)numHiLimt.Value;
-            Position.Instance.MinGlueArea=(double)numLowLimt.Value;
+            Position.Instance.MinGlueArea = (double)numLowLimt.Value;
+            Position.Instance.ManualThreshold = (int)numThreshold.Value;
             SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
             MessageBox.Show("OK");
         }
@@ -104,6 +105,7 @@ namespace Vision_Assistant
             numCenterY.Value = (decimal)Position.Instance.CenterOffset_Y;
             numHiLimt.Value = (decimal)Position.Instance.MaxGlueArea;
             numLowLimt.Value = (decimal)Position.Instance.MinGlueArea;
+            numThreshold.Value = (decimal)Position.Instance.ManualThreshold;
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)

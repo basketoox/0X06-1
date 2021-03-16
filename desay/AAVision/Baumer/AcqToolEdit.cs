@@ -95,7 +95,7 @@ namespace desay
 
         public void bmpToVisionImage(Bitmap bmp)
         {
-            if (!Marking.DryRun)
+            if (!Marking.DryRun && !Marking.CCDShield)
             {
                 bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
                 VI = new VisionImage(ImageType.Rgb32);
@@ -260,13 +260,13 @@ namespace desay
                                 RectGlueCheck.ProcessImage(VI, offsetOri);
                                 if (Form2.JudegCenterPosition() && Form2.JudgeRectangleSize() && Form2.JudegMaxMassArea())
                                 {
-                                    Marking.GlueResult = true;
+                                    Marking.GlueCheckResult = true;
                                 }
                                 else
                                 {
-                                    Marking.GlueResult = false;
+                                    Marking.GlueCheckResult = false;
                                 }
-                                GlueCheck.GlueCheck_R(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult);
+                                GlueCheck.GlueCheck_R(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueCheckResult);
                                 VI.Dispose();
                             }
                             else
@@ -279,13 +279,13 @@ namespace desay
                                 GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}", out distance);
                                 if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.insideDistance)
                                 {
-                                    Marking.GlueResult = true;
+                                    Marking.GlueCheckResult = true;
                                 }
                                 else
                                 {
-                                    Marking.GlueResult = false;
+                                    Marking.GlueCheckResult = false;
                                 }
-                                GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueResult, distance);
+                                GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueCheckResult, distance);
                                 LastVI.Dispose();
                             }
                             Marking.GlueCheckTestSucceed = true;
@@ -299,7 +299,7 @@ namespace desay
                     else//空跑模式
                     {
                         Marking.GlueCheckTest = false;
-                        Marking.GlueResult = false;
+                        Marking.GlueCheckResult = false;
                     }
                 }
             }

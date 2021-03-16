@@ -141,7 +141,9 @@ namespace desay.Flow
                             {
                                 MesAAData.aaResult = true;
                                 MesAAData.haveLensRst = true;
+                                MesAAData.whiteLightRst = true;
                                 MesAAData.whiteBoardRst = true;
+                                MesAAData.gluePosRst = true;
                                 MesAAData.glueCheckRst = true;
                                 MesAAData.lightCameraRst = true;
                                 MesAAData.preAAPosRst = true;
@@ -163,52 +165,63 @@ namespace desay.Flow
                                     if (aaServer.strResultTCP.Contains("NG10"))
                                     {
                                         MesAAData.uvAfterRst = false;
-                                        MesAAData.ResultCode = "10";
+                                        MesAAData.ResultCode = "12";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG1"))
                                     {
                                         MesAAData.haveLensRst = false;
                                         MesAAData.ResultCode = "01";
                                     }
-                                    else if (aaServer.strResultTCP.Contains("NG2"))
+                                    else if (aaServer.strResultTCP.Contains("NG2_2"))
                                     {
                                         MesAAData.whiteBoardRst = false;
+                                        MesAAData.ResultCode = "03";
+                                    }
+                                    else if (aaServer.strResultTCP.Contains("NG2"))
+                                    {
+                                        MesAAData.whiteLightRst = false;
                                         MesAAData.ResultCode = "02";
+                                    }
+                                    else if (aaServer.strResultTCP.Contains("NG3_2"))
+                                    {
+                                        MesAAData.glueCheckRst = false;
+                                        MesAAData.ResultCode = "05";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG3"))
                                     {
-                                        MesAAData.glueCheckRst = false;
-                                        MesAAData.ResultCode = "03";
+                                        MesAAData.gluePosRst = false;
+                                        MesAAData.ResultCode = "04";
                                     }
+                                   
                                     else if (aaServer.strResultTCP.Contains("NG4"))
                                     {
                                         MesAAData.lightCameraRst = false;
-                                        MesAAData.ResultCode = "04";
+                                        MesAAData.ResultCode = "06";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG5"))
                                     {
                                         MesAAData.preAAPosRst = false;
-                                        MesAAData.ResultCode = "05";
+                                        MesAAData.ResultCode = "07";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG6"))
                                     {
                                         MesAAData.searchPosRst = false;
-                                        MesAAData.ResultCode = "06";
+                                        MesAAData.ResultCode = "08";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG7"))
                                     {
                                         MesAAData.ocAdjustRst = false;
-                                        MesAAData.ResultCode = "07";
+                                        MesAAData.ResultCode = "09";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG8"))
                                     {
                                         MesAAData.tiltAdjustRst = false;
-                                        MesAAData.ResultCode = "08";
+                                        MesAAData.ResultCode = "10";
                                     }
                                     else if (aaServer.strResultTCP.Contains("NG9"))
                                     {
                                         MesAAData.uvBeforeRst = false;
-                                        MesAAData.ResultCode = "09";
+                                        MesAAData.ResultCode = "11";
                                     }
                                 }
 
@@ -308,7 +321,8 @@ namespace desay.Flow
                         case 20://检查CCD连接
                             //if (Marking.CCDShield)
                             {
-                                Marking.GlueResult = false;
+                                Marking.GluePosResult = false;
+                                Marking.GlueCheckResult = false;
                                 stationInitialize.Flow = 30;
                             }
                             break;
@@ -317,6 +331,7 @@ namespace desay.Flow
                             {
                                 Marking.WbData = null;
                                 Marking.WhiteBoardResult = false;
+                                Marking.WhiteLightResult = false;
                                 Marking.WbRequestResultFlg = false;
                                 Marking.WbGetResultFlg = false;
                                 AppendText("白板复位完成！");
@@ -544,42 +559,94 @@ namespace desay.Flow
                                 //    strMsg += "NG2";
                                 //else if (!Marking.GlueResult && !Marking.GlueShield && !Marking.CCDShield)
                                 //    strMsg += "NG3";
-
                                 //xmz  全OK 01  其余10   无镜头NG1  白板点亮测试NG NG2   点胶NG  NG3
+                                
+                                //辉创点检增加
+                                //白板点检OK：AHR01_CheckWB
+                                //白板点检NG：AHR10_CheckWB
+                                //胶水检测点检OK：AHR01_CheckGlue
+                                //胶水检测点检NG：AHR10_CheckGlue
+                                //MTF点检OK：AHR01_CheckMTF
+                                //MTF点检NG：AHR10_CheckMTF
+                                //胶重点检OK：AHR01_CheckWeight
+                                //胶重点检NG：AHR10_CheckWeight
+                                
+
                                 if (Marking.GlueShield)
                                 {
                                     if (!Marking.DryRun)
                                     {
-                                        Marking.GlueResult = true;//不考虑相机
+                                        Marking.GluePosResult = true;    //不考虑相机
+                                        Marking.GlueCheckResult = true;
                                     }
                                     else
                                     {
-                                        Marking.GlueResult = false;
+                                        Marking.GluePosResult = true;
+                                        Marking.GlueCheckResult = false;
                                     }
 
                                 }
                                 strMsg = (MesData.glueData.cleanData.HaveLens.Equals("OK")        //有无镜头
                                             && MesData.glueData.cleanData.CleanResult             //清洗结果
-                                            && MesData.glueData.cleanData.WbResult.Equals("OK")   //白板结果
-                                            && Marking.GlueResult) ? "01" : "10";                 //点胶结果
+                                            && MesData.glueData.cleanData.WbLResult.Equals("OK")  //白板点亮结果
+                                            && MesData.glueData.cleanData.WbResult.Equals("OK")   //白板检测结果 
+                                            && Marking.GluePosResult                                 //点胶定位结果
+                                            && Marking.GlueCheckResult) ? "01" : "10";                 //点胶识别结果
 
                                 log.Debug($"有无镜头{MesData.glueData.cleanData.HaveLens}");
                                 log.Debug($"清洗工位结果{MesData.glueData.cleanData.CleanResult.ToString()}");
-                                log.Debug($"白板点亮测试结果{MesData.glueData.cleanData.WbResult}");
-                                log.Debug($"点胶结果{Marking.GlueResult.ToString()}");
+                                log.Debug($"白板点亮测试结果{MesData.glueData.cleanData.WbLResult}");
+                                log.Debug($"白板检测测试结果{MesData.glueData.cleanData.WbResult}");
+                                log.Debug($"点胶定位结果{Marking.GluePosResult.ToString()}");
+                                log.Debug($"点胶识别结果{Marking.GlueCheckResult.ToString()}");
                                 if (Marking.GlueShield) log.Debug($"点胶工位屏蔽");
                                 if (Marking.CleanShield) log.Debug($"清洗工位屏蔽");
                                 if (Marking.WhiteShield) log.Debug($"白板检测屏蔽");
 
                                 if (MesData.glueData.cleanData.HaveLens.Equals("NG"))
-                                    strMsg += "NG1";
+                                {
+                                    strMsg += "NG1";      //镜头清洗NG
+                                }
+                                else if (MesData.glueData.cleanData.WbLResult.Equals("NG"))
+                                {
+                                    strMsg += "NG2";      //白板点亮NG
+                                }
                                 else if (MesData.glueData.cleanData.WbResult.Equals("NG"))
-                                    strMsg += "NG2";
-                                else if (!Marking.GlueResult)
-                                    strMsg += "NG3";
+                                {
+                                    strMsg += "NG2_2";    //白板检测NG
+                                }
+                                else if (!Marking.GluePosResult)
+                                {
+                                    strMsg += "NG3";      //点胶定位NG
+                                }
+                                else if (!Marking.GlueCheckResult)
+                                {
+                                    strMsg += "NG3_2";    //点胶识别NG
+                                }
+
+                                if (Marking.WhiteMode)     
+                                {
+                                   strMsg += "_CheckWB";      //白板点检
+                                   Marking.WhiteMode = false;
+                                }
+                                else if (Marking.GlueMode) 
+                                {
+                                    strMsg += "_CheckGlue";   //胶水点检
+                                    Marking.GlueMode = false;
+                                }
+                                else if (Marking.AAMode)   
+                                {
+                                    strMsg += "_CheckMTF";    //AA点检
+                                    Marking.AAMode = false;
+                                }
+                                else                       
+                                {
+                                    strMsg += "_CheckWeight"; //胶重点检
+                                    Marking.WeighMode = false;
+                                }
                                 log.Debug($"发送给AA字符串{strMsg}");
 
-                                if (Marking.GlueResult)
+                                if (Marking.GlueCheckResult)
                                     Config.Instance.GlueProductOkTotal++;
                                 else
                                     Config.Instance.GlueProductNgTotal++;
@@ -595,6 +662,7 @@ namespace desay.Flow
                                     strMsg += "*" + MesData.glueData.cleanData.carrierData.FN;
                                 }
                                 AppendText("发送AA治具码及结果数据！" + strMsg);
+
                             }
                             else
                             {

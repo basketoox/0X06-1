@@ -341,6 +341,10 @@ namespace desay.ProductData
         /// 自动对针中心位置
         /// </summary>
         public Point3D<double> NeedleCalibCenter;
+        /// <summary>
+        /// 屏蔽CCD的点胶补偿值
+        /// </summary>
+        public int GlueOffset_DryMode = -5;
         #endregion
 
         #region 通讯相关

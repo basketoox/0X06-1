@@ -285,7 +285,7 @@ namespace desay
             txtGlueCallOutFinish.BackColor = Marking.GlueCallOutFinish ? Color.LimeGreen : SystemColors.Control;
 
             txtCleanResult.BackColor = Marking.CleanResult ? Color.LimeGreen : Color.Red;
-            txtGlueResult.BackColor = Marking.GlueResult ? Color.LimeGreen : Color.Red;
+            txtGlueResult.BackColor = Marking.GlueCheckResult ? Color.LimeGreen : Color.Red;
 
             txtFN.Text = Marking.FN;
             txtSN.Text = Marking.SN;

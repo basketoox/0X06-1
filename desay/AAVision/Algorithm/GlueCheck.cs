@@ -907,7 +907,7 @@ namespace desay
 
         public static void TestBmp(Bitmap no_glue_bmp, Bitmap glue_bmp, HWindow hWindow, bool save)
         {
-            Marking.GlueResult = action(no_glue_bmp, glue_bmp, hWindow);
+            Marking.GluePosResult = action(no_glue_bmp, glue_bmp, hWindow);
            
             if (save)
             {

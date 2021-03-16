@@ -27,6 +27,12 @@ namespace desay
             chkAAShield.Checked = Marking.AAShield;
             chkSnScannerShield.Checked = Marking.SnScannerShield;
             chkDryRun.Checked = Marking.DryRun;
+
+            chkWhiteMode.Checked = Marking.WhiteMode;
+            chkGlueMode.Checked = Marking.GlueMode;
+            chkAAMode.Checked = Marking.AAMode;
+            chkWeighMode.Checked = Marking.WeighMode;
+               
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -43,6 +49,12 @@ namespace desay
             Config.Instance.AAShield = Marking.AAShield ? 1 : 0;
             Config.Instance.CurtainShield = Marking.CurtainShield ? 1 : 0;
             Config.Instance.SnScannerShield = Marking.SnScannerShield ? 1 : 0;
+
+            Marking.WhiteMode = chkWhiteMode.Checked;
+            Marking.GlueMode = chkGlueMode.Checked;
+            Marking.AAMode = chkAAMode.Checked;
+            Marking.WeighMode = chkWeighMode.Checked;
+            frmMain.DailyCheck = true;
             this.Close();
         }
 
@@ -50,6 +62,45 @@ namespace desay
         {
             this.Close();
         }
-        
+
+        private void chkWhiteMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkWhiteMode.Checked)
+            {
+                chkGlueMode.Checked = false;
+                chkAAMode.Checked = false;
+                chkWeighMode.Checked = false;
+            }
+        }
+
+        private void chkGlueMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkGlueMode.Checked)
+            {
+                chkWhiteMode.Checked = false;
+                chkAAMode.Checked = false;
+                chkWeighMode.Checked = false;
+            }
+        }
+
+        private void chkAAMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAAMode.Checked)
+            {
+                chkWhiteMode.Checked = false;
+                chkGlueMode.Checked = false;
+                chkWeighMode.Checked = false;
+            }
+        }
+
+        private void chkWeighMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkWeighMode.Checked)
+            {
+                chkWhiteMode.Checked = false;
+                chkGlueMode.Checked = false;
+                chkAAMode.Checked = false;
+            }
+        }
     }
 }
