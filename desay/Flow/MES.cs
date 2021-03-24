@@ -639,11 +639,12 @@ namespace desay.Flow
                                     strMsg += "_CheckMTF";    //AA点检
                                     Marking.AAMode = false;
                                 }
-                                else                       
+                                else if (Marking.WeighMode)                      
                                 {
                                     strMsg += "_CheckWeight"; //胶重点检
                                     Marking.WeighMode = false;
                                 }
+
                                 log.Debug($"发送给AA字符串{strMsg}");
 
                                 if (Marking.GlueCheckResult)

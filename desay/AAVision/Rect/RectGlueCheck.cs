@@ -235,7 +235,7 @@ namespace Vision_Assistant
 
             // Particle Analysis - Computes the number of particles detected in a binary image and
             // returns the requested measurements about the particles.
-            Collection<MeasurementType> vaPixelMeasurements = new Collection<MeasurementType>(new MeasurementType[] { MeasurementType.CenterOfMassX, MeasurementType.CenterOfMassY, MeasurementType.BoundingRectWidth, MeasurementType.BoundingRectHeight, MeasurementType.Area });
+            Collection<MeasurementType> vaPixelMeasurements = new Collection<MeasurementType>(new MeasurementType[] { MeasurementType.CenterOfMassX, MeasurementType.CenterOfMassY, MeasurementType.BoundingRectWidth, MeasurementType.BoundingRectHeight,  MeasurementType.ConvexHullPerimeter, MeasurementType.Area });
             Collection<MeasurementType> vaCalibratedMeasurements = new Collection<MeasurementType>(new MeasurementType[]{});
 			IVA_Particle(image, Connectivity.Connectivity8, vaPixelMeasurements, vaCalibratedMeasurements, ivaData, 8, out vaParticleReport, out vaParticleReportCalibrated);
 
@@ -283,12 +283,12 @@ namespace Vision_Assistant
             double MaxArea = 0;
             for (int i = 0; i < RectGlueCheck.vaParticleReport.PixelMeasurements.GetLength(0); i++)
             {
-                if(RectGlueCheck.vaParticleReport.PixelMeasurements[i, 4] > MaxArea)
+                if(RectGlueCheck.vaParticleReport.PixelMeasurements[i, 5] > MaxArea)
                 {
-                    MaxArea = RectGlueCheck.vaParticleReport.PixelMeasurements[i, 4];
+                    MaxArea = RectGlueCheck.vaParticleReport.PixelMeasurements[i, 5];
                     MaxMassIndex = i;
                 }
-                TotalAreas += RectGlueCheck.vaParticleReport.PixelMeasurements[i, 4];
+                TotalAreas += RectGlueCheck.vaParticleReport.PixelMeasurements[i, 5];
             }
         }
     }

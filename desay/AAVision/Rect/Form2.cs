@@ -44,8 +44,8 @@ namespace Vision_Assistant
             button1.Enabled = true;
             LoadImageButton.Enabled = false;
             RunButton.Enabled = false;
-         
-            if (JudegCenterPosition() && JudgeRectangleSize() && JudegMaxMassArea())
+
+            if (JudegCenterPosition() && JudgeRectangleSize() && JudegMaxMassArea() && JudgeRectPerimeter())
             {
                 CheckResult.Text = "OK";
                 CheckResult.BackColor = Color.GreenYellow;
@@ -64,6 +64,17 @@ namespace Vision_Assistant
             Position.Instance.MaxGlueArea = (double)numHiLimt.Value;
             Position.Instance.MinGlueArea = (double)numLowLimt.Value;
             Position.Instance.ManualThreshold = (int)numThreshold.Value;
+
+            Position.Instance.Pos_X[0] = (double)X0.Value;
+            Position.Instance.Pos_X[1] = (double)X1.Value;
+            Position.Instance.Pos_X[2] = (double)X2.Value;
+            Position.Instance.Pos_X[3] = (double)X3.Value;
+            Position.Instance.Pos_X[4] = (double)X4.Value;
+            Position.Instance.Pos_Y[0] = (double)Y0.Value;
+            Position.Instance.Pos_Y[1] = (double)Y1.Value;
+            Position.Instance.Pos_Y[2] = (double)Y2.Value;
+            Position.Instance.Pos_Y[3] = (double)Y3.Value;
+            Position.Instance.Pos_Y[4] = (double)Y4.Value;
             SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName, Position.Instance);
             MessageBox.Show("OK");
         }
@@ -106,6 +117,17 @@ namespace Vision_Assistant
             numHiLimt.Value = (decimal)Position.Instance.MaxGlueArea;
             numLowLimt.Value = (decimal)Position.Instance.MinGlueArea;
             numThreshold.Value = (decimal)Position.Instance.ManualThreshold;
+
+            X0.Value = (decimal)Position.Instance.Pos_X[0];
+            X1.Value = (decimal)Position.Instance.Pos_X[1];
+            X2.Value = (decimal)Position.Instance.Pos_X[2];
+            X3.Value = (decimal)Position.Instance.Pos_X[3];
+            X4.Value = (decimal)Position.Instance.Pos_X[4];
+            Y0.Value = (decimal)Position.Instance.Pos_Y[0];
+            Y1.Value = (decimal)Position.Instance.Pos_Y[1];
+            Y2.Value = (decimal)Position.Instance.Pos_Y[2];
+            Y3.Value = (decimal)Position.Instance.Pos_Y[3];
+            Y4.Value = (decimal)Position.Instance.Pos_Y[4];
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
@@ -178,7 +200,7 @@ namespace Vision_Assistant
             double area = RectGlueCheck.TotalAreas;
             double LowLimt = Position.Instance.MinGlueArea;
             double HiLimt = Position.Instance.MaxGlueArea;
-            if (area >=LowLimt  && area <= HiLimt)
+            if (area >= LowLimt && area <= HiLimt)
             {
                 return true;
             }
@@ -187,5 +209,18 @@ namespace Vision_Assistant
                 return false;
             }
         }
+        public static bool JudgeRectPerimeter()
+        {
+            int Perimeter = (int)RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 4];            
+            if (Perimeter >= Position.Instance.RectGluePreimeter)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

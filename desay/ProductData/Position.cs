@@ -345,6 +345,14 @@ namespace desay.ProductData
         /// 屏蔽CCD的点胶补偿值
         /// </summary>
         public int GlueOffset_DryMode = -5;
+        /// <summary>
+        /// 20.5M 5点相对中心X偏差
+        /// </summary>
+        public double[] Pos_X = { -630, 580, 655, 655, -630, -630 };
+        /// <summary>
+        /// 20.5M 5点相对中心Y偏差
+        /// </summary>
+        public double[] Pos_Y = { -650, -650, -580, 640, 640, -650 };
         #endregion
 
         #region 通讯相关
@@ -455,6 +463,10 @@ namespace desay.ProductData
         /// </summary>
         public int BlueMax_Threshold = 255;
         /// <summary>
+        /// 20.5M定位阈值
+        /// </summary>
+        public int RectPosThreshold = 125;
+        /// <summary>
         /// FFT滤波
         /// </summary>
         public int FFT_Frequency = 7;
@@ -478,6 +490,10 @@ namespace desay.ProductData
         /// 矩形胶路阈值Min
         /// </summary>
         public int ManualThreshold = 160;
+        /// <summary>
+        /// 凸包形状的周长
+        /// </summary>
+        public int RectGluePreimeter = 4900;
         #endregion
 
         #region MES字段

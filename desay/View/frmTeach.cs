@@ -3678,6 +3678,11 @@ namespace desay
             NeedleCalib_Camera();
         }
 
+        private void btnAutoLeave_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         #region MoveToPoint的重载
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,

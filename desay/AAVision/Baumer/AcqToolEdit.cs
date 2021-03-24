@@ -191,8 +191,8 @@ namespace desay
                                     ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y-414;//414
                                     offset_x = ICCenter_X - VI.Width / 2;
                                     offset_y = ICCenter_Y - VI.Height / 2;
-                                    double[] offset_x_pix = { -630, 580, 655, 655, -630, -630 };
-                                    double[] offset_y_pix = { -650, -650, -580, 640, 640, -650 };
+                                    double[] offset_x_pix = Position.Instance.Pos_X;
+                                    double[] offset_y_pix = Position.Instance.Pos_Y;
                                     for (int i = 0; i < offset_x_pix.Length; i++)
                                     {
                                         Config.Instance.RectX[i] = Position.Instance.GlueCameraPosition.X - Position.Instance.CCD2NeedleOffset.X + Position.Instance.GlueOffsetX - (offset_x_pix[i] - offset_x) / 96;
@@ -258,7 +258,7 @@ namespace desay
                                 VI = new VisionImage(ImageType.Rgb32);
                                 VI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
                                 RectGlueCheck.ProcessImage(VI, offsetOri);
-                                if (Form2.JudegCenterPosition() && Form2.JudgeRectangleSize() && Form2.JudegMaxMassArea())
+                                if (Form2.JudegCenterPosition() && Form2.JudgeRectangleSize() && Form2.JudegMaxMassArea() && Form2.JudgeRectPerimeter())
                                 {
                                     Marking.GlueCheckResult = true;
                                 }

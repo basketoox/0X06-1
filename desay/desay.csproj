@@ -537,6 +537,8 @@
     <None Include="Resources\yahe.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\20.5M.png" />
+    <None Include="Resources\Image1.bmp" />
     <None Include="Connected Services\ServiceReference1\Mes_WebServiceMain.disco" />
     <None Include="Connected Services\ServiceReference1\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference1\configuration.svcinfo" />
