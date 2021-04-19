@@ -66,13 +66,8 @@ namespace desay.Flow
             _watch.Start();
             uint GlueCheckCount = 0;
             double glueHeightOffset = 0.0;//new add
-            double glueHeightTotal = 0.0;//new add
-            int glueHeightTotalTimes = 0;
             try
             {
-
-
-
                 while (true)
                 {
                     Thread.Sleep(10);
@@ -147,8 +142,80 @@ namespace desay.Flow
                                         }
                                     }
                                 }
-                                else
+                                else if (frmMain.NeedLeaveGlue && !Marking.LeaveShield)  //需要排胶且未屏蔽-自动排胶
+                                {
+                                    try
+                                    {
+                                        var Lstep = 0;
+                                        bool Leaving = true;
+                                        Stopwatch LeaveGlue = new Stopwatch();
+                                        while (Leaving)
+                                        {
+                                            switch (Lstep)
+                                            {
+                                                case 0://XYZ轴静止，Z轴移动至安全位置
+                                                    if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
+                                                    {
+                                                        Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
+                                                        Lstep = 10;
+                                                    }
+                                                    break;
+                                                case 10://XY移动至排胶位置
+                                                    if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                                                    {
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.WeightGluePosition, AxisParameter.Instance.RXspeed);
+                                                        Lstep = 20;
+                                                    }
+                                                    break;
+                                                case 20://计时，排胶
+                                                    if (Xaxis.IsInPosition(Position.Instance.WeightGluePosition.X) && Yaxis.IsInPosition(Position.Instance.WeightGluePosition.Y))
+                                                    {
+                                                        Thread.Sleep(500);
+                                                        LeaveGlue.Restart();
+                                                        IoPoints.IDO19.Value = true;//自动排胶打开
+                                                        frmMain.GlueSpanTime.Restart();
+                                                        frmMain.NeedLeaveGlue = false;
+                                                        Lstep = 30;
+                                                    }
+                                                    break;
+                                                case 30://关闭胶阀
+                                                    if (!IoPoints.IDO19.Value)
+                                                    {
+                                                        LeaveGlue.Stop();
+                                                        Lstep = 40;
+                                                    }
+                                                    else
+                                                    {
+                                                        if ((LeaveGlue.ElapsedMilliseconds / 1000) > Position.Instance.ManualLeaveTime)
+                                                        {
+                                                            IoPoints.IDO19.Value = false;
+                                                        }
+                                                    }
+                                                    break;
+                                                case 40://XY回点胶安全位置
+                                                    if (!IoPoints.IDO19.Value)
+                                                    {
+                                                        MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueSafePosition, AxisParameter.Instance.RZspeed);
+                                                        Lstep = 50;
+                                                    }
+                                                    break;
+                                                default:
+                                                    Lstep = 0;
+                                                    Leaving = false;
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogHelper.Error(ex.ToString());
+                                    }
                                     step = 0;
+                                }
+                                else
+                                {
+                                    step = 0;
+                                }                                    
                                 break;
                             case 51://检测Z轴是否在安全位，XY轴移至测高位置
                                 if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
@@ -188,13 +255,17 @@ namespace desay.Flow
                                     }
                                     else
                                     {
-                                        if (!Marking.DryRun)
+                                        if (Marking.DryRun)
+                                        {                                            
+                                            glueHeightOffset = Position.Instance.GlueOffset_DryMode;
+                                        }
+                                        else if (Marking.WeighMode)//胶重点检按实际高度点胶
                                         {
                                             glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
                                         }
                                         else
                                         {
-                                            glueHeightOffset = Position.Instance.GlueOffset_DryMode;
+                                            glueHeightOffset = Position.Instance.DetectHeight2BaseHeight;
                                         }
 
                                         Marking.GetHeightFlg = false;
@@ -212,7 +283,8 @@ namespace desay.Flow
                                 break;
                             case 60:// Z轴返回安全位
                                 Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                if ((glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown) && !Marking.DryRun)
+                                //胶重点检模式和空跑模式不判断测高偏差，以设定值进行点胶
+                                if ((glueHeightOffset > Position.Instance.DetectHeightOffsetUp || glueHeightOffset < -Position.Instance.DetectHeightOffsetDown) && !( Marking.DryRun || Marking.WeighMode))
                                 {
                                     AppendText("测高偏差过大异常");
                                     log.Debug("测高偏差过大异常");
@@ -344,8 +416,8 @@ namespace desay.Flow
                                     }
                                     else
                                     {
-                                        Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                        MessageBox.Show("CCD识别失败!", "异常提示", MessageBoxButtons.OK);
+                                        AppendText("点胶定位识别异常，判定点胶NG发送给AA");
+                                        Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);                                        
                                         step = 175;
                                     }
                                 }
@@ -479,7 +551,9 @@ namespace desay.Flow
                                                 }
                                                 else
                                                 {
-                                                    IoPoints.IDO19.Value = true;
+                                                    IoPoints.IDO19.Value = true;//流程-圆形点胶打开
+                                                    frmMain.GlueSpanTime.Restart();
+                                                    frmMain.NeedLeaveGlue = false;
                                                     Thread.Sleep((int)Position.Instance.StartGlueDelay);
                                                 }
 
@@ -516,7 +590,7 @@ namespace desay.Flow
                                             case 30://点胶拖胶
                                                 if (Xaxis.IsDone && Yaxis.IsDone && Zaxis.IsDone)
                                                 {
-                                                    IoPoints.IDO19.Value = false;//关闭胶阀
+                                                    IoPoints.IDO19.Value = false;
                                                     APS168.APS_absolute_arc_move(2, new Int32[2] { Xaxis.NoId, Yaxis.NoId }, new Int32[2]
                                                     {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
                                                        (int)((Position.Instance.GlueCenterPosition.Y) / AxisParameter.Instance.RYTransParams.PulseEquivalent) },
@@ -741,7 +815,6 @@ namespace desay.Flow
                                     IoPoints.IDO9.Value = false;
                                     Thread.Sleep(100);
                                     GlueUpCylinder.Reset();
-                                    //Thread.Sleep(2000);
                                     if (Marking.GlueRecycleRun)
                                     {
                                         Marking.GlueFinishBit = false;
@@ -1115,7 +1188,12 @@ namespace desay.Flow
             try
             {
                 //先打开电磁阀，延时，再移动
-                if (bGlue) IoPoints.IDO19.Value = true;
+                if (bGlue)
+                {
+                    IoPoints.IDO19.Value = true;//流程-矩形点胶打开
+                    frmMain.GlueSpanTime.Restart();
+                    frmMain.NeedLeaveGlue = false;
+                }
                 Thread.Sleep(iTime);
                 APS168.APS_pt_start(iBord, iPt);
                 while (true)

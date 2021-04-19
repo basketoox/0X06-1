@@ -306,10 +306,26 @@ namespace desay
             dialog.Filter = "bmp图片(*.bmp)|*.*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-
-                Bitmap InputImage = new Bitmap(Image.FromFile(dialog.FileName));  // 加载图像
-                CenterLocate.CenterMatch(InputImage, hWindowControl1.HalconWindow);
-
+                Bitmap bmp = new Bitmap(Image.FromFile(dialog.FileName));
+                VisionImage VI = new VisionImage(ImageType.Rgb32);
+                VI.ReadFile(dialog.FileName);
+                FindCircularCenter.ProcessImage(VI);
+                if (FindCircularCenter.vaCircularEdgeReport.CircleFound)
+                {
+                    double[] data = new double[2];
+                    data[0] = FindCircularCenter.vaCircularEdgeReport.Center.X;
+                    data[1] = FindCircularCenter.vaCircularEdgeReport.Center.Y;
+                    Position.Instance.PCB2CCDOffset.X = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
+                    Position.Instance.PCB2CCDOffset.Y = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
+                    Marking.CenterLocateTestSucceed = true;
+                }
+                else
+                {
+                    Marking.CenterLocateTestSucceed = false;
+                }
+                CenterLocate.CircularMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, FindCircularCenter.vaCircularEdgeReport.CircleFound);
+                bmp.Dispose();
+                VI.Dispose();
             }
         }
 
@@ -336,7 +352,34 @@ namespace desay
 
         private void button9_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Multiselect = true;//该值确定是否可以选择多个文件
+                dialog.Title = "请选择文件夹";
+                dialog.Filter = "bmp图片(*.bmp)|*.*";
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Bitmap bmp = new Bitmap(Image.FromFile(dialog.FileName));
+                    VisionImage VI = new VisionImage(ImageType.Rgb32);
+                    VI.ReadFile(dialog.FileName);
+                    FindNeedleLoc.ProcessImage(VI);
+                    if (FindNeedleLoc.vaCircularEdgeReport.CircleFound)
+                    {
+                        double[] data = new double[2];
+                        double[] offset = new double[2];
+                        data[0] = FindNeedleLoc.vaCircularEdgeReport.Center.X;
+                        data[1] = FindNeedleLoc.vaCircularEdgeReport.Center.Y;
+                        offset[0] = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
+                        offset[1] = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
+                        Position.Instance.CCD2NeedleOffset.X = Position.Instance.GlueCameraCalibPosition.X - Position.Instance.GlueAdjustPinPosition.X - offset[0];
+                        Position.Instance.CCD2NeedleOffset.Y = Position.Instance.GlueCameraCalibPosition.Y - Position.Instance.GlueAdjustPinPosition.Y + offset[1];
+                        NeedleLocate.FindNeedleLoc(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, data, offset);
+                        Marking.NeedleLocateTestSucceed = true;
+                    }
+                }
+            }
+            catch { }
         }
 
         private void btn_ReadImg_Click(object sender, EventArgs e)
@@ -526,25 +569,17 @@ namespace desay
                     Image_Processing.ProcessImage(VI);
                     double ICCenter_X = 0;
                     double ICCenter_Y = 0;
-                    if (Image_Processing.gpm2Results.Count == 2)
+                    if (Image_Processing.pmResults.Count == 1)
                     {
-                        if (Image_Processing.gpm2Results[0].Position.Y < Image_Processing.gpm2Results[1].Position.Y)
-                        {
-                            Image_Processing.gpm2Results.RemoveAt(0);
-                        }
-                        else
-                        {
-                            Image_Processing.gpm2Results.RemoveAt(1);
-                        }
-
-                    }
-                    if (Image_Processing.gpm2Results.Count == 1)
-                    {
-                        ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X - 457;//457
-                        ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y - 414;//414
+                        ICCenter_X = Image_Processing.pmResults[0].CalibratedPosition.X - 457;//457
+                        ICCenter_Y = Image_Processing.pmResults[0].CalibratedPosition.Y - 414;//414
+                        AcqToolEdit.offset_x = ICCenter_X - VI.Width / 2;
+                        AcqToolEdit.offset_y = ICCenter_Y - VI.Height / 2;
                         Marking.CenterLocateTestSucceed = true;  
                     }
-                    CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1, ICCenter_X, ICCenter_Y);
+                    CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.pmResults.Count == 1, ICCenter_X, ICCenter_Y);
+                    bmp.Dispose();
+                    VI.Dispose();
                 }
             }
             catch (Exception ex)

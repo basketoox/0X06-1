@@ -43,6 +43,10 @@
             this.label34 = new System.Windows.Forms.Label();
             this.nudDetctHeightOffserUp = new System.Windows.Forms.NumericUpDown();
             this.nudDetctHeightOffserDown = new System.Windows.Forms.NumericUpDown();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.numManualLeaveTime = new System.Windows.Forms.NumericUpDown();
+            this.numAutoLeaveTime = new System.Windows.Forms.NumericUpDown();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
@@ -130,6 +134,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ndnTriggerCameraDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDetctHeightOffserUp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDetctHeightOffserDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numManualLeaveTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAutoLeaveTime)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -194,6 +200,10 @@
             this.tableLayoutPanel1.Controls.Add(this.label34, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.nudDetctHeightOffserUp, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.nudDetctHeightOffserDown, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label35, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.label36, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.numManualLeaveTime, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.numAutoLeaveTime, 1, 8);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -342,20 +352,24 @@
             // label33
             // 
             this.label33.AutoSize = true;
+            this.label33.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label33.Location = new System.Drawing.Point(3, 150);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(101, 12);
+            this.label33.Size = new System.Drawing.Size(190, 30);
             this.label33.TabIndex = 58;
             this.label33.Text = "测高偏差值上限mm";
+            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label34
             // 
             this.label34.AutoSize = true;
+            this.label34.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label34.Location = new System.Drawing.Point(3, 180);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(89, 12);
+            this.label34.Size = new System.Drawing.Size(190, 30);
             this.label34.TabIndex = 58;
-            this.label34.Text = "测高偏差值下限";
+            this.label34.Text = "测高偏差值下限mm";
+            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // nudDetctHeightOffserUp
             // 
@@ -391,6 +405,74 @@
             this.nudDetctHeightOffserDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudDetctHeightOffserDown.Value = new decimal(new int[] {
             5,
+            0,
+            0,
+            0});
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label35.Location = new System.Drawing.Point(3, 210);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(190, 30);
+            this.label35.TabIndex = 42;
+            this.label35.Text = "手动排胶时间(s)";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label36.Location = new System.Drawing.Point(3, 240);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(190, 30);
+            this.label36.TabIndex = 42;
+            this.label36.Text = "自动排胶间隔(min)";
+            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numManualLeaveTime
+            // 
+            this.numManualLeaveTime.Location = new System.Drawing.Point(199, 213);
+            this.numManualLeaveTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numManualLeaveTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numManualLeaveTime.Name = "numManualLeaveTime";
+            this.numManualLeaveTime.Size = new System.Drawing.Size(78, 21);
+            this.numManualLeaveTime.TabIndex = 60;
+            this.numManualLeaveTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numManualLeaveTime.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // numAutoLeaveTime
+            // 
+            this.numAutoLeaveTime.Location = new System.Drawing.Point(199, 243);
+            this.numAutoLeaveTime.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.numAutoLeaveTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numAutoLeaveTime.Name = "numAutoLeaveTime";
+            this.numAutoLeaveTime.Size = new System.Drawing.Size(78, 21);
+            this.numAutoLeaveTime.TabIndex = 61;
+            this.numAutoLeaveTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numAutoLeaveTime.Value = new decimal(new int[] {
+            30,
             0,
             0,
             0});
@@ -1551,6 +1633,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ndnTriggerCameraDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDetctHeightOffserUp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDetctHeightOffserDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numManualLeaveTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAutoLeaveTime)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -1687,5 +1771,9 @@
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.NumericUpDown nudDetctHeightOffserUp;
         private System.Windows.Forms.NumericUpDown nudDetctHeightOffserDown;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.NumericUpDown numManualLeaveTime;
+        private System.Windows.Forms.NumericUpDown numAutoLeaveTime;
     }
 }

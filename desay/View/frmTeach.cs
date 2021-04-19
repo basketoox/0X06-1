@@ -2164,7 +2164,9 @@ namespace desay
         {
             if (!IoPoints.IDO19.Value)
             {
-                IoPoints.IDO19.Value = true;
+                IoPoints.IDO19.Value = true;//点胶按键打开
+                frmMain.GlueSpanTime.Restart();
+                frmMain.NeedLeaveGlue = false;
                 btnGlueOpen.Text = "点胶关闭";
             }
             else
@@ -2212,7 +2214,9 @@ namespace desay
                                 {
                                     if (isUseGlue)  //先打开点胶电磁阀
                                     {
-                                        IoPoints.IDO19.Value = true;
+                                        IoPoints.IDO19.Value = true;//圆弧点胶打开
+                                        frmMain.GlueSpanTime.Restart();
+                                        frmMain.NeedLeaveGlue = false;
                                         Thread.Sleep((int)Position.Instance.StartGlueDelay);
                                     }
                                     else
@@ -3072,7 +3076,9 @@ namespace desay
                                 {
                                     if (isUseGlue)
                                     {
-                                        IoPoints.IDO19.Value = true;
+                                        IoPoints.IDO19.Value = true;//视觉圆形点胶打开
+                                        frmMain.GlueSpanTime.Restart();
+                                        frmMain.NeedLeaveGlue = false;
                                         Thread.Sleep((int)Position.Instance.StartGlueDelay);
                                     }
                                     else
@@ -3111,7 +3117,7 @@ namespace desay
                             case 230://点胶拖胶
                                 if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone)
                                 {
-                                    IoPoints.IDO19.Value = false;//关闭胶阀
+                                    IoPoints.IDO19.Value = false;
 
                                     APS168.APS_absolute_arc_move(2, new Int32[2] { m_GluePlateform.Xaxis.NoId, m_GluePlateform.Yaxis.NoId }, new Int32[2]
                                  {  (int)((Position.Instance.GlueCenterPosition.X) / AxisParameter.Instance.RXTransParams.PulseEquivalent),
@@ -3680,9 +3686,73 @@ namespace desay
 
         private void btnAutoLeave_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                var step = 0;
+                Stopwatch swLeave = new Stopwatch();
+                while (true)
+                {
+                    switch (step)
+                    {
+                        case 0://XYZ轴静止，Z轴移动至安全位置
+                            if (m_GluePlateform.Xaxis.IsDone && m_GluePlateform.Yaxis.IsDone && m_GluePlateform.Zaxis.IsDone)
+                            {
+                                m_GluePlateform.Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, Global.RZmanualSpeed);
+                                step = 10;
+                            }
+                            break;
+                        case 10://XY移动至排胶位置
+                            if (m_GluePlateform.Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                            {
+                                m_GluePlateform.MoveLine2Absolute(m_GluePlateform.Xaxis, m_GluePlateform.Yaxis, Position.Instance.WeightGluePosition, Global.RXmanualSpeed);
+                                step = 20;
+                            }
+                            break;
+                        case 20://计时，排胶
+                            if (m_GluePlateform.Xaxis.IsInPosition(Position.Instance.WeightGluePosition.X) && m_GluePlateform.Yaxis.IsInPosition(Position.Instance.WeightGluePosition.Y))
+                            {
+                                Thread.Sleep(500);
+                                swLeave.Restart();
+                                IoPoints.IDO19.Value = true;//手动排胶打开
+                                frmMain.GlueSpanTime.Restart();
+                                frmMain.NeedLeaveGlue = false;
+                                btnGlueOpen.Text = "点胶关闭";
+                                step = 30;
+                            }
+                            break;
+                        case 30://关闭胶阀
+                            if (!IoPoints.IDO19.Value)
+                            {
+                                swLeave.Stop();
+                                btnGlueOpen.Text = "点胶打开";
+                                step = 40;
+                            }
+                            else
+                            {
+                                if ((swLeave.ElapsedMilliseconds / 1000) > Position.Instance.ManualLeaveTime)
+                                {
+                                    IoPoints.IDO19.Value = false;
+                                }
+                            }
+                            break;
+                        case 40://XY回点胶安全位置
+                            if (!IoPoints.IDO19.Value)
+                            {
+                                m_GluePlateform.MoveLine2Absolute(m_GluePlateform.Xaxis, m_GluePlateform.Yaxis, Position.Instance.GlueSafePosition, Global.RXmanualSpeed);
+                                step = 50;
+                            }
+                            break;
+                        default:
+                            step = 0;
+                            return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.ToString());
+            }
         }
-
 
         #region MoveToPoint的重载
         private int MoveToPoint(ApsAxis Xaxis, double X, VelocityCurve XvelocityCurve,

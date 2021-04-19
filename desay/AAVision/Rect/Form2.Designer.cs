@@ -72,6 +72,8 @@ namespace Vision_Assistant
             this.X0 = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.numRectPosScore = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numThreshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHiLimt)).BeginInit();
@@ -92,6 +94,7 @@ namespace Vision_Assistant
             ((System.ComponentModel.ISupportInitialize)(this.X4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.X0)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numRectPosScore)).BeginInit();
             this.SuspendLayout();
             // 
             // imageViewer
@@ -128,7 +131,9 @@ namespace Vision_Assistant
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numRectPosScore);
             this.groupBox2.Controls.Add(this.numThreshold);
+            this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.numHiLimt);
             this.groupBox2.Controls.Add(this.label4);
@@ -550,6 +555,21 @@ namespace Vision_Assistant
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
+            // 
+            // numRectPosScore
+            // 
+            resources.ApplyResources(this.numRectPosScore, "numRectPosScore");
+            this.numRectPosScore.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numRectPosScore.Name = "numRectPosScore";
+            // 
             // Form2
             // 
             resources.ApplyResources(this, "$this");
@@ -582,6 +602,7 @@ namespace Vision_Assistant
             ((System.ComponentModel.ISupportInitialize)(this.X0)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numRectPosScore)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -631,6 +652,8 @@ namespace Vision_Assistant
         private System.Windows.Forms.NumericUpDown X3;
         private System.Windows.Forms.NumericUpDown X2;
         private System.Windows.Forms.NumericUpDown X4;
+        private System.Windows.Forms.NumericUpDown numRectPosScore;
+        private System.Windows.Forms.Label label17;
     }
 }
 

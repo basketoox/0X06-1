@@ -107,6 +107,10 @@ namespace Vision_Assistant
             numoutside.Location = new Point(19, 111);
             label2.Location = new Point(19, 154);
             numinside.Location = new Point(19, 169);
+            button1.Location = new Point(24,360);
+            LoadImageButton.Location = new Point(24,386);
+            RunButton.Location = new Point(24,412);
+            ExitButton.Location = new Point(24,438);
             numoutside.Value = (decimal)Position.Instance.OutsideDistance;
             numinside.Value = (decimal)Position.Instance.insideDistance;
             numRedMax.Value = Position.Instance.RedMax_Threshold;

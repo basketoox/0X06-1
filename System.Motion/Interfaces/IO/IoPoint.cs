@@ -77,6 +77,6 @@ namespace Motion.Interfaces
         {
             if ((IoMode & ioMode) == 0)
                 throw new InvalidOperationException(String.Format("非法{0}操作{1}开关量：Board:{2} Index:{3}", ioMode, IoMode, BoardNo, PortNo));
-        }
+        }    
     }
 }

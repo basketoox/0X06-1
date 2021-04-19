@@ -254,7 +254,6 @@
             this.lstInfo = new System.Windows.Forms.ListBox();
             this.skinGroupBox1 = new CCWin.SkinControl.SkinGroupBox();
             this.lstAlarm = new System.Windows.Forms.ListBox();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.LAB_VER = new System.Windows.Forms.Label();
             this.autoScanner = new System.Device.DM50S();
@@ -1067,7 +1066,7 @@
             this.chkLensShield.Name = "chkLensShield";
             this.chkLensShield.Size = new System.Drawing.Size(96, 16);
             this.chkLensShield.TabIndex = 82;
-            this.chkLensShield.Text = "镜头有无屏蔽";
+            this.chkLensShield.Text = "镜头检测关闭";
             this.chkLensShield.UseVisualStyleBackColor = true;
             // 
             // lblGlueNGTotal
@@ -1129,9 +1128,9 @@
             this.chkCCDShiled.ForeColor = System.Drawing.Color.Black;
             this.chkCCDShiled.Location = new System.Drawing.Point(14, 86);
             this.chkCCDShiled.Name = "chkCCDShiled";
-            this.chkCCDShiled.Size = new System.Drawing.Size(66, 16);
+            this.chkCCDShiled.Size = new System.Drawing.Size(72, 16);
             this.chkCCDShiled.TabIndex = 83;
-            this.chkCCDShiled.Text = "CCD关闭";
+            this.chkCCDShiled.Text = "检胶关闭";
             this.chkCCDShiled.UseVisualStyleBackColor = true;
             // 
             // label45
@@ -1153,7 +1152,7 @@
             this.chkGlueRun.Name = "chkGlueRun";
             this.chkGlueRun.Size = new System.Drawing.Size(72, 16);
             this.chkGlueRun.TabIndex = 84;
-            this.chkGlueRun.Text = "点胶关闭";
+            this.chkGlueRun.Text = "出胶关闭";
             this.chkGlueRun.UseVisualStyleBackColor = true;
             // 
             // groupBox14
@@ -1461,7 +1460,7 @@
             this.chkPlasmaShield.Name = "chkPlasmaShield";
             this.chkPlasmaShield.Size = new System.Drawing.Size(84, 16);
             this.chkPlasmaShield.TabIndex = 83;
-            this.chkPlasmaShield.Text = "Plasma屏蔽";
+            this.chkPlasmaShield.Text = "Plasma关闭";
             this.chkPlasmaShield.UseVisualStyleBackColor = true;
             // 
             // chkCleanRun
@@ -1485,7 +1484,7 @@
             this.chkWhiteShiled.Name = "chkWhiteShiled";
             this.chkWhiteShiled.Size = new System.Drawing.Size(72, 16);
             this.chkWhiteShiled.TabIndex = 82;
-            this.chkWhiteShiled.Text = "白板屏蔽";
+            this.chkWhiteShiled.Text = "白板关闭";
             this.chkWhiteShiled.UseVisualStyleBackColor = true;
             // 
             // lblCleanNGTotal
@@ -1878,7 +1877,6 @@
             this.gbxCarrierSetting.Size = new System.Drawing.Size(251, 111);
             this.gbxCarrierSetting.TabIndex = 106;
             this.gbxCarrierSetting.TabStop = false;
-            this.gbxCarrierSetting.Enter += new System.EventHandler(this.gbxCarrierSetting_Enter);
             // 
             // label7
             // 
@@ -2260,7 +2258,6 @@
             this.btnStart.TabIndex = 3;
             this.btnStart.Text = "启动";
             this.btnStart.UseVisualStyleBackColor = false;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
             this.btnStart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseUp);
             // 
@@ -2813,11 +2810,6 @@
             this.lstAlarm.Size = new System.Drawing.Size(544, 165);
             this.lstAlarm.TabIndex = 3;
             // 
-            // timer2
-            // 
-            this.timer2.Interval = 500;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
             // serialPort1
             // 
             this.serialPort1.BaudRate = 38400;
@@ -3191,7 +3183,6 @@
         private System.Device.HoneyWell1900 snScanner;
         private System.Windows.Forms.ToolStripButton btnAAImage;
         private System.Windows.Forms.ToolStripButton btnAAVision;
-        private System.Windows.Forms.Timer timer2;
         public System.Windows.Forms.TabPage tpgAAImage;
         public System.Windows.Forms.TabPage tpgAAVision;
         private System.IO.Ports.SerialPort serialPort1;

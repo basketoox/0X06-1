@@ -64,6 +64,7 @@ namespace Vision_Assistant
             Position.Instance.MaxGlueArea = (double)numHiLimt.Value;
             Position.Instance.MinGlueArea = (double)numLowLimt.Value;
             Position.Instance.ManualThreshold = (int)numThreshold.Value;
+            Position.Instance.RectPosScore = (int)numRectPosScore.Value;
 
             Position.Instance.Pos_X[0] = (double)X0.Value;
             Position.Instance.Pos_X[1] = (double)X1.Value;
@@ -116,7 +117,8 @@ namespace Vision_Assistant
             numCenterY.Value = (decimal)Position.Instance.CenterOffset_Y;
             numHiLimt.Value = (decimal)Position.Instance.MaxGlueArea;
             numLowLimt.Value = (decimal)Position.Instance.MinGlueArea;
-            numThreshold.Value = (decimal)Position.Instance.ManualThreshold;
+            numThreshold.Value = Position.Instance.ManualThreshold;
+            numRectPosScore.Value = Position.Instance.RectPosScore;
 
             X0.Value = (decimal)Position.Instance.Pos_X[0];
             X1.Value = (decimal)Position.Instance.Pos_X[1];
@@ -138,21 +140,10 @@ namespace Vision_Assistant
         public double[] GetOffsetOri()
         {
             double[] offset = new double[] { 0, 0 };
-            if (Image_Processing.gpm2Results.Count == 2)
+            if (Image_Processing.pmResults.Count == 1)
             {
-                if (Image_Processing.gpm2Results[0].Position.Y < Image_Processing.gpm2Results[1].Position.Y)
-                {
-                    Image_Processing.gpm2Results.RemoveAt(0);
-                }
-                else
-                {
-                    Image_Processing.gpm2Results.RemoveAt(1);
-                }
-            }
-            if (Image_Processing.gpm2Results.Count == 1)
-            {
-                offset[0] = Image_Processing.gpm2Results[0].CalibratedPosition.X - 1759.58;
-                offset[1] = Image_Processing.gpm2Results[0].CalibratedPosition.Y - 1411.70;
+                offset[0] = Image_Processing.pmResults[0].CalibratedPosition.X - 1759.58;
+                offset[1] = Image_Processing.pmResults[0].CalibratedPosition.Y - 1411.70;
             }
             else
             {
@@ -185,7 +176,7 @@ namespace Vision_Assistant
             int width = (int)RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 2];
             int height = (int)RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 3];
             int AbsDiffValue = Math.Abs(width - height);
-            if (AbsDiffValue < 100)
+            if (AbsDiffValue < Position.Instance.GlueAbsDiff)
             {
                 return true;
             }

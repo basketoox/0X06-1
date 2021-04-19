@@ -36,6 +36,13 @@ namespace Vision_Assistant
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numBlueMax = new System.Windows.Forms.NumericUpDown();
+            this.numGreenMax = new System.Windows.Forms.NumericUpDown();
+            this.numRedMax = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.outsideVal = new System.Windows.Forms.Label();
@@ -46,20 +53,13 @@ namespace Vision_Assistant
             this.insideVal = new System.Windows.Forms.Label();
             this.numoutside = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numRedMax = new System.Windows.Forms.NumericUpDown();
-            this.numGreenMax = new System.Windows.Forms.NumericUpDown();
-            this.numBlueMax = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numBlueMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGreenMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRedMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numinside)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numoutside)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRedMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGreenMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBlueMax)).BeginInit();
             this.SuspendLayout();
             // 
             // imageViewer
@@ -128,6 +128,86 @@ namespace Vision_Assistant
             this.groupBox1.TabStop = false;
             this.groupBox1.Tag = "3";
             // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // numBlueMax
+            // 
+            resources.ApplyResources(this.numBlueMax, "numBlueMax");
+            this.numBlueMax.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numBlueMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numBlueMax.Name = "numBlueMax";
+            this.numBlueMax.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numGreenMax
+            // 
+            resources.ApplyResources(this.numGreenMax, "numGreenMax");
+            this.numGreenMax.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numGreenMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numGreenMax.Name = "numGreenMax";
+            this.numGreenMax.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numRedMax
+            // 
+            resources.ApplyResources(this.numRedMax, "numRedMax");
+            this.numRedMax.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numRedMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numRedMax.Name = "numRedMax";
+            this.numRedMax.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
@@ -182,86 +262,6 @@ namespace Vision_Assistant
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // numRedMax
-            // 
-            resources.ApplyResources(this.numRedMax, "numRedMax");
-            this.numRedMax.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRedMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numRedMax.Name = "numRedMax";
-            this.numRedMax.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numGreenMax
-            // 
-            resources.ApplyResources(this.numGreenMax, "numGreenMax");
-            this.numGreenMax.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numGreenMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numGreenMax.Name = "numGreenMax";
-            this.numGreenMax.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numBlueMax
-            // 
-            resources.ApplyResources(this.numBlueMax, "numBlueMax");
-            this.numBlueMax.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numBlueMax.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numBlueMax.Name = "numBlueMax";
-            this.numBlueMax.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -274,12 +274,12 @@ namespace Vision_Assistant
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numBlueMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGreenMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRedMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numinside)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numoutside)).EndInit();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numRedMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGreenMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBlueMax)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -20,10 +20,13 @@ namespace desay
             ndnConeCleanNum.Value = Position.Instance.ConeCleanNum;
             ndnLensCleanNum.Value = Position.Instance.LensCleanNum;
             ndnUVAfterAlarm.Value = Position.Instance.UVAfterAlarmTime;
-            ndnTriggerCameraDelay.Value = Position.Instance.TriggerCameraDelay;
-            #endregion
+            ndnTriggerCameraDelay.Value = Position.Instance.TriggerCameraDelay;            
             nudDetctHeightOffserUp.Value= (decimal)Position.Instance.DetectHeightOffsetUp;
             nudDetctHeightOffserDown.Value= (decimal)Position.Instance.DetectHeightOffsetDown ;
+            numManualLeaveTime.Value = Position.Instance.ManualLeaveTime;
+            numAutoLeaveTime.Value = Position.Instance.AutoLeaveTime;
+            #endregion
+
             #region 装配参数
             chxCleanBuffer.Checked = Position.Instance.IsCleanZBuffer;
             ndnCleanBufferSpeed.Value = (decimal)Position.Instance.CleanZBufferSpeed;
@@ -88,10 +91,13 @@ namespace desay
             Position.Instance.ConeCleanNum = (int)ndnConeCleanNum.Value;
             Position.Instance.LensCleanNum = (int)ndnLensCleanNum.Value;
             Position.Instance.UVAfterAlarmTime = (int)ndnUVAfterAlarm.Value;
-            Position.Instance.TriggerCameraDelay = (int)ndnTriggerCameraDelay.Value;
-            #endregion
+            Position.Instance.TriggerCameraDelay = (int)ndnTriggerCameraDelay.Value;            
             Position.Instance.DetectHeightOffsetUp = (double)nudDetctHeightOffserUp.Value;
             Position.Instance.DetectHeightOffsetDown = (double)nudDetctHeightOffserDown.Value;
+            Position.Instance.ManualLeaveTime = (int)numManualLeaveTime.Value;
+            Position.Instance.AutoLeaveTime = (int)numAutoLeaveTime.Value;
+            #endregion
+
             #region 装配参数
             Position.Instance.IsCleanZBuffer = chxCleanBuffer.Checked;
             Position.Instance.CleanZBufferSpeed = (double)ndnCleanBufferSpeed.Value;

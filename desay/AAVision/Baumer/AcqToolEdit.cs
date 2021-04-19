@@ -171,24 +171,14 @@ namespace desay
                                 Image_Processing.ProcessImage(VI);
                                 double ICCenter_X = 0;
                                 double ICCenter_Y = 0;
-                                if(Image_Processing.gpm2Results.Count == 2)
+                                if (Image_Processing.pmResults.Count == 1)
                                 {
-                                   if(Image_Processing.gpm2Results[0].Position.Y < Image_Processing.gpm2Results[1].Position.Y)
-                                    {
-                                        Image_Processing.gpm2Results.RemoveAt(0);
-                                    }
-                                    else
-                                    {
-                                        Image_Processing.gpm2Results.RemoveAt(1);
-                                    }
-                                }
-                                if (Image_Processing.gpm2Results.Count == 1)
-                                {
-                                    offsetOri[0] = Image_Processing.gpm2Results[0].CalibratedPosition.X - 1759.58;
-                                    offsetOri[1] = Image_Processing.gpm2Results[0].CalibratedPosition.Y - 1411.70;
-
-                                    ICCenter_X = Image_Processing.gpm2Results[0].CalibratedPosition.X-457;//457
-                                    ICCenter_Y = Image_Processing.gpm2Results[0].CalibratedPosition.Y-414;//414
+                                    //1759.58  1411.70  初始Mask图片的模板原点
+                                    offsetOri[0] = Image_Processing.pmResults[0].CalibratedPosition.X - 1759.58;
+                                    offsetOri[1] = Image_Processing.pmResults[0].CalibratedPosition.Y - 1411.70;
+                                    //457 414 初始图片模板原点和IC中心的大小
+                                    ICCenter_X = Image_Processing.pmResults[0].CalibratedPosition.X-457;//457
+                                    ICCenter_Y = Image_Processing.pmResults[0].CalibratedPosition.Y-414;//414
                                     offset_x = ICCenter_X - VI.Width / 2;
                                     offset_y = ICCenter_Y - VI.Height / 2;
                                     double[] offset_x_pix = Position.Instance.Pos_X;
@@ -206,7 +196,7 @@ namespace desay
                                 {
                                     Marking.CenterLocateTestSucceed = false;
                                 }
-                                CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.gpm2Results.Count == 1, ICCenter_X, ICCenter_Y);
+                                CenterLocate.RectangleMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Image_Processing.pmResults.Count == 1, ICCenter_X, ICCenter_Y);
                             }
                             catch
                             {

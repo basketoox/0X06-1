@@ -514,6 +514,10 @@ namespace desay.ProductData
         /// </summary>
         public static bool IsProductThrans = false;
         /// <summary>
+        /// 屏蔽自动排胶功能
+        /// </summary>
+        public static bool LeaveShield = false;
+        /// <summary>
         /// 空跑模式
         /// </summary>
         public static bool DryRun = false;

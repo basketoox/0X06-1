@@ -58,8 +58,8 @@ namespace desay
 
                 //SerializerManager<Config>.Instance.Save(AppConfig.ConfigFileName,Config.Instance);
                 //SerializerManager<Position>.Instance.Save(AppConfig.ConfigPositionName,Position.Instance);
-                //Application.Run(new frmMain());
-                Application.Run(new Form2());
+                //Application.Run(new frmAAVision());
+                Application.Run(new frmMain());
 
             }
             else

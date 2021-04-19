@@ -44,6 +44,7 @@
             this.chkCurtainShield = new System.Windows.Forms.CheckBox();
             this.chkDoorSheild = new System.Windows.Forms.CheckBox();
             this.chkGlueHaveProduct = new System.Windows.Forms.CheckBox();
+            this.chkLeaveShield = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +70,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkLeaveShield);
             this.groupBox3.Controls.Add(this.chkAAMode);
             this.groupBox3.Controls.Add(this.chkWeighMode);
             this.groupBox3.Controls.Add(this.chkGlueMode);
@@ -92,7 +94,7 @@
             // 
             this.chkAAMode.AutoSize = true;
             this.chkAAMode.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkAAMode.Location = new System.Drawing.Point(190, 155);
+            this.chkAAMode.Location = new System.Drawing.Point(183, 155);
             this.chkAAMode.Name = "chkAAMode";
             this.chkAAMode.Size = new System.Drawing.Size(97, 20);
             this.chkAAMode.TabIndex = 15;
@@ -104,7 +106,7 @@
             // 
             this.chkWeighMode.AutoSize = true;
             this.chkWeighMode.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkWeighMode.Location = new System.Drawing.Point(190, 182);
+            this.chkWeighMode.Location = new System.Drawing.Point(183, 182);
             this.chkWeighMode.Name = "chkWeighMode";
             this.chkWeighMode.Size = new System.Drawing.Size(95, 20);
             this.chkWeighMode.TabIndex = 14;
@@ -116,7 +118,7 @@
             // 
             this.chkGlueMode.AutoSize = true;
             this.chkGlueMode.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkGlueMode.Location = new System.Drawing.Point(190, 128);
+            this.chkGlueMode.Location = new System.Drawing.Point(183, 128);
             this.chkGlueMode.Name = "chkGlueMode";
             this.chkGlueMode.Size = new System.Drawing.Size(95, 20);
             this.chkGlueMode.TabIndex = 13;
@@ -128,7 +130,7 @@
             // 
             this.chkWhiteMode.AutoSize = true;
             this.chkWhiteMode.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.chkWhiteMode.Location = new System.Drawing.Point(190, 101);
+            this.chkWhiteMode.Location = new System.Drawing.Point(183, 101);
             this.chkWhiteMode.Name = "chkWhiteMode";
             this.chkWhiteMode.Size = new System.Drawing.Size(95, 20);
             this.chkWhiteMode.TabIndex = 12;
@@ -140,7 +142,7 @@
             // 
             this.chkDryRun.AutoSize = true;
             this.chkDryRun.Font = new System.Drawing.Font("宋体", 12F);
-            this.chkDryRun.Location = new System.Drawing.Point(190, 20);
+            this.chkDryRun.Location = new System.Drawing.Point(183, 47);
             this.chkDryRun.Name = "chkDryRun";
             this.chkDryRun.Size = new System.Drawing.Size(91, 20);
             this.chkDryRun.TabIndex = 11;
@@ -226,6 +228,17 @@
             this.chkGlueHaveProduct.Text = "点胶平台有料";
             this.chkGlueHaveProduct.UseVisualStyleBackColor = true;
             // 
+            // chkLeaveShield
+            // 
+            this.chkLeaveShield.AutoSize = true;
+            this.chkLeaveShield.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkLeaveShield.Location = new System.Drawing.Point(183, 24);
+            this.chkLeaveShield.Name = "chkLeaveShield";
+            this.chkLeaveShield.Size = new System.Drawing.Size(123, 20);
+            this.chkLeaveShield.TabIndex = 16;
+            this.chkLeaveShield.Text = "屏蔽自动排胶";
+            this.chkLeaveShield.UseVisualStyleBackColor = true;
+            // 
             // frmRunSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -265,5 +278,6 @@
         private System.Windows.Forms.CheckBox chkWeighMode;
         private System.Windows.Forms.CheckBox chkGlueMode;
         private System.Windows.Forms.CheckBox chkWhiteMode;
+        private System.Windows.Forms.CheckBox chkLeaveShield;
     }
 }

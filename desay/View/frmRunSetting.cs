@@ -27,6 +27,7 @@ namespace desay
             chkAAShield.Checked = Marking.AAShield;
             chkSnScannerShield.Checked = Marking.SnScannerShield;
             chkDryRun.Checked = Marking.DryRun;
+            chkLeaveShield.Checked = Marking.LeaveShield;
 
             chkWhiteMode.Checked = Marking.WhiteMode;
             chkGlueMode.Checked = Marking.GlueMode;
@@ -45,6 +46,7 @@ namespace desay
             Marking.AAShield = chkAAShield.Checked;
             Marking.SnScannerShield = chkSnScannerShield.Checked;
             Marking.DryRun = chkDryRun.Checked;
+            Marking.LeaveShield = chkLeaveShield.Checked;
             Config.Instance.DoorShield = Marking.DoorShield ? 1 : 0;
             Config.Instance.AAShield = Marking.AAShield ? 1 : 0;
             Config.Instance.CurtainShield = Marking.CurtainShield ? 1 : 0;
@@ -54,7 +56,15 @@ namespace desay
             Marking.GlueMode = chkGlueMode.Checked;
             Marking.AAMode = chkAAMode.Checked;
             Marking.WeighMode = chkWeighMode.Checked;
-            frmMain.DailyCheck = true;
+            if (Marking.WhiteMode || Marking.GlueMode || Marking.AAMode || Marking.WeighMode)
+            {
+                frmMain.DailyCheck = true;
+            }
+            else
+            {
+                frmMain.DailyCheck = false;
+            }
+            
             this.Close();
         }
 

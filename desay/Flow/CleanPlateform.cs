@@ -1250,17 +1250,17 @@ namespace desay.Flow
             AAImage_Particle_NG,
             AA_SN_NG,
         };
-        string WbIniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"ProjectConfig\\ProjectConfig.ini");
+
         public bool WbINItrans(string ModelName)
         {
 
-            if (File.Exists(WbIniPath) == false)
+            if (File.Exists(AppConfig.WbIniPath) == false)
             {
-                MessageBox.Show($"白板参数文件不存在:{WbIniPath}");
+                MessageBox.Show($"白板参数文件不存在:{AppConfig.WbIniPath}");
                 return false;
             }
 
-            IniHelper.WriteValue("ProjectConfig", "ModelName", ModelName, WbIniPath);
+            IniHelper.WriteValue("ProjectConfig", "ModelName", ModelName, AppConfig.WbIniPath);
             return true;
         }
 

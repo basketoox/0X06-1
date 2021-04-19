@@ -141,10 +141,10 @@
     <value>0</value>
   </data>
   <data name="LoadImageButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 374</value>
+    <value>24, 386</value>
   </data>
   <data name="LoadImageButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 30</value>
+    <value>105, 26</value>
   </data>
   <data name="LoadImageButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -165,10 +165,10 @@
     <value>17</value>
   </data>
   <data name="RunButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 404</value>
+    <value>24, 412</value>
   </data>
   <data name="RunButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 30</value>
+    <value>105, 26</value>
   </data>
   <data name="RunButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -189,10 +189,10 @@
     <value>18</value>
   </data>
   <data name="ExitButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 434</value>
+    <value>24, 438</value>
   </data>
   <data name="ExitButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 30</value>
+    <value>105, 26</value>
   </data>
   <data name="ExitButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -216,10 +216,10 @@
     <value>17, 17</value>
   </metadata>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 344</value>
+    <value>24, 360</value>
   </data>
   <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 30</value>
+    <value>105, 26</value>
   </data>
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -247,7 +247,7 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 315</value>
+    <value>7, 336</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -277,7 +277,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 293</value>
+    <value>7, 314</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -304,7 +304,7 @@
     <value>True</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 271</value>
+    <value>7, 292</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -328,7 +328,7 @@
     <value>2</value>
   </data>
   <data name="numBlueMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 312</value>
+    <value>24, 333</value>
   </data>
   <data name="numBlueMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 21</value>
@@ -349,7 +349,7 @@
     <value>3</value>
   </data>
   <data name="numGreenMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 288</value>
+    <value>24, 309</value>
   </data>
   <data name="numGreenMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 21</value>
@@ -370,7 +370,7 @@
     <value>4</value>
   </data>
   <data name="numRedMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 265</value>
+    <value>24, 286</value>
   </data>
   <data name="numRedMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 21</value>
@@ -394,7 +394,7 @@
     <value>True</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 250</value>
+    <value>22, 271</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>

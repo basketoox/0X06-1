@@ -299,7 +299,7 @@ namespace desay.ProductData
         /// </summary>
         public Point3D<double> GlueAdjustPinPosition;
         /// <summary>
-        /// 胶重点检位置
+        /// 自动排胶位置
         /// </summary>
         public Point3D<double> WeightGluePosition;
         /// <summary>
@@ -353,6 +353,14 @@ namespace desay.ProductData
         /// 20.5M 5点相对中心Y偏差
         /// </summary>
         public double[] Pos_Y = { -650, -650, -580, 640, 640, -650 };
+        /// <summary>
+        /// 手动排胶出胶时间
+        /// </summary>
+        public int ManualLeaveTime = 15;
+        /// <summary>
+        /// 自动排胶时间间隔
+        /// </summary>
+        public int AutoLeaveTime = 30;
         #endregion
 
         #region 通讯相关
@@ -467,6 +475,10 @@ namespace desay.ProductData
         /// </summary>
         public int RectPosThreshold = 125;
         /// <summary>
+        /// 20.5M定位得分
+        /// </summary>
+        public int RectPosScore = 650;
+        /// <summary>
         /// FFT滤波
         /// </summary>
         public int FFT_Frequency = 7;
@@ -494,6 +506,10 @@ namespace desay.ProductData
         /// 凸包形状的周长
         /// </summary>
         public int RectGluePreimeter = 4900;
+        /// <summary>
+        /// 宽高差值
+        /// </summary>
+        public int GlueAbsDiff = 150;
         #endregion
 
         #region MES字段
