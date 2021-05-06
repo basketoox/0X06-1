@@ -82,7 +82,7 @@ namespace desay.Flow
                         }
                         AutoScanner.ReceiveString = null;
                     }
-                    if (SnScanner.StringReceived && !Marking.SnScannerShield)
+                    if (SnScanner.StringReceived && SnScanner.ReceiveString != null && Marking.BeginTriggerSN)
                     {
                         Marking.BeginTriggerSN = false;
                         SnScanner.StringReceived = false;
@@ -192,7 +192,7 @@ namespace desay.Flow
                                         MesAAData.gluePosRst = false;
                                         MesAAData.ResultCode = "04";
                                     }
-                                   
+
                                     else if (aaServer.strResultTCP.Contains("NG4"))
                                     {
                                         MesAAData.lightCameraRst = false;
@@ -560,7 +560,7 @@ namespace desay.Flow
                                 //else if (!Marking.GlueResult && !Marking.GlueShield && !Marking.CCDShield)
                                 //    strMsg += "NG3";
                                 //xmz  全OK 01  其余10   无镜头NG1  白板点亮测试NG NG2   点胶NG  NG3
-                                
+
                                 //辉创点检增加
                                 //白板点检OK：AHR01_CheckWB
                                 //白板点检NG：AHR10_CheckWB
@@ -570,7 +570,7 @@ namespace desay.Flow
                                 //MTF点检NG：AHR10_CheckMTF
                                 //胶重点检OK：AHR01_CheckWeight
                                 //胶重点检NG：AHR10_CheckWeight
-                                
+
 
                                 if (Marking.GlueShield)
                                 {
@@ -624,34 +624,35 @@ namespace desay.Flow
                                     strMsg += "NG3_2";    //点胶识别NG
                                 }
 
-                                if (Marking.WhiteMode)     
+                                if (Marking.WhiteMode)
                                 {
-                                   strMsg += "_CheckWB";      //白板点检
-                                   Marking.WhiteMode = false;
+                                    strMsg += "_CheckWB";      //白板点检
+                                    Marking.WhiteMode = false;
                                 }
-                                else if (Marking.GlueMode) 
+                                else if (Marking.GlueMode)
                                 {
                                     strMsg += "_CheckGlue";   //胶水点检
                                     Marking.GlueMode = false;
                                 }
-                                else if (Marking.AAMode)   
+                                else if (Marking.AAMode)
                                 {
                                     strMsg += "_CheckMTF";    //AA点检
                                     Marking.AAMode = false;
                                 }
-                                else if (Marking.WeighMode)                      
+                                else if (Marking.WeighMode)
                                 {
                                     strMsg += "_CheckWeight"; //胶重点检
                                     Marking.WeighMode = false;
                                 }
 
-                                log.Debug($"发送给AA字符串{strMsg}");
+                                log.Debug($"发送给AA结果:{strMsg}");
 
                                 if (Marking.GlueCheckResult)
                                     Config.Instance.GlueProductOkTotal++;
                                 else
                                     Config.Instance.GlueProductNgTotal++;
 
+                                string SendMessage = string.Empty;
                                 lock (MesData.AALock)
                                 {
                                     //发送产品码SN,治具码FN
@@ -660,9 +661,9 @@ namespace desay.Flow
                                     //发送前段结果
                                     aaServer.AsynSend(string.Format("$AHR{0}\r\n", strMsg));
                                     Thread.Sleep(300);
-                                    strMsg += "*" + MesData.glueData.cleanData.carrierData.FN;
+                                    SendMessage = strMsg + "*" + MesData.glueData.cleanData.carrierData.FN + "," + MesData.glueData.cleanData.carrierData.SN + "#";
                                 }
-                                AppendText("发送AA治具码及结果数据！" + strMsg);
+                                AppendText("发送给AA数据:" + SendMessage);
 
                             }
                             else

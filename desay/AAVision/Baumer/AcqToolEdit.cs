@@ -95,7 +95,7 @@ namespace desay
 
         public void bmpToVisionImage(Bitmap bmp)
         {
-            if (!Marking.DryRun && !Marking.CCDShield)
+            if (!Marking.DryRun)
             {
                 bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
                 VI = new VisionImage(ImageType.Rgb32);
@@ -104,7 +104,6 @@ namespace desay
             else
             {
                 VI = new VisionImage(ImageType.Rgb32);
-                string p = Config.Instance.CurrentProductType;
                 VI.ReadFile(AppConfig.DryRunPic);
             }
             
@@ -237,7 +236,7 @@ namespace desay
                 }
                 else if (Marking.GlueCheckTest)
                 {
-                    if (!Marking.DryRun)
+                    if (!Marking.DryRun && !Marking.CCDShield)
                     {
                         try
                         {
@@ -286,10 +285,15 @@ namespace desay
                         }
                         VI.Dispose();
                     }
-                    else//空跑模式
+                    else if(Marking.DryRun)
                     {
                         Marking.GlueCheckTest = false;
                         Marking.GlueCheckResult = false;
+                    }
+                    else
+                    {
+                        Marking.GlueCheckTest = false;
+                        Marking.GlueCheckResult = true;
                     }
                 }
             }

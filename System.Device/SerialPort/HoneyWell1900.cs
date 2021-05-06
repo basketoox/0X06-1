@@ -82,7 +82,7 @@ namespace System.Device
                             ShowMsg = true;
                             Flag = true;
                             MsgShow = ReceiveString;
-                            LogHelper.Debug(string.Format("读到字符为:{0}", readbuffer));
+                            LogHelper.Debug(string.Format("读到字符为:{0}", MsgShow));
                         }
                         catch (Exception e)
                         {

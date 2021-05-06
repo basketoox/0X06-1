@@ -109,7 +109,9 @@ namespace desay.ProductData
         /// 白板点亮结果
         /// </summary>
         public static bool WhiteLightResult;
-     
+        /// <summary>
+        /// 白板再次点亮标志
+        /// </summary>
         public static bool WbCheckAgainFlg;
        
         /// <summary>

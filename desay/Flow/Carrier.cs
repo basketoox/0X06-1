@@ -229,7 +229,7 @@ namespace desay.Flow
                                 step = 80;
                                 break;
                             case 80:
-                                if (Marking.GetSNFlg || Marking.SnScannerShield)
+                                if (Marking.GetSNFlg)
                                 {
                                     Marking.GetSNFlg = false;                                    
                                     step = 100;

@@ -789,7 +789,7 @@ namespace desay.Flow
                                 }
                                 else if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AAImage_LightON_NG)
                                 {
-                                    Marking.WhiteLightResult = true;//存疑
+                                    Marking.WhiteLightResult = false;//改动
                                     Marking.WhiteBoardResult = false;
                                 }
                                 else if (CallWb.GetAAImageTestResult(buf) == (int)AAImageResult.AAImage_Particle_NG)
@@ -816,15 +816,16 @@ namespace desay.Flow
                                     Marking.WbGetResultFlg = true;
                                     step = 370;
                                 }
-                                else if(!Marking.WhiteLightResult)
+                                else if(false)   //(!Marking.WhiteLightResult)  //屏蔽二次点亮
                                 {
-                                    if (Marking.WbCheckAgainFlg && wbCheckCount < 1)
+                                    if (!Marking.WbCheckAgainFlg && wbCheckCount < 1)
                                     {
                                         AppendText("点亮失败，重新顶升气缸");
                                         step = 361;
                                     }
                                     else if (Marking.WbCheckAgainFlg && wbCheckCount >= 1)
                                     {
+                                        Marking.WbCheckAgainFlg = false;
                                         wbCheckCount = 0;
                                         AppendText("再次点亮失败");
                                         log.Debug("再次点亮失败");
@@ -837,8 +838,8 @@ namespace desay.Flow
                                 else
                                 {
                                     wbCheckCount = 0;
-                                    AppendText("点亮成功，识别结果为：NG");
-                                    log.Debug("点亮成功,结果NG");
+                                    AppendText("点亮失败，结果为：NG");
+                                    log.Debug("点亮失败,结果NG");
                                     Config.Instance.CleanProductNgTotal++;
                                     Marking.CleanResult = false;
                                     Marking.WbGetResultFlg = true;
@@ -847,12 +848,12 @@ namespace desay.Flow
                                 break;
                             case 361://点亮失败重新顶升
                                 IoPoints.IDO9.Value = false;
-                                Thread.Sleep(1000);
+                                Thread.Sleep(500);
                                 CleanUpCylinder.Reset();
 
                                 Thread.Sleep(1000);
                                 log.Debug("点亮失败，重新顶升气缸");
-                                CleanUpCylinder.Set();
+                                CleanUpCylinder.Set();                                
                                 Thread.Sleep(500);
                                 IoPoints.IDO9.Value = true;
                                 step = 362;
@@ -860,6 +861,7 @@ namespace desay.Flow
                             case 362://气缸顶升后重新开始白板检测
                                 if (CleanUpCylinder.OutMoveStatus)
                                 {
+                                    Marking.WbCheckAgainFlg = true;
                                     wbCheckCount++;//单个产品点亮次数+1
                                     step = 350;
                                 }
