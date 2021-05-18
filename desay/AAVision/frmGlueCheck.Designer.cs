@@ -30,298 +30,105 @@ namespace desay.AAVision
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.tB_GlueWidth = new System.Windows.Forms.TextBox();
             this.tB_GlueInnerCircle = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.winContr_GCP = new HalconDotNet.HWindowControl();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.GlueLack_in = new System.Windows.Forms.TextBox();
+            this.GlueLack_out = new System.Windows.Forms.TextBox();
+            this.GlueCenterOffset = new System.Windows.Forms.TextBox();
+            this.GlueOver_in = new System.Windows.Forms.TextBox();
+            this.GlueOver_out = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.m_CtrlHStatusLabelCtrl = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnCreateCircle = new System.Windows.Forms.Button();
+            this.btnCreateRing = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.fillarea = new System.Windows.Forms.TextBox();
+            this.closearea = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.openarea = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.threshold_min = new System.Windows.Forms.TextBox();
+            this.threshold_max = new System.Windows.Forms.TextBox();
+            this.groupBox1.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.tB_GlueWidth);
-            this.panel1.Controls.Add(this.tB_GlueInnerCircle);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(14, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(221, 243);
-            this.panel1.TabIndex = 2;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(23, 20);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(125, 12);
-            this.label12.TabIndex = 17;
-            this.label12.Text = "设置胶水判别参考基准";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(121, 204);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "取消";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // tB_GlueWidth
             // 
-            this.tB_GlueWidth.Location = new System.Drawing.Point(121, 100);
+            this.tB_GlueWidth.Location = new System.Drawing.Point(100, 59);
             this.tB_GlueWidth.Name = "tB_GlueWidth";
-            this.tB_GlueWidth.Size = new System.Drawing.Size(80, 21);
+            this.tB_GlueWidth.Size = new System.Drawing.Size(100, 21);
             this.tB_GlueWidth.TabIndex = 13;
             // 
             // tB_GlueInnerCircle
             // 
-            this.tB_GlueInnerCircle.Location = new System.Drawing.Point(124, 56);
+            this.tB_GlueInnerCircle.Location = new System.Drawing.Point(100, 23);
             this.tB_GlueInnerCircle.Name = "tB_GlueInnerCircle";
-            this.tB_GlueInnerCircle.Size = new System.Drawing.Size(77, 21);
+            this.tB_GlueInnerCircle.Size = new System.Drawing.Size(100, 21);
             this.tB_GlueInnerCircle.TabIndex = 12;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 100);
+            this.label2.Location = new System.Drawing.Point(17, 64);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 12);
+            this.label2.Size = new System.Drawing.Size(77, 12);
             this.label2.TabIndex = 11;
-            this.label2.Text = "胶水宽度/Pixes";
+            this.label2.Text = "胶水最大宽度";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 59);
+            this.label4.Location = new System.Drawing.Point(17, 28);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 12);
+            this.label4.Size = new System.Drawing.Size(77, 12);
             this.label4.TabIndex = 10;
-            this.label4.Text = "胶圈内圈半径/Pixes";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(5, 204);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "确定";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.label4.Text = "产品内圈半径";
             // 
             // winContr_GCP
             // 
             this.winContr_GCP.BackColor = System.Drawing.Color.Black;
             this.winContr_GCP.BorderColor = System.Drawing.Color.Black;
             this.winContr_GCP.ImagePart = new System.Drawing.Rectangle(0, 0, 640, 480);
-            this.winContr_GCP.Location = new System.Drawing.Point(483, 26);
+            this.winContr_GCP.Location = new System.Drawing.Point(509, 24);
             this.winContr_GCP.Name = "winContr_GCP";
-            this.winContr_GCP.Size = new System.Drawing.Size(520, 424);
+            this.winContr_GCP.Size = new System.Drawing.Size(648, 486);
             this.winContr_GCP.TabIndex = 0;
-            this.winContr_GCP.WindowSize = new System.Drawing.Size(520, 424);
+            this.winContr_GCP.WindowSize = new System.Drawing.Size(648, 486);
             this.winContr_GCP.HMouseMove += new HalconDotNet.HMouseEventHandler(this.winContr_GCP_HMouseMove);
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.trackBar2);
-            this.panel2.Controls.Add(this.trackBar1);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.textBox2);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(12, 299);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(289, 130);
-            this.panel2.TabIndex = 6;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(148, 104);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 22;
-            this.button5.Text = "取消";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(5, 104);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 21;
-            this.button4.Text = "确定";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // trackBar2
-            // 
-            this.trackBar2.Location = new System.Drawing.Point(168, 46);
-            this.trackBar2.Maximum = 600000;
-            this.trackBar2.Minimum = 400000;
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(114, 45);
-            this.trackBar2.TabIndex = 20;
-            this.trackBar2.Value = 400000;
-            this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar2_ValueChanged);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Location = new System.Drawing.Point(168, 3);
-            this.trackBar1.Maximum = 7;
-            this.trackBar1.Minimum = 1;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(114, 45);
-            this.trackBar1.TabIndex = 19;
-            this.trackBar1.Value = 1;
-            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 49);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(101, 12);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "区域面积最小阈值";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(126, 46);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(36, 21);
-            this.textBox2.TabIndex = 8;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(126, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(36, 21);
-            this.textBox1.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 12);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "像素灰度公差阈值";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.button7);
-            this.panel3.Controls.Add(this.button6);
-            this.panel3.Controls.Add(this.label6);
-            this.panel3.Controls.Add(this.textBox3);
-            this.panel3.Location = new System.Drawing.Point(307, 299);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(171, 127);
-            this.panel3.TabIndex = 23;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(91, 60);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 26;
-            this.button7.Text = "取消";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(10, 60);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 25;
-            this.button6.Text = "确定";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 12);
-            this.label6.TabIndex = 24;
-            this.label6.Text = "腐蚀核大小";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(79, 17);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(69, 21);
-            this.textBox3.TabIndex = 23;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.button9);
-            this.panel4.Controls.Add(this.button8);
-            this.panel4.Controls.Add(this.textBox8);
-            this.panel4.Controls.Add(this.textBox7);
-            this.panel4.Controls.Add(this.textBox6);
-            this.panel4.Controls.Add(this.textBox5);
-            this.panel4.Controls.Add(this.textBox4);
-            this.panel4.Controls.Add(this.label11);
-            this.panel4.Controls.Add(this.label10);
-            this.panel4.Controls.Add(this.label9);
-            this.panel4.Controls.Add(this.label8);
-            this.panel4.Controls.Add(this.label7);
-            this.panel4.Location = new System.Drawing.Point(241, 12);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(237, 243);
-            this.panel4.TabIndex = 24;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(151, 201);
+            this.button9.Location = new System.Drawing.Point(139, 450);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.Size = new System.Drawing.Size(90, 23);
             this.button9.TabIndex = 11;
             this.button9.Text = "取消";
             this.button9.UseVisualStyleBackColor = true;
@@ -329,170 +136,391 @@ namespace desay.AAVision
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(14, 201);
+            this.button8.Location = new System.Drawing.Point(19, 450);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.Size = new System.Drawing.Size(90, 23);
             this.button8.TabIndex = 10;
             this.button8.Text = "确定";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
-            // textBox8
+            // GlueLack_in
             // 
-            this.textBox8.Location = new System.Drawing.Point(148, 169);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(78, 21);
-            this.textBox8.TabIndex = 9;
+            this.GlueLack_in.Location = new System.Drawing.Point(106, 60);
+            this.GlueLack_in.Name = "GlueLack_in";
+            this.GlueLack_in.Size = new System.Drawing.Size(100, 21);
+            this.GlueLack_in.TabIndex = 9;
             // 
-            // textBox7
+            // GlueLack_out
             // 
-            this.textBox7.Location = new System.Drawing.Point(148, 128);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(78, 21);
-            this.textBox7.TabIndex = 8;
+            this.GlueLack_out.Location = new System.Drawing.Point(106, 60);
+            this.GlueLack_out.Name = "GlueLack_out";
+            this.GlueLack_out.Size = new System.Drawing.Size(100, 21);
+            this.GlueLack_out.TabIndex = 8;
             // 
-            // textBox6
+            // GlueCenterOffset
             // 
-            this.textBox6.Location = new System.Drawing.Point(148, 95);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(78, 21);
-            this.textBox6.TabIndex = 7;
+            this.GlueCenterOffset.Location = new System.Drawing.Point(106, 27);
+            this.GlueCenterOffset.Name = "GlueCenterOffset";
+            this.GlueCenterOffset.Size = new System.Drawing.Size(100, 21);
+            this.GlueCenterOffset.TabIndex = 7;
             // 
-            // textBox5
+            // GlueOver_in
             // 
-            this.textBox5.Location = new System.Drawing.Point(148, 56);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(77, 21);
-            this.textBox5.TabIndex = 6;
+            this.GlueOver_in.Location = new System.Drawing.Point(106, 23);
+            this.GlueOver_in.Name = "GlueOver_in";
+            this.GlueOver_in.Size = new System.Drawing.Size(100, 21);
+            this.GlueOver_in.TabIndex = 6;
             // 
-            // textBox4
+            // GlueOver_out
             // 
-            this.textBox4.Location = new System.Drawing.Point(148, 20);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(77, 21);
-            this.textBox4.TabIndex = 5;
+            this.GlueOver_out.Location = new System.Drawing.Point(106, 25);
+            this.GlueOver_out.Name = "GlueOver_out";
+            this.GlueOver_out.Size = new System.Drawing.Size(100, 21);
+            this.GlueOver_out.TabIndex = 5;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 95);
+            this.label11.Location = new System.Drawing.Point(16, 33);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(101, 12);
+            this.label11.Size = new System.Drawing.Size(77, 12);
             this.label11.TabIndex = 4;
-            this.label11.Text = "胶圈偏移判断阈值";
+            this.label11.Text = "偏移判断阈值";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 172);
+            this.label10.Location = new System.Drawing.Point(16, 65);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(125, 12);
+            this.label10.Size = new System.Drawing.Size(77, 12);
             this.label10.TabIndex = 3;
-            this.label10.Text = "胶水内圈缺胶判断阈值";
+            this.label10.Text = "缺胶判断阈值";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 131);
+            this.label9.Location = new System.Drawing.Point(16, 64);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(125, 12);
+            this.label9.Size = new System.Drawing.Size(77, 12);
             this.label9.TabIndex = 2;
-            this.label9.Text = "胶水外圈缺胶判断阈值";
+            this.label9.Text = "缺胶判断阈值";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 56);
+            this.label8.Location = new System.Drawing.Point(16, 29);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(101, 12);
+            this.label8.Size = new System.Drawing.Size(77, 12);
             this.label8.TabIndex = 1;
-            this.label8.Text = "胶水内溢判断阈值";
+            this.label8.Text = "溢胶判断阈值";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 20);
+            this.label7.Location = new System.Drawing.Point(16, 30);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(101, 12);
+            this.label7.Size = new System.Drawing.Size(77, 12);
             this.label7.TabIndex = 0;
-            this.label7.Text = "胶水外溢判断阈值";
+            this.label7.Text = "溢胶判断阈值";
             // 
             // m_CtrlHStatusLabelCtrl
             // 
             this.m_CtrlHStatusLabelCtrl.AutoSize = true;
-            this.m_CtrlHStatusLabelCtrl.Location = new System.Drawing.Point(484, 9);
+            this.m_CtrlHStatusLabelCtrl.Location = new System.Drawing.Point(509, 9);
             this.m_CtrlHStatusLabelCtrl.Name = "m_CtrlHStatusLabelCtrl";
             this.m_CtrlHStatusLabelCtrl.Size = new System.Drawing.Size(41, 12);
             this.m_CtrlHStatusLabelCtrl.TabIndex = 25;
             this.m_CtrlHStatusLabelCtrl.Text = "Image:";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.groupBox9);
+            this.groupBox1.Controls.Add(this.groupBox4);
+            this.groupBox1.Controls.Add(this.groupBox3);
+            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Location = new System.Drawing.Point(257, 17);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(246, 493);
+            this.groupBox1.TabIndex = 26;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "胶水判断参数";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.btnCreateCircle);
+            this.groupBox9.Controls.Add(this.btnCreateRing);
+            this.groupBox9.Location = new System.Drawing.Point(14, 358);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(218, 115);
+            this.groupBox9.TabIndex = 28;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "胶水ROI";
+            // 
+            // btnCreateCircle
+            // 
+            this.btnCreateCircle.Location = new System.Drawing.Point(37, 71);
+            this.btnCreateCircle.Name = "btnCreateCircle";
+            this.btnCreateCircle.Size = new System.Drawing.Size(145, 23);
+            this.btnCreateCircle.TabIndex = 0;
+            this.btnCreateCircle.Text = "圆形";
+            this.btnCreateCircle.UseVisualStyleBackColor = true;
+            this.btnCreateCircle.Click += new System.EventHandler(this.btnCreateCircle_Click);
+            // 
+            // btnCreateRing
+            // 
+            this.btnCreateRing.Location = new System.Drawing.Point(37, 32);
+            this.btnCreateRing.Name = "btnCreateRing";
+            this.btnCreateRing.Size = new System.Drawing.Size(145, 23);
+            this.btnCreateRing.TabIndex = 0;
+            this.btnCreateRing.Text = "圆环";
+            this.btnCreateRing.UseVisualStyleBackColor = true;
+            this.btnCreateRing.Click += new System.EventHandler(this.btnCreateRing_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.GlueCenterOffset);
+            this.groupBox4.Location = new System.Drawing.Point(14, 269);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(218, 76);
+            this.groupBox4.TabIndex = 27;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "胶圈位置";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.GlueOver_in);
+            this.groupBox3.Controls.Add(this.GlueLack_in);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Location = new System.Drawing.Point(14, 145);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(218, 102);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "胶水内圈";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.GlueOver_out);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.GlueLack_out);
+            this.groupBox2.Location = new System.Drawing.Point(14, 30);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(218, 98);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "胶水外圈";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.button9);
+            this.groupBox5.Controls.Add(this.groupBox8);
+            this.groupBox5.Controls.Add(this.groupBox6);
+            this.groupBox5.Controls.Add(this.button8);
+            this.groupBox5.Controls.Add(this.groupBox7);
+            this.groupBox5.Location = new System.Drawing.Point(5, 17);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(246, 493);
+            this.groupBox5.TabIndex = 27;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "基本参数";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.fillarea);
+            this.groupBox8.Controls.Add(this.closearea);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.label13);
+            this.groupBox8.Controls.Add(this.openarea);
+            this.groupBox8.Controls.Add(this.label12);
+            this.groupBox8.Location = new System.Drawing.Point(16, 269);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(213, 135);
+            this.groupBox8.TabIndex = 29;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "胶水筛选参数";
+            // 
+            // fillarea
+            // 
+            this.fillarea.Location = new System.Drawing.Point(100, 89);
+            this.fillarea.Name = "fillarea";
+            this.fillarea.Size = new System.Drawing.Size(100, 21);
+            this.fillarea.TabIndex = 1;
+            // 
+            // closearea
+            // 
+            this.closearea.Location = new System.Drawing.Point(100, 58);
+            this.closearea.Name = "closearea";
+            this.closearea.Size = new System.Drawing.Size(100, 21);
+            this.closearea.TabIndex = 1;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(16, 95);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(77, 12);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "填充区间阈值";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(16, 63);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(77, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "形状最大阈值";
+            // 
+            // openarea
+            // 
+            this.openarea.Location = new System.Drawing.Point(100, 27);
+            this.openarea.Name = "openarea";
+            this.openarea.Size = new System.Drawing.Size(100, 21);
+            this.openarea.TabIndex = 1;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(16, 33);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "形状最小阈值";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label4);
+            this.groupBox6.Controls.Add(this.tB_GlueInnerCircle);
+            this.groupBox6.Controls.Add(this.tB_GlueWidth);
+            this.groupBox6.Controls.Add(this.label2);
+            this.groupBox6.Location = new System.Drawing.Point(16, 30);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(213, 98);
+            this.groupBox6.TabIndex = 28;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "产品参数";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label6);
+            this.groupBox7.Controls.Add(this.label3);
+            this.groupBox7.Controls.Add(this.threshold_min);
+            this.groupBox7.Controls.Add(this.threshold_max);
+            this.groupBox7.Location = new System.Drawing.Point(16, 145);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(213, 102);
+            this.groupBox7.TabIndex = 28;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "胶水分割参数";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(17, 65);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 12);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "胶水最大阈值";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "胶水最小阈值";
+            // 
+            // threshold_min
+            // 
+            this.threshold_min.Location = new System.Drawing.Point(100, 23);
+            this.threshold_min.Name = "threshold_min";
+            this.threshold_min.Size = new System.Drawing.Size(100, 21);
+            this.threshold_min.TabIndex = 1;
+            // 
+            // threshold_max
+            // 
+            this.threshold_max.Location = new System.Drawing.Point(100, 60);
+            this.threshold_max.Name = "threshold_max";
+            this.threshold_max.Size = new System.Drawing.Size(100, 21);
+            this.threshold_max.TabIndex = 1;
+            // 
             // frmGlueCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1010, 452);
+            this.ClientSize = new System.Drawing.Size(1164, 520);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.m_CtrlHStatusLabelCtrl);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.winContr_GCP);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmGlueCheck";
-            this.Text = "frmGuleCheck";
+            this.Text = "胶水检查参数";
             this.Load += new System.EventHandler(this.frmGlueCheck_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private HWindowControl winContr_GCP;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox GlueLack_in;
+        private System.Windows.Forms.TextBox GlueLack_out;
+        private System.Windows.Forms.TextBox GlueCenterOffset;
+        private System.Windows.Forms.TextBox GlueOver_in;
+        private System.Windows.Forms.TextBox GlueOver_out;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tB_GlueWidth;
         private System.Windows.Forms.TextBox tB_GlueInnerCircle;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label m_CtrlHStatusLabelCtrl;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox fillarea;
+        private System.Windows.Forms.TextBox closearea;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox openarea;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox threshold_min;
+        private System.Windows.Forms.TextBox threshold_max;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Button btnCreateCircle;
+        private System.Windows.Forms.Button btnCreateRing;
     }
 }

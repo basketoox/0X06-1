@@ -71,6 +71,30 @@ namespace desay.ProductData
             }
         }
 
+        public static string VisionConfig
+        {
+            get
+            {
+                return Path.Combine(VisonPath, "AAVisionConfig.ini");
+            }
+        }
+
+        public static string VisionLocateROI
+        {
+            get
+            {
+                return Path.Combine(VisonPath, "CenterLocROI.hobj");
+            }
+        }
+
+        public static string VisionLocateROI_Out
+        {
+            get
+            {
+                return Path.Combine(VisonPath, "CenterLocROI_out.hobj");
+            }
+        }
+
         public static string DryRunPic
         {
             get

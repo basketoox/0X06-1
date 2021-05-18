@@ -9,10 +9,11 @@ namespace desay
     static class GlueCheck
     {
         #region//控制参数
+
         #region//胶水判断参数
         //胶宽
         private static HTuple hv_glueWidth = new HTuple(135);
-        public static HTuple GlueWidth { get {return hv_glueWidth; } set { hv_glueWidth= value; } }
+        public static HTuple GlueWidth { get { return hv_glueWidth; } set { hv_glueWidth = value; } }
         //胶圈内圆
         private static HTuple hv_glueInnerCircle = new HTuple(535.0);
         public static HTuple GlueInnerCircle { get { return hv_glueInnerCircle; } set { hv_glueInnerCircle = value; } }
@@ -36,14 +37,45 @@ namespace desay
         #endregion
 
         #region//阈值分割参数
-        //区域之间的tolerance
-        public static HTuple tol = new HTuple(1.0);
-        //region的最小面积阈值
-        public static HTuple area = new HTuple(500000.0);
-        //开运算核大小
-        public static HTuple kernel = new HTuple(200.0);
+        //阈值分割
+        private static HTuple hv_threshold_gray_min = new HTuple(65.0);
+        private static HTuple hv_threshold_gray_max = new HTuple(255.0);
+        public static double threshold_min
+        {
+            get { return hv_threshold_gray_min[0]; }
+            set { hv_threshold_gray_min[0] = value; }
+        }
+        public static double threshold_max
+        {
+            get { return hv_threshold_gray_max[0]; }
+            set { hv_threshold_gray_max[0] = value; }
+        }
+
+        //Shape面积
+        private static HTuple _Minarea = new HTuple(300000);
+        public static double Shapearea_min
+        {
+            get { return _Minarea[0]; }
+            set { _Minarea[0] = value; }
+        }
+        //Shape面积
+        private static HTuple _Maxarea = new HTuple(500000);
+        public static double Shapearea_max
+        {
+            get { return _Maxarea[0]; }
+            set { _Maxarea[0] = value; }
+        }
+        //填充面积
+        private static HTuple _fillarea = new HTuple(100000.0);
+        public static double Fillarea
+        {
+            get { return _fillarea[0]; }
+            set { _fillarea[0] = value; }
+        }
         #endregion
+
         #endregion
+
         public static void SetString(HWindow window, HTuple str, HTuple color, HTuple size)
         {
             HOperatorSet.SetColor(window, color);
@@ -52,8 +84,7 @@ namespace desay
             HOperatorSet.WriteString(window, str);
             set_display_font(window, 15, "mono", "true", "false");
         }
-        public static void set_display_font(HTuple hv_WindowHandle, HTuple hv_Size, HTuple hv_Font,
-    HTuple hv_Bold, HTuple hv_Slant)
+        public static void set_display_font(HTuple hv_WindowHandle, HTuple hv_Size, HTuple hv_Font, HTuple hv_Bold, HTuple hv_Slant)
         {
 
 
@@ -176,79 +207,76 @@ namespace desay
 
             return;
         }
+
         private static bool action(Bitmap bmp_with_no_glue, Bitmap bmp_with_glue, HWindow Window)
         {
 
             try
             {
-                #region// 声明图像变量 
-                HObject ho_ImageT, ho_ImageF, ho_TransImage;
-                HObject ho_ImageSub, ho_ImageGauss, ho_Regions_R, ho_RegionClosing;
-                HObject ho_RegionOpening1, ho_RegionUnion, ho_Rectangle;
-                HObject ho_RegionDifference, ho_RegionOpening, ho_Regionc;
-                HObject ho_ConnectedRegions, ho_SelectedRegions, ho_RegionFillUp1;
-                HObject ho_RegionErosion, ho_Contours1, ho_Circle_mask_S = null;
-                HObject ho_target_ring = null, ho_target_ring_scale = null;
-                HObject ho_Regions = null, ho_RegionFillUp = null, ho_RegionTrans = null;
-                HObject ho_Contours = null, ho_glueOutterContour = null, ho_glueInnerContour = null;
-                HObject ho_Contour_I_sap = null, ho_Contour_O_sap = null, ho_ContCircle_outter = null;
-                HObject ho_ContCircle_Inner = null, Regionoping = null;
-                HObject SmoothedGlueOutterContour = null, SmoothedGlueInnerContour = null;
+                bool result = true;
+
+                #region 声明图像变量
+                HObject ho_Image = null, ho_ROI_0 = null, ho_TMP_Region = null;
+                HObject ho_ImageReduced = null, ho_R = null, ho_G = null, ho_B = null;
+                HObject ho_ImageMean = null, ho_Regions = null, ho_ConnectedRegions = null;
+                HObject ho_SelectedRegions1 = null, ho_Contours = null, ho_SelectedContours = null;
+                HObject ho_Contour = null, ho_Image2 = null, ho_ImageAbsDiff = null;
+                HObject ho_ImageReduced1 = null, ho_R1 = null, ho_G1 = null, ho_B1 = null;
+                HObject ho_Regions1 = null, ho_RegionFillUp1 = null, ho_ConnectedRegions1 = null;
+                HObject ho_RegionClosing1 = null, ho_Contours1 = null, ho_glueOutterContour = null;
+                HObject ho_glueInnerContour = null, ho_Contour_I_sap = null;
+                HObject ho_Contour_O_sap = null;
                 #endregion
 
-                #region//初始化图像变量
-                HOperatorSet.GenEmptyObj(out ho_ImageT);
-                HOperatorSet.GenEmptyObj(out ho_ImageF);
-                HOperatorSet.GenEmptyObj(out ho_TransImage);
-                HOperatorSet.GenEmptyObj(out ho_ImageSub);
-                HOperatorSet.GenEmptyObj(out ho_ImageGauss);
-                HOperatorSet.GenEmptyObj(out ho_Regions_R);
-                HOperatorSet.GenEmptyObj(out ho_RegionClosing);
-                HOperatorSet.GenEmptyObj(out ho_RegionOpening1);
-                HOperatorSet.GenEmptyObj(out ho_RegionUnion);
-                HOperatorSet.GenEmptyObj(out ho_Rectangle);
-                HOperatorSet.GenEmptyObj(out ho_RegionDifference);
-                HOperatorSet.GenEmptyObj(out ho_RegionOpening);
-                HOperatorSet.GenEmptyObj(out ho_Regionc);
-                HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
-                HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
-                HOperatorSet.GenEmptyObj(out ho_RegionFillUp1);
-                HOperatorSet.GenEmptyObj(out ho_RegionErosion);
-                HOperatorSet.GenEmptyObj(out ho_Contours1);
-                HOperatorSet.GenEmptyObj(out ho_Circle_mask_S);
-                HOperatorSet.GenEmptyObj(out ho_target_ring);
-                HOperatorSet.GenEmptyObj(out ho_target_ring_scale);
+                #region 初始化图像变量
+                HOperatorSet.GenEmptyObj(out ho_Image);
+                HOperatorSet.GenEmptyObj(out ho_ROI_0);
+                HOperatorSet.GenEmptyObj(out ho_TMP_Region);
+                HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+                HOperatorSet.GenEmptyObj(out ho_R);
+                HOperatorSet.GenEmptyObj(out ho_G);
+                HOperatorSet.GenEmptyObj(out ho_B);
+                HOperatorSet.GenEmptyObj(out ho_ImageMean);
                 HOperatorSet.GenEmptyObj(out ho_Regions);
-                HOperatorSet.GenEmptyObj(out ho_RegionFillUp);
-                HOperatorSet.GenEmptyObj(out ho_RegionTrans);
+                HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+                HOperatorSet.GenEmptyObj(out ho_SelectedRegions1);
                 HOperatorSet.GenEmptyObj(out ho_Contours);
+                HOperatorSet.GenEmptyObj(out ho_SelectedContours);
+                HOperatorSet.GenEmptyObj(out ho_Contour);
+                HOperatorSet.GenEmptyObj(out ho_Image2);
+                HOperatorSet.GenEmptyObj(out ho_ImageAbsDiff);
+                HOperatorSet.GenEmptyObj(out ho_ImageReduced1);
+                HOperatorSet.GenEmptyObj(out ho_R1);
+                HOperatorSet.GenEmptyObj(out ho_G1);
+                HOperatorSet.GenEmptyObj(out ho_B1);
+                HOperatorSet.GenEmptyObj(out ho_Regions1);
+                HOperatorSet.GenEmptyObj(out ho_RegionFillUp1);
+                HOperatorSet.GenEmptyObj(out ho_ConnectedRegions1);
+                HOperatorSet.GenEmptyObj(out ho_RegionClosing1);
+                HOperatorSet.GenEmptyObj(out ho_Contours1);
                 HOperatorSet.GenEmptyObj(out ho_glueOutterContour);
                 HOperatorSet.GenEmptyObj(out ho_glueInnerContour);
                 HOperatorSet.GenEmptyObj(out ho_Contour_I_sap);
                 HOperatorSet.GenEmptyObj(out ho_Contour_O_sap);
-                HOperatorSet.GenEmptyObj(out ho_ContCircle_outter);
-                HOperatorSet.GenEmptyObj(out ho_ContCircle_Inner);
-                HOperatorSet.GenEmptyObj(out Regionoping);
+
                 #endregion
 
-                #region// 初始化控制变量 
-                // Local control variables 
-
-                HTuple hv_Width = null, hv_Height = null, hv_WindowHandle = new HTuple();
-                HTuple hv_RowsF = null, hv_ColsF = null, hv_RowsT = null;
-                HTuple hv_ColsT = null, hv_HomMat2D = null, hv_Points1 = null;
-                HTuple hv_Points2 = null, hv_Number1 = null, hv_Number2 = null;
-                HTuple hv_Row = new HTuple();
-                HTuple hv_Column = new HTuple(), hv_Radius = new HTuple();
-                HTuple hv_StartPhi = new HTuple(), hv_EndPhi = new HTuple();
-                HTuple hv_PointOrder = new HTuple();
-                //HTuple hv_glueInnerCircle = new HTuple(), hv_glueWidth = new HTuple();
-                HTuple hv_glueOutterCircle = new HTuple();
-                HTuple hv_glueCenter = new HTuple(), hv_Row2 = new HTuple();
-                HTuple hv_Col1 = new HTuple(), hv_Row3 = new HTuple();
-                HTuple hv_Col2 = new HTuple(), hv_Row_Inner_sampling = new HTuple();
-                HTuple hv_Col_Inner_sampling = new HTuple(), hv_k = new HTuple();
-                HTuple hv_i = new HTuple(), hv_Row_Outter_sampling = new HTuple();
+                #region 初始化控制变量 
+                HTuple hv_is_opened = new HTuple(), hv_glueoverflow_O = new HTuple();
+                HTuple hv_glueoverflow_I = new HTuple(), hv_gluelack_O = new HTuple();
+                HTuple hv_gluelack_I = new HTuple(), hv_glueoffset = new HTuple();
+                HTuple hv_glueWidth = new HTuple(), hv_Number = new HTuple();
+                HTuple hv_Row = new HTuple(), hv_Column = new HTuple();
+                HTuple hv_Radius = new HTuple(), hv_StartPhi = new HTuple();
+                HTuple hv_EndPhi = new HTuple(), hv_PointOrder = new HTuple();
+                HTuple hv_thvalue = new HTuple(), hv_fillarea = new HTuple();
+                HTuple hv_areavalue = new HTuple(), hv_Number1 = new HTuple();
+                HTuple hv_Number2 = new HTuple(), hv_glueCenter = new HTuple();
+                HTuple hv_glueInnerCircle = new HTuple(), hv_glueOutterCircle = new HTuple();
+                HTuple hv_Row2 = new HTuple(), hv_Col1 = new HTuple();
+                HTuple hv_Row3 = new HTuple(), hv_Col2 = new HTuple();
+                HTuple hv_Row_Inner_sampling = new HTuple(), hv_Col_Inner_sampling = new HTuple();
+                HTuple hv_k = new HTuple(), hv_i = new HTuple(), hv_Row_Outter_sampling = new HTuple();
                 HTuple hv_Col_Outter_sampling = new HTuple(), hv_DistanceMin = new HTuple();
                 HTuple hv_DistanceMax = new HTuple(), hv_glueWidthMin = new HTuple();
                 HTuple hv_glueWidthMax = new HTuple(), hv_DistanceMin1 = new HTuple();
@@ -258,273 +286,237 @@ namespace desay
                 HTuple hv_Distance_outter_max = new HTuple(), hv_Row_Outter = new HTuple();
                 HTuple hv_Column_Outter = new HTuple(), hv_Radius_Outter = new HTuple();
                 HTuple hv_StartPhi1 = new HTuple(), hv_EndPhi1 = new HTuple();
-                HTuple hv_PointOrder1 = new HTuple(), hv_DistanceMin_Outter = new HTuple();
-                HTuple hv_DistanceMax_Outter = new HTuple(), hv_Ddistance_Outter = new HTuple();
-                HTuple hv_Sdistance_Outter = new HTuple(), hv_Row_Inner = new HTuple();
+                HTuple hv_PointOrder1 = new HTuple(), hv_Row_Inner = new HTuple();
                 HTuple hv_Column_Inner = new HTuple(), hv_Radius_Inner = new HTuple();
                 HTuple hv_StartPhi2 = new HTuple(), hv_EndPhi2 = new HTuple();
-                HTuple hv_PointOrder2 = new HTuple(), hv_DistanceMin_Inner = new HTuple();
-                HTuple hv_DistanceMax_Inner = new HTuple(), hv_Ddistance_Inner = new HTuple();
-                HTuple hv_Sdistance_Inner = new HTuple(), hv_Row_glue = new HTuple();
+                HTuple hv_PointOrder2 = new HTuple(), hv_Row_glue = new HTuple();
                 HTuple hv_Col_glue = new HTuple(), hv_Distance_offset = new HTuple();
-                HTuple hv_Font = new HTuple();
-                #endregion
-                is_qualified = true;
-                ho_ImageT.Dispose();
-                Bitmap2HObject.Bitmap2HObj(bmp_with_no_glue, out ho_ImageT);
-                bmp_with_no_glue = null;
-
-                HObject  img_old;             
-                HOperatorSet.GenEmptyObj(out img_old);
-                HTuple htuple;
-                //彩色变灰色
-                HOperatorSet.CountChannels(ho_ImageT, out htuple);
-                img_old.Dispose();
-                if (htuple == 3)
-                {
-                    HOperatorSet.Rgb1ToGray(ho_ImageT, out img_old);
-                    ho_ImageT.Dispose();
-                    ho_ImageT = img_old.Clone();
-                }
-               
-
-                //CenterLocate.LastCenterLocateBMP.Dispose();
-                ho_ImageF.Dispose();
-                Bitmap2HObject.Bitmap2HObj(bmp_with_glue, out ho_ImageF);
-                bmp_with_glue.Dispose();
-                //彩色变灰色
-                HOperatorSet.CountChannels(ho_ImageF, out htuple);
-                img_old.Dispose();
-                if (htuple == 3)
-                {
-                    HOperatorSet.Rgb1ToGray(ho_ImageF, out img_old);
-                    ho_ImageF.Dispose();
-                    ho_ImageF = img_old.Clone();
-                }
-
-                //获取图像的尺寸信息
-                HOperatorSet.GetImageSize(ho_ImageF, out hv_Width, out hv_Height);
-                //*******************主逻辑
-                #region//提取特征点,根据特征点求两张图之间的仿射矩阵：HomMat2D,并对齐图像
-                HOperatorSet.PointsHarris(ho_ImageF, 2.5, 2, 0.08, 2500, out hv_RowsF, out hv_ColsF);
-                HOperatorSet.PointsHarris(ho_ImageT, 2.5, 2, 0.08, 2500, out hv_RowsT, out hv_ColsT);
-
-                //* 根据特征点求两张图之间的仿射矩阵：HomMat2D
-                HOperatorSet.ProjMatchPointsRansac(ho_ImageT, ho_ImageF, hv_RowsT, hv_ColsT,
-                    hv_RowsF, hv_ColsF, "sad", 10, 0, 0, 100, 100, (new HTuple((new HTuple(-0.2)).TupleRad()
-                    )).TupleConcat((new HTuple(0.2)).TupleRad()), 10, "gold_standard", 0.2, 0,
-                    out hv_HomMat2D, out hv_Points1, out hv_Points2);
-                //*将ImageT进行放射变换以对齐两张图片
-                ho_TransImage.Dispose();
-                HOperatorSet.ProjectiveTransImage(ho_ImageT, out ho_TransImage, hv_HomMat2D,
-                    "bilinear", "false", "false");
-                //ho_ImageT.Dispose();
+                HTuple hv_Width = new HTuple(), hv_Height = new HTuple();
+                HTuple hv_WindowHandle = new HTuple(), hv_Font = new HTuple();
+                HTuple htuple = new HTuple(), htuple1 = new HTuple();
                 #endregion
 
-                #region//提取胶圈轮廓
-                ////将对齐后点胶之后的图片减去点胶之前图片
-                //ho_ImageSub.Dispose();
-                //HOperatorSet.SubImage(ho_ImageF, ho_TransImage, out ho_ImageSub, 0.95,110);
-                ////**对相减得到的图片进行处理，提出胶圈轮廓
-                ////平滑图像
-                //ho_ImageGauss.Dispose();
-                ////HOperatorSet.GaussFilter(ho_ImageSub, out ho_ImageGauss, 9);
-                //HOperatorSet.MedianImage(ho_ImageSub, out ho_ImageGauss,"circle", 2.5,"cyclic");
-                //ho_ImageSub.Dispose();
-                ////*阈值分割，采用区域生长法，控制参数tol=3, region阈值500000
-                //ho_Regions_R.Dispose();
-                //HOperatorSet.Regiongrowing(ho_ImageGauss, out ho_Regions_R, 4, 4, tol, area);
-                //ho_ImageGauss.Dispose();
-                ////对region进行开运算和闭运算，并合并region
-                //ho_RegionClosing.Dispose();
-                //HOperatorSet.ClosingCircle(ho_Regions_R, out ho_RegionClosing, 30);
-                //ho_RegionOpening1.Dispose();
-                //HOperatorSet.OpeningCircle(ho_RegionClosing, out ho_RegionOpening1, 11);
-                //ho_RegionUnion.Dispose();
-                //HOperatorSet.Union1(ho_RegionOpening1, out ho_RegionUnion);
+                #region 判断参数
+                //胶圈是否断开
+                hv_is_opened = 1;
+                //胶水外溢判断阈值
+                hv_glueoverflow_O = glueOverflowOutter;
+                //胶水内溢判断阈值
+                hv_glueoverflow_I = glueOverflowInner;
+                //胶水外圈缺胶判断胶阈值
+                hv_gluelack_O = glueLackOutter;
+                //胶水内圈缺胶判断阈值
+                hv_gluelack_I = glueLackInner;
+                //胶圈偏移判断阈值
+                hv_glueoffset = glueOffset;
+                //理论胶宽
+                hv_glueWidth = GlueWidth;
+                #endregion
 
-                ho_ImageSub.Dispose();
-
-                //HOperatorSet.AbsDiffImage(ho_ImageF, ho_TransImage, out ho_ImageSub, GlueFindParam.Instance.abs_diff_image_value);
-                HOperatorSet.SubImage(ho_ImageF, ho_TransImage, out ho_ImageSub, 0.95, 110);
-
+                ho_Image.Dispose();
+                Bitmap2HObject.Bitmap2HObj(bmp_with_no_glue, out ho_Image);
+                //24转8
+                ho_R.Dispose(); ho_G.Dispose(); ho_B.Dispose();
+                HOperatorSet.CountChannels(ho_Image, out htuple);
+                if (htuple == 3)
+                {
+                    HOperatorSet.Decompose3(ho_Image, out ho_R, out ho_G, out ho_B);
+                }
+                else
+                {
+                    ho_B = ho_Image.Clone();
+                }
+                //读取圆心Region
+                HOperatorSet.GetImageSize(ho_Image, out hv_Width, out hv_Height);
                 try
                 {
-                    HOperatorSet.WriteImage(ho_ImageSub, "jpg", 0, "C:\\Sub.jpg");
+                    ho_ROI_0.Dispose();
+                    HOperatorSet.ReadRegion(out ho_ROI_0, AppConfig.VisionLocateROI);
+                    ho_TMP_Region.Dispose();
+                    HOperatorSet.ReadRegion(out ho_TMP_Region, AppConfig.VisionLocateROI_Out);
+                    {
+                        HObject ExpTmpOutVar_0;
+                        HOperatorSet.SymmDifference(ho_ROI_0, ho_TMP_Region, out ExpTmpOutVar_0);
+                        ho_ROI_0.Dispose();
+                        ho_ROI_0 = ExpTmpOutVar_0;
+                    }
                 }
-                catch { }
-                HObject hpowimage, hscareimage;
-                HOperatorSet.GenEmptyObj(out hpowimage);
-                HOperatorSet.GenEmptyObj(out hscareimage);
-                hpowimage.Dispose();
-             
-                HOperatorSet.PowImage(ho_ImageSub, out hpowimage,1.0);
-              
-
-                hscareimage.Dispose();
-                HOperatorSet.ScaleImageMax(hpowimage, out hscareimage);
-                //**对相减得到的图片进行处理，提出胶圈轮廓
-                //平滑图像
-                ho_ImageGauss.Dispose();
-                //HOperatorSet.GaussFilter(ho_ImageSub, out ho_ImageGauss, 11);
-                HOperatorSet.MedianImage(hscareimage, out ho_ImageGauss, "circle", 2, "cyclic");
-                ho_ImageSub.Dispose();
-                //*阈值分割，采用区域生长法，控制参数tol=3, region阈值500000
-                ho_Regions_R.Dispose();
-                HOperatorSet.Regiongrowing(ho_ImageGauss, out ho_Regions_R, 4, 4, tol, area);
-
-                //提取胶圈区域region
-                ho_Rectangle.Dispose();
-                HOperatorSet.GenRectangle1(out ho_Rectangle, 0, 0, hv_Height, hv_Width);
-                ho_RegionDifference.Dispose();
-                //HOperatorSet.Difference(ho_Rectangle, ho_RegionUnion, out ho_RegionDifference);
-                HOperatorSet.Difference(ho_Rectangle, ho_Regions_R, out ho_RegionDifference);
-                HOperatorSet.CountObj(ho_RegionDifference, out hv_Number1);
-                ho_RegionOpening.Dispose();
-                HOperatorSet.OpeningCircle(ho_RegionDifference, out ho_RegionOpening, 30);
-                ho_Regionc.Dispose();
-                HOperatorSet.ClosingCircle(ho_RegionOpening, out ho_Regionc, 30);
-
-                ho_ConnectedRegions.Dispose();
-                HOperatorSet.Connection(ho_Regionc, out ho_ConnectedRegions);
-                ho_SelectedRegions.Dispose();
-                HOperatorSet.SelectShapeStd(ho_ConnectedRegions, out ho_SelectedRegions, "max_area", 70);
-                ho_RegionFillUp1.Dispose();
-                HOperatorSet.FillUpShape(ho_SelectedRegions, out ho_RegionFillUp1, "area", 1, 500);
-                ho_RegionErosion.Dispose();
-                HOperatorSet.ErosionCircle(ho_RegionFillUp1, out ho_RegionErosion, 2.5);
-                ho_Contours1.Dispose();
-                HOperatorSet.GenContourRegionXld(ho_RegionErosion, out ho_Contours1, "border_holes");
-                HOperatorSet.CountObj(ho_Contours1, out hv_Number2);
-                #endregion
-                HOperatorSet.QueryFont(Window, out hv_Font);
-                HOperatorSet.SetFont(Window, (hv_Font.TupleSelect(0)) + "-Bold-13");
-
-                #region//计算点胶区域内外圆
-                //***********************
-                //理论胶圈外圆
-                hv_glueOutterCircle = hv_glueInnerCircle + hv_glueWidth;
-                //理论胶圈圆心
-                hv_glueCenter = new HTuple(2);
-                hv_glueCenter[0] = CenterLocate.CenterLoc[1];
-                hv_glueCenter[1] = CenterLocate.CenterLoc[0];
-                HObject ho_Cross, ho_cir1, ho_cir2;
-                HOperatorSet.GenEmptyObj(out ho_Cross);
-                HOperatorSet.GenEmptyObj(out ho_cir1);
-                HOperatorSet.GenEmptyObj(out ho_cir2);
-                //xmz  显示 内外圆区域
-                HOperatorSet.SetColor(Window, "green");
-                HOperatorSet.SetDraw(Window,"margin"); ;
-                ho_Cross.Dispose(); ;
-
-                HOperatorSet.GenCrossContourXld(out ho_Cross, CenterLocate.CenterLoc[1], CenterLocate.CenterLoc[0],
-                       180, 0.785398);
-                HOperatorSet.DispObj(ho_ImageF, Window);
-                HOperatorSet.DispObj(ho_Cross, Window);
-                ho_cir1.Dispose();
-                HOperatorSet.GenCircle(out ho_cir1, CenterLocate.CenterLoc[1], CenterLocate.CenterLoc[0], hv_glueInnerCircle);
-                HOperatorSet.DispObj(ho_cir1, Window);
-                ho_cir2.Dispose();
-                HOperatorSet.GenCircle(out ho_cir2, CenterLocate.CenterLoc[1], CenterLocate.CenterLoc[0], hv_glueOutterCircle);
-                HOperatorSet.DispObj(ho_cir2, Window);
-                //***********************
-                #endregion
-
-                #region//检测胶圈是否封闭
-                if ((int)((new HTuple((new HTuple(hv_Number2.TupleEqual(2))).TupleAnd(new HTuple(hv_Number1.TupleEqual(
-            1))))).TupleNot()) != 0)
+                catch
                 {
-                    is_qualified = false;
-                    //HOperatorSet.DispObj(ho_ImageF, Window);
-                    HOperatorSet.SetLineWidth(Window, 2);
-                    HOperatorSet.SetColor(Window, "red");
-                    HOperatorSet.DispObj(ho_Contours1, Window);
-                    HOperatorSet.DispText(Window, "无胶或胶圈不完整NG", "window",
-                        15, 480, "red", "box","false");
-                    SetString(Window, "NG", "red", 100);
-                    #region
-                    ho_ImageT.Dispose();
-                    ho_ImageF.Dispose();
-                    ho_TransImage.Dispose();
-                    ho_ImageSub.Dispose();
-                    ho_ImageGauss.Dispose();
-                    ho_Regions_R.Dispose();
-                    ho_RegionClosing.Dispose();
-                    ho_RegionOpening1.Dispose();
-                    ho_RegionUnion.Dispose();
-                    ho_Rectangle.Dispose();
-                    ho_RegionDifference.Dispose();
-                    ho_RegionOpening.Dispose();
-                    ho_Regionc.Dispose();
-                    ho_ConnectedRegions.Dispose();
-                    ho_SelectedRegions.Dispose();
-                    ho_RegionFillUp1.Dispose();
-                    ho_RegionErosion.Dispose();
-                    ho_Contours1.Dispose();
-                    ho_Circle_mask_S.Dispose();
-                    ho_target_ring.Dispose();
-                    ho_target_ring_scale.Dispose();
+                    HOperatorSet.SetPart(Window, 0, 0, hv_Height - 1, hv_Width - 1);
+                    HOperatorSet.DispObj(ho_Image, Window);
+                    HOperatorSet.DispText(Window, "胶水检查失败,圆心ROI文件不存在！", "window", 12, 7, "black", new HTuple(), new HTuple());
+                    ho_Image.Dispose();
+                    ho_ROI_0.Dispose();
+                    ho_TMP_Region.Dispose();
+                    ho_ImageReduced.Dispose();
+                    ho_R.Dispose();
+                    ho_G.Dispose();
+                    ho_B.Dispose();
+                    ho_ImageMean.Dispose();
                     ho_Regions.Dispose();
-                    ho_RegionFillUp.Dispose();
-                    ho_RegionTrans.Dispose();
+                    ho_ConnectedRegions.Dispose();
+                    ho_SelectedRegions1.Dispose();
                     ho_Contours.Dispose();
+                    ho_SelectedContours.Dispose();
+                    ho_Contour.Dispose();
+                    ho_Image2.Dispose();
+                    ho_ImageAbsDiff.Dispose();
+                    ho_ImageReduced1.Dispose();
+                    ho_R1.Dispose();
+                    ho_G1.Dispose();
+                    ho_B1.Dispose();
+                    ho_Regions1.Dispose();
+                    ho_RegionFillUp1.Dispose();
+                    ho_ConnectedRegions1.Dispose();
+                    ho_RegionClosing1.Dispose();
+                    ho_Contours1.Dispose();
                     ho_glueOutterContour.Dispose();
                     ho_glueInnerContour.Dispose();
                     ho_Contour_I_sap.Dispose();
                     ho_Contour_O_sap.Dispose();
-                    ho_ContCircle_outter.Dispose();
-                    ho_ContCircle_Inner.Dispose();
-                    #endregion
-                    return is_qualified;
+                    return false;
                 }
-                #endregion
-
-                #region//胶圈封闭则进一步检查其它指标是否合格
+                //获取无胶圆心坐标
+                ho_ImageReduced.Dispose();
+                HOperatorSet.ReduceDomain(ho_B, ho_ROI_0, out ho_ImageReduced);
+                ho_ImageMean.Dispose();
+                HOperatorSet.MeanImage(ho_ImageReduced, out ho_ImageMean, 10, 10);
+                ho_Regions.Dispose();
+                HOperatorSet.Threshold(ho_ImageMean, out ho_Regions, CenterLocate.threshold_min, CenterLocate.threshold_max);
+                ho_ConnectedRegions.Dispose();
+                HOperatorSet.Connection(ho_Regions, out ho_ConnectedRegions);
+                ho_SelectedRegions1.Dispose();
+                HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions1, "area", "and", CenterLocate.areaMin, CenterLocate.areaMax);
+                HOperatorSet.CountObj(ho_SelectedRegions1, out hv_Number);
+                if ((int)(new HTuple(hv_Number.TupleEqual(1))) != 0)
+                {
+                    ho_Contours.Dispose();
+                    HOperatorSet.GenContourRegionXld(ho_SelectedRegions1, out ho_Contours, "border_holes");
+                    ho_SelectedContours.Dispose();
+                    HOperatorSet.SelectContoursXld(ho_Contours, out ho_SelectedContours, "contour_length", 1000, 20000, -0.5, 0.5);
+                    ho_Contour.Dispose();
+                    HOperatorSet.SelectObj(ho_SelectedContours, out ho_Contour, 2);
+                    HOperatorSet.FitCircleContourXld(ho_Contour, "algebraic", -1, 0, 0, 3, 2, out hv_Row,
+                        out hv_Column, out hv_Radius, out hv_StartPhi, out hv_EndPhi, out hv_PointOrder);
+                }
                 else
                 {
-                    
-                    #region
-                    ho_RegionClosing.Dispose();
-                    HOperatorSet.ClosingCircle(ho_Regions_R, out ho_RegionClosing, kernel);
-                    ho_RegionOpening1.Dispose();
-                    HOperatorSet.OpeningCircle(ho_RegionClosing, out ho_RegionOpening1, 15);
-                    ho_RegionUnion.Dispose();
-                    HOperatorSet.Union1(ho_RegionOpening1, out ho_RegionUnion);
-
-                    ho_Rectangle.Dispose();
-                    HOperatorSet.GenRectangle1(out ho_Rectangle, 0, 0, hv_Height, hv_Width);
-                    ho_RegionDifference.Dispose();
-                    HOperatorSet.Difference(ho_Rectangle, ho_RegionUnion, out ho_RegionDifference
-                        );
-
-                    ho_RegionOpening.Dispose();
-                    HOperatorSet.OpeningCircle(ho_RegionDifference, out ho_RegionOpening, 7);
-                    ho_Regionc.Dispose();
-                    HOperatorSet.ClosingCircle(ho_RegionOpening, out ho_Regionc, 9);
-
+                    HOperatorSet.SetPart(Window, 0, 0, hv_Height - 1, hv_Width - 1);
+                    HOperatorSet.DispObj(ho_Image, Window);
+                    HOperatorSet.DispText(Window, "圆心定位失败，阈值设置不正确！", "window", 12, 7, "black", new HTuple(), new HTuple());
+                    ho_Image.Dispose();
+                    ho_ROI_0.Dispose();
+                    ho_TMP_Region.Dispose();
+                    ho_ImageReduced.Dispose();
+                    ho_R.Dispose();
+                    ho_G.Dispose();
+                    ho_B.Dispose();
+                    ho_ImageMean.Dispose();
+                    ho_Regions.Dispose();
                     ho_ConnectedRegions.Dispose();
-                    HOperatorSet.Connection(ho_Regionc, out ho_ConnectedRegions);
-                    ho_SelectedRegions.Dispose();
-                    HOperatorSet.SelectShapeStd(ho_ConnectedRegions, out ho_SelectedRegions, "max_area",
-                        70);
-                    ho_RegionFillUp1.Dispose();
-                    HOperatorSet.FillUpShape(ho_SelectedRegions, out ho_RegionFillUp1, "area",
-                        1, 20000);
-                    ho_RegionErosion.Dispose();
-                    HOperatorSet.ErosionCircle(ho_RegionFillUp1, out ho_RegionErosion, 2.5);
-
+                    ho_SelectedRegions1.Dispose();
                     ho_Contours.Dispose();
-                    HOperatorSet.GenContourRegionXld(ho_RegionErosion, out ho_Contours, "border_holes");
+                    ho_SelectedContours.Dispose();
+                    ho_Contour.Dispose();
+                    ho_Image2.Dispose();
+                    ho_ImageAbsDiff.Dispose();
+                    ho_ImageReduced1.Dispose();
+                    ho_R1.Dispose();
+                    ho_G1.Dispose();
+                    ho_B1.Dispose();
+                    ho_Regions1.Dispose();
+                    ho_RegionFillUp1.Dispose();
+                    ho_ConnectedRegions1.Dispose();
+                    ho_RegionClosing1.Dispose();
+                    ho_Contours1.Dispose();
+                    ho_glueOutterContour.Dispose();
+                    ho_glueInnerContour.Dispose();
+                    ho_Contour_I_sap.Dispose();
+                    ho_Contour_O_sap.Dispose();
+                    return false;
+                }
+                //读取有胶图片
+                ho_Image2.Dispose();
+                Bitmap2HObject.Bitmap2HObj(bmp_with_glue, out ho_Image2);
+                //图像差值
+                ho_ImageAbsDiff.Dispose();
+                HOperatorSet.AbsDiffImage(ho_Image, ho_Image2, out ho_ImageAbsDiff, 1);
+                //设置胶水Region
+                ho_ROI_0.Dispose();
+                HOperatorSet.GenCircle(out ho_ROI_0, hv_Row, hv_Column, hv_Radius - hv_glueWidth - 100);
+                ho_TMP_Region.Dispose();
+                HOperatorSet.GenCircle(out ho_TMP_Region, hv_Row, hv_Column, hv_Radius + 100);
+                {
+                    HObject ExpTmpOutVar_0;
+                    HOperatorSet.SymmDifference(ho_ROI_0, ho_TMP_Region, out ExpTmpOutVar_0);
+                    ho_ROI_0.Dispose();
+                    ho_ROI_0 = ExpTmpOutVar_0;
+                }
+                //裁剪图片
+                ho_ImageReduced1.Dispose();
+                HOperatorSet.ReduceDomain(ho_ImageAbsDiff, ho_ROI_0, out ho_ImageReduced1);
+                ho_R1.Dispose(); ho_G1.Dispose(); ho_B1.Dispose();
+                HOperatorSet.CountChannels(ho_Image2, out htuple1);
+                if (htuple1 == 3)
+                {
+                    HOperatorSet.Decompose3(ho_ImageReduced1, out ho_R1, out ho_G1, out ho_B1);
+                }
+                else
+                {
+                    ho_B1 = ho_ImageReduced1.Clone();
+                }
+                //获取轮廓
+                ho_Regions1.Dispose();
+                HOperatorSet.Threshold(ho_B1, out ho_Regions1, threshold_min, threshold_max);
+                ho_RegionFillUp1.Dispose();
+                HOperatorSet.FillUpShape(ho_Regions1, out ho_RegionFillUp1, "area", 1, Fillarea);
+                ho_ConnectedRegions1.Dispose();
+                HOperatorSet.Connection(ho_RegionFillUp1, out ho_ConnectedRegions1);
+                ho_SelectedRegions1.Dispose();
+                HOperatorSet.SelectShape(ho_ConnectedRegions1, out ho_SelectedRegions1, "area", "and", Shapearea_min, Shapearea_max);
+                ho_RegionClosing1.Dispose();
+                HOperatorSet.ClosingCircle(ho_SelectedRegions1, out ho_RegionClosing1, 25);                
+                ho_Contours.Dispose();
+                HOperatorSet.GenContourRegionXld(ho_RegionClosing1, out ho_Contours, "border_holes");
+                ho_Contours1.Dispose();
+                HOperatorSet.SelectContoursXld(ho_Contours, out ho_Contours1, "contour_length", 200, 20000, -0.5, 0.5);
+                //判断胶圈是否封闭
+                HOperatorSet.CountObj(ho_Contours1, out hv_Number1);
+                if ((int)((new HTuple(hv_Number1.TupleEqual(2))).TupleNot()) != 0)
+                {
+                    hv_is_opened = 1;
+                    HOperatorSet.SetLineWidth(Window, 2);
+                    HOperatorSet.SetColor(Window, "red");
+                    HOperatorSet.DispObj(ho_Image2, Window);
+                    HOperatorSet.DispObj(ho_Contours, Window);
+                    HOperatorSet.DispText(Window, "胶圈不完整！", "window", 12, 7, "black", new HTuple(), new HTuple());
+                    return false;
+                }
+                else
+                {
+                    hv_is_opened = 0;
+                    //理论胶圈圆心
+                    hv_glueCenter = new HTuple();
+                    hv_glueCenter = hv_glueCenter.TupleConcat(hv_Row);
+                    hv_glueCenter = hv_glueCenter.TupleConcat(hv_Column);
+                    //理论胶圈内圆
+                    hv_glueInnerCircle = hv_Radius - hv_glueWidth;
+                    //理论胶圈外圆
+                    hv_glueOutterCircle = hv_Radius.Clone();
+                    //选择对应轮廓
                     ho_glueOutterContour.Dispose();
                     HOperatorSet.SelectObj(ho_Contours, out ho_glueOutterContour, 1);
                     ho_glueInnerContour.Dispose();
                     HOperatorSet.SelectObj(ho_Contours, out ho_glueInnerContour, 2);
+                    //轮廓坐标
                     HOperatorSet.GetContourXld(ho_glueInnerContour, out hv_Row2, out hv_Col1);
                     HOperatorSet.GetContourXld(ho_glueOutterContour, out hv_Row3, out hv_Col2);
+                    //采样
                     hv_Row_Inner_sampling = new HTuple();
                     hv_Col_Inner_sampling = new HTuple();
                     hv_k = 0;
-                    for (hv_i = 0; (int)hv_i <= (int)((new HTuple(hv_Row2.TupleLength())) - 1); hv_i = (int)hv_i + 50)
+                    for (hv_i = 0; (int)hv_i <= (int)((new HTuple(hv_Row2.TupleLength())) - 1); hv_i = (int)hv_i + 25)
                     {
                         if (hv_Row_Inner_sampling == null)
                             hv_Row_Inner_sampling = new HTuple();
@@ -545,7 +537,7 @@ namespace desay
                     hv_Row_Outter_sampling = new HTuple();
                     hv_Col_Outter_sampling = new HTuple();
                     hv_k = 0;
-                    for (hv_i = 0; (int)hv_i <= (int)((new HTuple(hv_Row3.TupleLength())) - 1); hv_i = (int)hv_i + 50)
+                    for (hv_i = 0; (int)hv_i <= (int)((new HTuple(hv_Row3.TupleLength())) - 1); hv_i = (int)hv_i + 25)
                     {
                         if (hv_Row_Outter_sampling == null)
                             hv_Row_Outter_sampling = new HTuple();
@@ -563,6 +555,7 @@ namespace desay
                         hv_Col_Outter_sampling = new HTuple();
                     hv_Col_Outter_sampling[new HTuple(hv_Col_Outter_sampling.TupleLength())] = hv_Col_Outter_sampling.TupleSelect(
                         0);
+                    //获取新的轮廓
                     ho_Contour_I_sap.Dispose();
                     HOperatorSet.GenContourPolygonXld(out ho_Contour_I_sap, hv_Row_Inner_sampling,
                         hv_Col_Inner_sampling);
@@ -578,12 +571,12 @@ namespace desay
                         out hv_DistanceMax);
                     HOperatorSet.TupleMin(hv_DistanceMin, out hv_glueWidthMin);
                     HOperatorSet.TupleMax(hv_DistanceMin, out hv_glueWidthMax);
-                    //*胶水内轮廓离边界的距离最大值最小值
+                    //*胶水离内轮廓边界的距离最大值最小值
                     HOperatorSet.DistancePc(ho_glueInnerContour, hv_glueCenter.TupleSelect(0),
                         hv_glueCenter.TupleSelect(1), out hv_DistanceMin1, out hv_DistanceMax1);
                     hv_Distance_inner_min = hv_DistanceMin1 - hv_glueInnerCircle;
                     hv_Distance_inner_max = hv_DistanceMax1 - hv_glueInnerCircle;
-                    //*胶水外轮廓离边界的距离最大最小值
+                    //*胶水离外轮廓边界的距离最大最小值
                     HOperatorSet.DistancePc(ho_glueOutterContour, hv_glueCenter.TupleSelect(0),
                         hv_glueCenter.TupleSelect(1), out hv_DistanceMin2, out hv_DistanceMax2);
                     hv_Distance_outter_min = hv_DistanceMin2 - hv_glueOutterCircle;
@@ -592,23 +585,9 @@ namespace desay
                     HOperatorSet.FitCircleContourXld(ho_glueOutterContour, "algebraic", -1, 0,
                         0, 3, 2, out hv_Row_Outter, out hv_Column_Outter, out hv_Radius_Outter,
                         out hv_StartPhi1, out hv_EndPhi1, out hv_PointOrder1);
-                    ho_ContCircle_outter.Dispose();
-                    HOperatorSet.GenCircleContourXld(out ho_ContCircle_outter, hv_Row_Outter, hv_Column_Outter,
-                        hv_Radius_Outter, 0, 6.28318, "positive", 1);
-                    HOperatorSet.DistancePc(ho_glueOutterContour, hv_Row_Outter, hv_Column_Outter,
-                        out hv_DistanceMin_Outter, out hv_DistanceMax_Outter);
-                    hv_Ddistance_Outter = hv_DistanceMax_Outter - hv_Radius_Outter;
-                    hv_Sdistance_Outter = hv_Radius_Outter - hv_DistanceMin_Outter;
-                    HOperatorSet.FitCircleContourXld(ho_glueInnerContour, "algebraic", -1, 0, 0,
-                        3, 2, out hv_Row_Inner, out hv_Column_Inner, out hv_Radius_Inner, out hv_StartPhi2,
-                        out hv_EndPhi2, out hv_PointOrder2);
-                    ho_ContCircle_Inner.Dispose();
-                    HOperatorSet.GenCircleContourXld(out ho_ContCircle_Inner, hv_Row_Inner, hv_Column_Inner,
-                        hv_Radius_Inner, 0, 6.28318, "positive", 1);
-                    HOperatorSet.DistancePc(ho_glueInnerContour, hv_Row_Inner, hv_Column_Inner,
-                        out hv_DistanceMin_Inner, out hv_DistanceMax_Inner);
-                    hv_Ddistance_Inner = hv_Radius_Inner - hv_DistanceMin_Inner;
-                    hv_Sdistance_Inner = hv_DistanceMax_Inner - hv_Radius_Inner;
+                    HOperatorSet.FitCircleContourXld(ho_glueInnerContour, "algebraic", -1, 0,
+                        0, 3, 2, out hv_Row_Inner, out hv_Column_Inner, out hv_Radius_Inner,
+                        out hv_StartPhi2, out hv_EndPhi2, out hv_PointOrder2);
                     //*利用拟合内外胶的圆心的平均值与拟合基准圆的圆心坐标判断偏移情况
                     hv_Row_glue = (hv_Row_Outter + hv_Row_Inner) / 2;
                     hv_Col_glue = (hv_Column_Outter + hv_Column_Inner) / 2;
@@ -616,171 +595,89 @@ namespace desay
                         1), hv_Row_glue, hv_Col_glue, out hv_Distance_offset);
                     //*算出拟合胶水的宽度
                     hv_Radius = hv_Radius_Outter - hv_Radius_Inner;
-                    //平滑轮廓
-                    HOperatorSet.SmoothContoursXld(ho_glueOutterContour, out SmoothedGlueOutterContour, 5);
-                    HOperatorSet.SmoothContoursXld(ho_glueInnerContour, out SmoothedGlueInnerContour, 5);
-
-                    //HOperatorSet.WriteString()
-                    #endregion
-                    if ((int)(new HTuple(hv_Distance_offset.TupleGreater(glueOffset_))) != 0)
+                    //**显示
+                    HOperatorSet.GetImageSize(ho_Image2, out hv_Width, out hv_Height);
+                    HOperatorSet.SetPart(Window, 0, 0, hv_Height - 1, hv_Width - 1);
+                    HOperatorSet.DispObj(ho_Image2, Window);
+                    HOperatorSet.QueryFont(Window, out hv_Font);
+                    HOperatorSet.SetFont(Window, (hv_Font.TupleSelect(0)) + "-Bold-15");
+                    HOperatorSet.SetColor(Window, "green");
+                    HOperatorSet.SetLineWidth(Window, 2);
+                    HOperatorSet.DispObj(ho_glueOutterContour, Window);
+                    HOperatorSet.DispObj(ho_glueInnerContour, Window);
+                    HOperatorSet.DispText(Window, (("胶离内边界最大 / 最小距离：" + hv_Distance_inner_max) + " / ") + hv_Distance_inner_min, "window", 15, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, (("胶离外边界最大 / 最小距离：" + hv_Distance_outter_max) + " / ") + hv_Distance_outter_min, "window", 40, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, "最小胶宽度：" + hv_glueWidthMin, "window", 65, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, "最大胶宽度：" + hv_glueWidthMax, "window", 90, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, "内外胶拟合圆宽度：" + hv_Radius, "window", 115, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, "胶偏移距离：" + hv_Distance_offset, "window", 140, 7, "black", new HTuple(), new HTuple());
+                    HOperatorSet.DispText(Window, "最大胶宽：" + hv_glueWidth, "window", 165, 7, "black", new HTuple(), new HTuple());
+                    if ((int)(new HTuple(hv_Distance_offset.TupleGreater(hv_glueoffset))) != 0)
                     {
-                        is_qualified = false;
-                        HOperatorSet.SetColor(Window, "red");
-                        HOperatorSet.SetLineWidth(Window, 2);
-                        HOperatorSet.DispObj(ho_ImageF, Window);
-                        HOperatorSet.DispObj(ho_glueOutterContour, Window);
-                        HOperatorSet.DispObj(ho_glueInnerContour, Window);
-                        //**显示
-                        HOperatorSet.DispText(Window, (("胶离内边界最大 / 最小距离：" + hv_Distance_inner_max) + " / ") + hv_Distance_inner_min,
-                            "window", 15, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, (("胶离外边界最大 / 最小距离：" + hv_Distance_outter_max) + " / ") + hv_Distance_outter_min,
-                            "window", 40, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "内外胶拟合圆宽度：" + hv_Radius,
-                            "window", 65, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "最小胶宽度：" + hv_glueWidthMin,
-                            "window", 90, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "最大胶宽度：" + hv_glueWidthMax,
-                            "window", 115, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "胶偏移距离：" + hv_Distance_offset,
-                            "window", 140, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "标准胶宽：" + hv_glueWidth,
-                            "window", 165, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "胶圈偏移NG", "window", 40,
-                            400, "red", "box",  "false");
-                        SetString(Window, "NG", "red", 100); ;
-                        #region//释放图像变量
-                        ho_ImageT.Dispose();
-                        ho_ImageF.Dispose();
-                        ho_TransImage.Dispose();
-                        ho_ImageSub.Dispose();
-                        ho_ImageGauss.Dispose();
-                        ho_Regions_R.Dispose();
-                        ho_RegionClosing.Dispose();
-                        ho_RegionOpening1.Dispose();
-                        ho_RegionUnion.Dispose();
-                        ho_Rectangle.Dispose();
-                        ho_RegionDifference.Dispose();
-                        ho_RegionOpening.Dispose();
-                        ho_Regionc.Dispose();
-                        ho_ConnectedRegions.Dispose();
-                        ho_SelectedRegions.Dispose();
-                        ho_RegionFillUp1.Dispose();
-                        ho_RegionErosion.Dispose();
-                        ho_Contours1.Dispose();
-                        ho_Circle_mask_S.Dispose();
-                        ho_target_ring.Dispose();
-                        ho_target_ring_scale.Dispose();
-                        ho_Regions.Dispose();
-                        ho_RegionFillUp.Dispose();
-                        ho_RegionTrans.Dispose();
-                        ho_Contours.Dispose();
-                        ho_glueOutterContour.Dispose();
-                        ho_glueInnerContour.Dispose();
-                        ho_Contour_I_sap.Dispose();
-                        ho_Contour_O_sap.Dispose();
-                        ho_ContCircle_outter.Dispose();
-                        ho_ContCircle_Inner.Dispose();
-                        #endregion
-                        return is_qualified;
+                        HOperatorSet.DispText(Window, "胶圈偏移", "window", 240, 300, "red", new HTuple(), new HTuple());
+                        result = false;
                     }
                     else
                     {
-                        
-                        HOperatorSet.SetColor(Window, "green");
-                        HOperatorSet.SetLineWidth(Window, 2);
-                        HOperatorSet.DispObj(ho_ImageF, Window);
-                        HOperatorSet.DispObj(ho_glueOutterContour, Window);
-                        HOperatorSet.DispObj(ho_glueInnerContour, Window);
-                        if ((int)(new HTuple(hv_Distance_outter_max.TupleGreater(glueoverflow_Outter))) != 0)
+                        if ((int)(new HTuple(hv_Distance_outter_max.TupleGreater(hv_glueoverflow_O))) != 0)
                         {
-                            HOperatorSet.DispText(Window, "外胶溢胶!NG", "window", 15, 400, "red", "box",  "false");
-                            is_qualified = false;
+                            result = false;
+                            HOperatorSet.DispText(Window, "外圈溢胶", "window", 215, 300, "red", new HTuple(), new HTuple());
                         }
-                        if ((int)(new HTuple(((hv_Distance_outter_min.TupleAbs())).TupleGreater(glueLack_Outter))) != 0)
+                        if ((int)(new HTuple(((hv_Distance_outter_min.TupleAbs())).TupleGreater(hv_gluelack_O))) != 0)
                         {
-                            HOperatorSet.DispText(Window, "外胶缺胶!NG", "window", 40, 400, "red", "box",  "false");
-                            is_qualified = false;
+                            result = false;
+                            HOperatorSet.DispText(Window, "外圈缺胶", "window", 240, 300, "red", new HTuple(), new HTuple());
                         }
-                        if ((int)(new HTuple(((hv_Distance_inner_min.TupleAbs())).TupleGreater(glueoverflow_Inner))) != 0)
+                        if ((int)(new HTuple(((hv_Distance_inner_min.TupleAbs())).TupleGreater(hv_glueoverflow_I))) != 0)
                         {
-                            HOperatorSet.DispText(Window, "内胶溢胶!NG", "window", 65, 400, "red", "box",  "false");
-                            is_qualified = false;
+                            result = false;
+                            HOperatorSet.DispText(Window, "内圈溢胶", "window", 265, 300, "red", new HTuple(), new HTuple());
                         }
-                        if ((int)(new HTuple(hv_Distance_inner_max.TupleGreater(glueLack_Inner))) != 0)
+                        if ((int)(new HTuple(hv_Distance_inner_max.TupleGreater(hv_gluelack_I))) != 0)
                         {
-                            HOperatorSet.DispText(Window, "内胶缺胶!NG", "window", 90, 400, "red", "box",  "false");
-                            is_qualified = false;
+                            result = false;
+                            HOperatorSet.DispText(Window, "内圈缺胶", "window", 290, 300, "red", new HTuple(), new HTuple());
                         }
-                        //if (hv_glueWidthMax > (hv_glueWidth + (glueOverflowOutter + glueOverflowInner) / 2.0))
-                        //{
-                        //    HOperatorSet.DispText(Window, "最大胶宽度超出！NG", "window", 115, 400, "red", "box", "false");
-                        //    is_qualified = false;
-                        //}
-                        //if (hv_glueWidthMin < (hv_glueWidth - (glueLackOutter + glueLackInner) / 2.0))
-                        //{
-                        //    HOperatorSet.DispText(Window, "最小胶宽度超出！NG", "window", 140, 400, "red", "box", "false");
-                        //    is_qualified = false;
-                        //}
-                        //**显示
-                        HOperatorSet.DispText(Window, (("胶离内边界最大 / 最小距离：" + hv_Distance_inner_max) + " / ") + hv_Distance_inner_min,
-                            "window", 15, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, (("胶离外边界最大 / 最小距离：" + hv_Distance_outter_max) + " / ") + hv_Distance_outter_min,
-                            "window", 40, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "内外胶拟合圆宽度：" + hv_Radius,
-                            "window", 65, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "最小胶宽度：" + hv_glueWidthMin,
-                            "window", 90, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "最大胶宽度：" + hv_glueWidthMax,
-                            "window", 115, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "胶偏移距离：" + hv_Distance_offset,
-                            "window", 140, 7, "green", "box", "false");
-                        HOperatorSet.DispText(Window, "标准胶宽：" + hv_glueWidth,
-                            "window", 165, 7, "green", "box", "false");
-
-                      if(is_qualified) SetString(Window, "OK", "green", 100);
-                        else SetString(Window, "NG", "red", 100); 
-                        #region//释放图像变量
-                        ho_ImageT.Dispose();
-                        ho_ImageF.Dispose();
-                        ho_TransImage.Dispose();
-                        ho_ImageSub.Dispose();
-                        ho_ImageGauss.Dispose();
-                        ho_Regions_R.Dispose();
-                        ho_RegionClosing.Dispose();
-                        ho_RegionOpening1.Dispose();
-                        ho_RegionUnion.Dispose();
-                        ho_Rectangle.Dispose();
-                        ho_RegionDifference.Dispose();
-                        ho_RegionOpening.Dispose();
-                        ho_Regionc.Dispose();
-                        ho_ConnectedRegions.Dispose();
-                        ho_SelectedRegions.Dispose();
-                        ho_RegionFillUp1.Dispose();
-                        ho_RegionErosion.Dispose();
-                        ho_Contours1.Dispose();
-                        ho_Circle_mask_S.Dispose();
-                        ho_target_ring.Dispose();
-                        ho_target_ring_scale.Dispose();
-                        ho_Regions.Dispose();
-                        ho_RegionFillUp.Dispose();
-                        ho_RegionTrans.Dispose();
-                        ho_Contours.Dispose();
-                        ho_glueOutterContour.Dispose();
-                        ho_glueInnerContour.Dispose();
-                        ho_Contour_I_sap.Dispose();
-                        ho_Contour_O_sap.Dispose();
-                        ho_ContCircle_outter.Dispose();
-                        ho_ContCircle_Inner.Dispose();
-                        #endregion
-
-                        return is_qualified;
                     }
-
-
                 }
-                #endregion
+                ho_Image.Dispose();
+                ho_ROI_0.Dispose();
+                ho_TMP_Region.Dispose();
+                ho_ImageReduced.Dispose();
+                ho_R.Dispose();
+                ho_G.Dispose();
+                ho_B.Dispose();
+                ho_ImageMean.Dispose();
+                ho_Regions.Dispose();
+                ho_ConnectedRegions.Dispose();
+                ho_SelectedRegions1.Dispose();
+                ho_Contours.Dispose();
+                ho_SelectedContours.Dispose();
+                ho_Contour.Dispose();
+                ho_Image2.Dispose();
+                ho_ImageAbsDiff.Dispose();
+                ho_ImageReduced1.Dispose();
+                ho_R1.Dispose();
+                ho_G1.Dispose();
+                ho_B1.Dispose();
+                ho_Regions1.Dispose();
+                ho_RegionFillUp1.Dispose();
+                ho_ConnectedRegions1.Dispose();
+                ho_RegionClosing1.Dispose();
+                ho_Contours1.Dispose();
+                ho_glueOutterContour.Dispose();
+                ho_glueInnerContour.Dispose();
+                ho_Contour_I_sap.Dispose();
+                ho_Contour_O_sap.Dispose();
+
+                return result;
             }
-            catch(HalconException ex) { SetString(Window, "NG", "red", 100); HOperatorSet.DispText(Window, ex.GetErrorMessage(), "window", 100, 0, "red", new HTuple(), new HTuple()); return false; }
+            catch (HalconException ex)
+            {
+                HOperatorSet.DispText(Window, ex.GetErrorMessage(), "window", 0, 10, "red", new HTuple(), new HTuple());
+                return false;
+            }
         }
 
         public static void GlueCheck_C(Bitmap bmp, HWindow window, bool ok, double[] distance)
@@ -861,7 +758,7 @@ namespace desay
                 HOperatorSet.SetColor(window, "red");
                 HOperatorSet.DispText(window, "胶路面积：" + RectGlueCheck.TotalAreas.ToString("") + " pix",
                      "window", 30, 7, "black", new HTuple(), new HTuple());
-                HOperatorSet.DispText(window, "等效矩形长宽：" + RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 2].ToString("") 
+                HOperatorSet.DispText(window, "等效矩形长宽：" + RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 2].ToString("")
                                                       + " ，" + RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 3].ToString(""), "window", 60, 7, "black", new HTuple(), new HTuple());
                 double MassPos_X = RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 0];
                 double MassPos_Y = RectGlueCheck.vaParticleReport.PixelMeasurements[RectGlueCheck.MaxMassIndex, 1];
@@ -907,12 +804,19 @@ namespace desay
 
         public static void TestBmp(Bitmap no_glue_bmp, Bitmap glue_bmp, HWindow hWindow, bool save)
         {
-            Marking.GluePosResult = action(no_glue_bmp, glue_bmp, hWindow);
-           
+            Marking.GlueCheckResult = action(no_glue_bmp, glue_bmp, hWindow);
+
+            if (Marking.GlueCheckResult)
+            {
+                SetString(hWindow, "OK", "green", 100);
+            }
+            else
+            {
+                SetString(hWindow, "NG", "red", 100);
+            }
             if (save)
             {
                 SaveImage.Save(hWindow);
-                
             }
 
         }

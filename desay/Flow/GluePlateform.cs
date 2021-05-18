@@ -74,7 +74,7 @@ namespace desay.Flow
                     GlueStopCylinder.Condition.External = AlarmReset;
                     GlueUpCylinder.Condition.External = AlarmReset;
 
-                    GlueHomeBit = /*IoPoints.IDI17.Value &&*/ IoPoints.IDI12.Value && Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z);
+                    GlueHomeBit = IoPoints.IDI12.Value && Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z);
 
                     #region 自动运行流程
                     if (stationOperate.Running)
@@ -87,60 +87,13 @@ namespace desay.Flow
                                 Marking.GlueCallOutFinish = false;
                                 Marking.GlueWorking = true;
                                 IoPoints.IDO19.Value = false;
-                                if (Marking.GlueHaveProduct/* && !Marking.GlueShield && !Marking.GlueFinishBit && (MesData.glueData.cleanData.CleanResult || Marking.CleanShield)*/)
+                                if (Marking.GlueHaveProduct)
                                 {
                                     Marking.GlueCallIn = false;
                                     if (GlueHomeBit)
                                         step = 50;
                                     else
                                         step = 10;
-                                }
-                                else
-                                {
-                                    Marking.GlueCallIn = true;
-                                    Marking.GlueFinishBit = false;
-                                }
-
-                                break;
-                            case 10:  //复位所有气缸的动作
-                                GlueStopCylinder.Reset();
-                                GlueUpCylinder.Reset();
-                                step = 20;
-                                break;
-                            case 20:    //判断所有气缸到位，启动Z轴回安全位
-                                if (GlueUpCylinder.OutOriginStatus)
-                                {
-                                    Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
-                                    step = 30;
-                                }
-                                break;
-                            case 30:  //判断Z轴是否在安全位
-                                if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
-                                {
-                                    step = 50;
-                                }
-                                break;
-                            case 50: //顶升气缸顶起
-                                if (GlueHomeBit)
-                                {
-                                    Thread.Sleep(50);
-                                    watchGlueCT.Restart();
-                                    Marking.GlueCycleTime = 0;
-                                    GlueUpCylinder.Set();
-                                    lock (MesData.GlueDataLock)
-                                    {
-                                        if (Marking.GlueHaveProduct && !Marking.GlueShield && (MesData.glueData.cleanData.CleanResult || Marking.CleanShield))
-                                        {
-                                            //step = 60;//相机定位拍照
-                                            //step = 120;//Z轴返回安全位
-                                            step = 51;//Z轴返回安全位
-                                        }
-                                        else
-                                        {
-                                            //Marking.GlueResult = true;
-                                            step = 210;//结束流程
-                                        }
-                                    }
                                 }
                                 else if (frmMain.NeedLeaveGlue && !Marking.LeaveShield)  //需要排胶且未屏蔽-自动排胶
                                 {
@@ -195,6 +148,7 @@ namespace desay.Flow
                                                 case 40://XY回点胶安全位置
                                                     if (!IoPoints.IDO19.Value)
                                                     {
+                                                        Thread.Sleep(1000);
                                                         MoveLine2Absolute(Xaxis, Yaxis, Position.Instance.GlueSafePosition, AxisParameter.Instance.RZspeed);
                                                         Lstep = 50;
                                                     }
@@ -211,6 +165,53 @@ namespace desay.Flow
                                         LogHelper.Error(ex.ToString());
                                     }
                                     step = 0;
+                                }
+                                else
+                                {
+                                    Marking.GlueCallIn = true;
+                                    Marking.GlueFinishBit = false;
+                                }
+
+                                break;
+                            case 10:  //复位所有气缸的动作
+                                GlueStopCylinder.Reset();
+                                GlueUpCylinder.Reset();
+                                step = 20;
+                                break;
+                            case 20:    //判断所有气缸到位，启动Z轴回安全位
+                                if (GlueUpCylinder.OutOriginStatus)
+                                {
+                                    Zaxis.MoveTo(Position.Instance.GlueSafePosition.Z, AxisParameter.Instance.RZspeed);
+                                    step = 30;
+                                }
+                                break;
+                            case 30:  //判断Z轴是否在安全位
+                                if (Zaxis.IsInPosition(Position.Instance.GlueSafePosition.Z))
+                                {
+                                    step = 50;
+                                }
+                                break;
+                            case 50: //顶升气缸顶起
+                                if (GlueHomeBit)
+                                {
+                                    Thread.Sleep(50);
+                                    watchGlueCT.Restart();
+                                    Marking.GlueCycleTime = 0;
+                                    GlueUpCylinder.Set();
+                                    lock (MesData.GlueDataLock)
+                                    {
+                                        if (Marking.GlueHaveProduct && !Marking.GlueShield && (MesData.glueData.cleanData.CleanResult || Marking.CleanShield))
+                                        {
+                                            //step = 60;//相机定位拍照
+                                            //step = 120;//Z轴返回安全位
+                                            step = 51;//Z轴返回安全位
+                                        }
+                                        else
+                                        {
+                                            //Marking.GlueResult = true;
+                                            step = 210;//结束流程
+                                        }
+                                    }
                                 }
                                 else
                                 {

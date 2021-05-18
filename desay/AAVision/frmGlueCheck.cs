@@ -1,4 +1,5 @@
 ﻿using desay.AAVision.Algorithm;
+using desay.ProductData;
 using HalconDotNet;
 using System;
 using System.Collections.Generic;
@@ -25,110 +26,26 @@ namespace desay.AAVision
         {
             InitializeComponent();
             Bitmap2HObject.Bitmap2HObj(bmpin, out image);
-            HOperatorSet.GetImageSize(image, out width, out height);
-            
+            HOperatorSet.GetImageSize(image, out width, out height);            
             str_imgSize = string.Format("{0}X{1}", width, height);
             HOperatorSet.SetPart(winContr_GCP.HalconWindow, 0, 0, height - 1, width - 1);
-            HOperatorSet.DispObj(image, winContr_GCP.HalconWindow);
-           
+            HOperatorSet.DispObj(image, winContr_GCP.HalconWindow);                     
+        }
+
+        private void frmGlueCheck_Load(object sender, EventArgs e)
+        {
             tB_GlueInnerCircle.Text = Convert.ToString((double)GlueCheck.GlueInnerCircle);
             tB_GlueWidth.Text = Convert.ToString((double)GlueCheck.GlueWidth);
-            textBox1.Text = Convert.ToString((double)GlueCheck.tol[0]);
-            textBox2.Text = Convert.ToString((double)GlueCheck.area);
-            textBox3.Text = Convert.ToString((double)GlueCheck.kernel);
-            textBox4.Text = Convert.ToString((double)GlueCheck.glueOverflowOutter);
-            textBox5.Text = Convert.ToString((double)GlueCheck.glueOverflowInner);
-            textBox6.Text = Convert.ToString((double)GlueCheck.glueOffset);
-            textBox7.Text = Convert.ToString((double)GlueCheck.glueLackOutter);
-            textBox8.Text = Convert.ToString((double)GlueCheck.glueLackInner);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //点击确定，将数据设置到函数里
-            
-
-                GlueCheck.GlueInnerCircle = double.Parse(tB_GlueInnerCircle.Text);
-                GlueCheck.GlueWidth = double.Parse(tB_GlueWidth.Text);
-                frmAAVision.WriteParamToFile();
-                MessageBox.Show("修改完成！", "提示信息",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace);
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //点击取消，将textbox里参数显示为函数里的数值
-            tB_GlueInnerCircle.Text = Convert.ToString((double)GlueCheck.GlueInnerCircle);
-            tB_GlueWidth.Text = Convert.ToString((double)GlueCheck.GlueWidth);
-        }
-
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
-        {
-            textBox1.Text = Convert.ToString(trackBar1.Value);
-        }
-
-        private void trackBar2_ValueChanged(object sender, EventArgs e)
-        {
-            textBox2.Text = Convert.ToString(trackBar2.Value);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                GlueCheck.tol = Convert.ToInt32(textBox1.Text);
-                GlueCheck.area = Convert.ToInt32(textBox2.Text);
-                frmAAVision.WriteParamToFile();
-                MessageBox.Show("修改完成！", "提示信息",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace);
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = (String)(GlueCheck.tol);
-            textBox2.Text = (String)(GlueCheck.area);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (textBox3.Text != null)
-                {
-                    GlueCheck.kernel = Convert.ToDouble(textBox3.Text);
-                    frmAAVision.WriteParamToFile();
-                    MessageBox.Show("设置完成！", "提示信息",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("没有输入！", "提示信息",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace);
-            }
-        }
-        
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            textBox3.Text = Convert.ToString((double)GlueCheck.kernel);
+            threshold_min.Text = Convert.ToString((double)GlueCheck.threshold_min);
+            threshold_max.Text = Convert.ToString((double)GlueCheck.threshold_max);
+            openarea.Text = Convert.ToString((double)GlueCheck.Shapearea_min);
+            closearea.Text = Convert.ToString((double)GlueCheck.Shapearea_max);
+            fillarea.Text = Convert.ToString((double)GlueCheck.Fillarea);
+            GlueOver_out.Text = Convert.ToString((double)GlueCheck.glueOverflowOutter);
+            GlueOver_in.Text = Convert.ToString((double)GlueCheck.glueOverflowInner);            
+            GlueLack_out.Text = Convert.ToString((double)GlueCheck.glueLackOutter);
+            GlueLack_in.Text = Convert.ToString((double)GlueCheck.glueLackInner);
+            GlueCenterOffset.Text = Convert.ToString((double)GlueCheck.glueOffset);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -136,19 +53,57 @@ namespace desay.AAVision
             try
             {
                 //点击确定，将数据设置到函数里
-                GlueCheck.glueOverflowOutter = Convert.ToDouble(textBox4.Text);
-                GlueCheck.glueOverflowInner = Convert.ToDouble(textBox5.Text);
-                GlueCheck.glueOffset = Convert.ToDouble(textBox6.Text);
-                GlueCheck.glueLackOutter = Convert.ToDouble(textBox7.Text);
-                GlueCheck.glueLackInner = Convert.ToDouble(textBox8.Text);
+                GlueCheck.GlueInnerCircle = double.Parse(tB_GlueInnerCircle.Text);
+                GlueCheck.GlueWidth = double.Parse(tB_GlueWidth.Text);
+                GlueCheck.threshold_min = Convert.ToDouble(threshold_min.Text);
+                GlueCheck.threshold_max = Convert.ToDouble(threshold_max.Text);
+                GlueCheck.Shapearea_min = Convert.ToDouble(openarea.Text);
+                GlueCheck.Shapearea_max = Convert.ToDouble(closearea.Text);
+                GlueCheck.Fillarea = Convert.ToDouble(fillarea.Text);
+                GlueCheck.glueOverflowOutter = Convert.ToDouble(GlueOver_out.Text);
+                GlueCheck.glueOverflowInner = Convert.ToDouble(GlueOver_in.Text);                
+                GlueCheck.glueLackOutter = Convert.ToDouble(GlueLack_out.Text);
+                GlueCheck.glueLackInner = Convert.ToDouble(GlueLack_in.Text);
+                GlueCheck.glueOffset = Convert.ToDouble(GlueCenterOffset.Text);
                 frmAAVision.WriteParamToFile();
-                MessageBox.Show("设置完成！", "提示信息",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("设置完成！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + ex.StackTrace);
             }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            tB_GlueInnerCircle.Text = Convert.ToString((double)GlueCheck.GlueInnerCircle);
+            tB_GlueWidth.Text = Convert.ToString((double)GlueCheck.GlueWidth);
+            threshold_min.Text = Convert.ToString((double)GlueCheck.threshold_min);
+            threshold_max.Text = Convert.ToString((double)GlueCheck.threshold_max);
+            openarea.Text = Convert.ToString((double)GlueCheck.Shapearea_min);
+            closearea.Text = Convert.ToString((double)GlueCheck.Shapearea_max);
+            fillarea.Text = Convert.ToString((double)GlueCheck.Fillarea);
+            GlueOver_out.Text = Convert.ToString((double)GlueCheck.glueOverflowOutter);
+            GlueOver_in.Text = Convert.ToString((double)GlueCheck.glueOverflowInner);
+            GlueLack_out.Text = Convert.ToString((double)GlueCheck.glueLackOutter);
+            GlueLack_in.Text = Convert.ToString((double)GlueCheck.glueLackInner);
+            GlueCenterOffset.Text = Convert.ToString((double)GlueCheck.glueOffset);
+        }
+
+        private void btnCreateRing_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("在右侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string fileName = AppConfig.VisonPath + "\\GlueCheckRegion.shm";
+            CreateModle Createtor = new CreateModle(fileName);
+            Createtor.DrawCircleRing(winContr_GCP.HalconWindow, image);
+        }
+
+        private void btnCreateCircle_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("在右侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string fileName = AppConfig.VisonPath + "\\GlueCheckRegion.shm";
+            CreateModle Createtor = new CreateModle(fileName);
+            Createtor.DrawCircle(winContr_GCP.HalconWindow, image);
         }
 
         private void winContr_GCP_HMouseMove(object sender, HMouseEventArgs e)
@@ -213,20 +168,5 @@ namespace desay.AAVision
 
             }
         }
-
-        private void frmGlueCheck_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            textBox4.Text = (String)(GlueCheck.glueOverflowOutter[0]);
-            textBox5.Text = (String)(GlueCheck.glueOverflowInner);
-            textBox6.Text = (String)(GlueCheck.glueOffset);
-            textBox7.Text = (String)(GlueCheck.glueLackOutter);
-            textBox8.Text = (String)(GlueCheck.glueLackInner);
-        }
-
     }
 }

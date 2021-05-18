@@ -31,11 +31,15 @@ namespace desay
             tB_r.Text = Convert.ToString(CenterLocate.circleRadius);
             textBox1.Text = Convert.ToString(CenterLocate.threshold_min);
             textBox2.Text = Convert.ToString(CenterLocate.threshold_max);
-            textBox3.Text = this.Text = Convert.ToString(CenterLocate.eroKernel);
+            textBox3.Text = Convert.ToString(CenterLocate.eroKernel);
             textBox4.Text = Convert.ToString(CenterLocate.areaMax);
             textBox5.Text = Convert.ToString(CenterLocate.areaMin);
         }
 
+        #region ROI
+        /// <summary>
+        /// 框选ROI区域
+        /// </summary>
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("在左侧图像里框取ROI区域，调整完后按鼠标右键以确定！", "提示信息",
@@ -47,11 +51,11 @@ namespace desay
             tB_r.Text = Convert.ToString(System.Math.Round(DR.radius[0].D, 4));
         }
 
+        //点击确定，将数据设置到函数里
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                //点击确定，将数据设置到函数里
                 CenterLocate.circleCenter_x = double.Parse(tB_x.Text);
                 CenterLocate.circleCenter_y = double.Parse(tB_y.Text);
                 CenterLocate.circleRadius = double.Parse(tB_r.Text);
@@ -65,6 +69,17 @@ namespace desay
             }
         }
 
+        //点击取消，将textbox里参数显示为函数里的数值
+        private void button2_Click(object sender, EventArgs e)
+        {
+            tB_x.Text = Convert.ToString(CenterLocate.circleCenter_x);
+            tB_y.Text = Convert.ToString(CenterLocate.circleCenter_y);
+            tB_r.Text = Convert.ToString(CenterLocate.circleRadius);
+        }
+
+        #endregion
+
+        #region 灰度阈值设定
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             textBox1.Text = Convert.ToString(trackBar1.Value);
@@ -85,12 +100,11 @@ namespace desay
             trackBar2.Value = Convert.ToInt32(textBox2.Text);
         }
 
+        //将灰度值写到函数参数里，判断数值是否合法，min应小于max
         private void button4_Click(object sender, EventArgs e)
         {
             try
             {
-                //用户点击确认，将灰度值写到函数参数里
-                //判断数值是否合法，min应小于max
                 if (Convert.ToInt32(textBox1.Text) > Convert.ToInt32(textBox2.Text))
                 {
                     MessageBox.Show("阈值不合法，最小阈值应小于最大阈值，请重新输入！", "提示信息",
@@ -104,7 +118,6 @@ namespace desay
                     frmAAVision.WriteParamToFile();
                     MessageBox.Show("修改完成！", "提示信息",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 }
             }
             catch (Exception ex)
@@ -114,14 +127,16 @@ namespace desay
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        //点击取消，将textbox里参数显示为函数里的数值
+        private void button5_Click(object sender, EventArgs e)
         {
-            //点击取消，将textbox里参数显示为函数里的数值
-            tB_x.Text = Convert.ToString(CenterLocate.circleCenter_x);
-            tB_y.Text = Convert.ToString(CenterLocate.circleCenter_y);
-            tB_r.Text = Convert.ToString(CenterLocate.circleRadius);
+            textBox1.Text = Convert.ToString(CenterLocate.threshold_min);
+            textBox2.Text = Convert.ToString(CenterLocate.threshold_max);
         }
 
+        #endregion
+
+        #region 面积阈值设定
         private void button6_Click(object sender, EventArgs e)
         {
             try
@@ -150,17 +165,18 @@ namespace desay
 
         private void button7_Click(object sender, EventArgs e)
         {
-
             textBox3.Text = Convert.ToString(CenterLocate.eroKernel);
             textBox4.Text = Convert.ToString(CenterLocate.areaMax);
             textBox5.Text = Convert.ToString(CenterLocate.areaMin);
         }
 
-        private void trackBar1_ValueChanged_1(object sender, EventArgs e)
-        {
-            textBox1.Text = Convert.ToString(trackBar1.Value);
-        }
+        #endregion
 
+        #region 模板
+
+        /// <summary>
+        /// 圆形ROI
+        /// </summary>
         private void button8_Click(object sender, EventArgs e)
         {
             MessageBox.Show("在左侧图像里框取ROI区域，调整完后按鼠标右键以确定！", "提示信息",
@@ -170,6 +186,9 @@ namespace desay
             Pen.DrawCircleRing(WinCtro_CLP.HalconWindow, fileName);
         }
 
+        /// <summary>
+        /// 矩形ROI
+        /// </summary>
         private void button9_Click(object sender, EventArgs e)
         {
             MessageBox.Show("在左侧图像里框取ROI区域，调整完后按鼠标右键以确定！", "提示信息",
@@ -179,42 +198,10 @@ namespace desay
             Pen.DrawRectangleROI(WinCtro_CLP.HalconWindow, fileName);
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
-            CreateModle Createtor = new CreateModle(fileName);
-            Createtor.DrawCircle(WinCtro_CLP.HalconWindow, image);
-        }
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
-            CreateModle Createtor = new CreateModle(fileName);
-            Createtor.DrawEllipse(WinCtro_CLP.HalconWindow, image);
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
-            CreateModle Createtor = new CreateModle(fileName);
-            Createtor.DrawRectangle(WinCtro_CLP.HalconWindow, image);
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
-            CreateModle Createtor = new CreateModle(fileName);
-            Createtor.DrawRegion(WinCtro_CLP.HalconWindow, image);
-        }
-
+        /// <summary>
+        /// 圆环ROI
+        /// </summary>
         private void button14_Click(object sender, EventArgs e)
         {
             MessageBox.Show("在左侧图像里框取ROI区域，调整完后按鼠标右键以确定！", "提示信息",
@@ -224,7 +211,46 @@ namespace desay
             Pen.DrawCircleRingROI(WinCtro_CLP.HalconWindow, fileName);
         }
 
-        private void button13_Click_1(object sender, EventArgs e)
+        /// <summary>
+        /// 圆形模板
+        /// </summary>
+        private void button10_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
+            CreateModle Createtor = new CreateModle(fileName);
+            Createtor.DrawCircle(WinCtro_CLP.HalconWindow, image);
+        }
+
+        /// <summary>
+        /// 椭圆模板
+        /// </summary>
+        private void button11_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
+            CreateModle Createtor = new CreateModle(fileName);
+            Createtor.DrawEllipse(WinCtro_CLP.HalconWindow, image);
+        }
+
+        /// <summary>
+        /// 矩形模板
+        /// </summary>
+        private void button12_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string fileName = AppConfig.VisonPath + "\\CenterModle.shm";
+            CreateModle Createtor = new CreateModle(fileName);
+            Createtor.DrawRectangle(WinCtro_CLP.HalconWindow, image);
+        }
+
+        /// <summary>
+        /// 圆环模板
+        /// </summary>
+        private void button13_Click(object sender, EventArgs e)
         {
             MessageBox.Show("在左侧图像里框取模板区域，调整完后按鼠标右键以确定！", "提示信息",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -233,12 +259,6 @@ namespace desay
             Createtor.DrawCircleRing(WinCtro_CLP.HalconWindow, image);
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            //点击取消，将textbox里参数显示为函数里的数值
-            textBox1.Text = Convert.ToString(CenterLocate.threshold_min);
-            textBox2.Text = Convert.ToString(CenterLocate.threshold_max);
-  
-        }
+        #endregion
     }
 }

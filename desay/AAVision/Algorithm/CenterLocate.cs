@@ -1,15 +1,19 @@
 ﻿using desay.AAVision.Algorithm;
 using desay.ProductData;
 using HalconDotNet;
+using log4net;
+using System;
 using System.Drawing;
 namespace desay
 {
     static class CenterLocate
     {
-        //public static string ROIFileName = @"./Resources/CenterLocROI.hobj";
-        //public static string ModelFileName = @"./Resources/CenterModle.shm";
+        public static ILog log = LogManager.GetLogger(typeof(CenterLocate));
         public static double[] CenterLoc = new double[2];
-        public static Bitmap LastCenterLocateBMP; //存储上一次圆心识别的图片，用于胶水识别中的模板匹配
+        /// <summary>
+        /// 存储上一次圆心识别的图片，用于胶水识别中的模板匹配
+        /// </summary>
+        public static Bitmap LastCenterLocateBMP; 
 
         #region // 控制参数
         //*圆区域控制参数
@@ -75,144 +79,9 @@ namespace desay
         }
         #endregion
 
-        public static double[] action(Bitmap bmp, HWindow Window)
-        {
-            // 声明图像变量
-            #region
-            HObject ho_src_image, ho_Circle_mask_S, ho_Circle_mask_L;
-            HObject ho_ImageReduced, ho_target_ring_mask, ho_target_ring;
-            HObject ho_target_ring_scale, ho_Regions, ho_ConnectedRegions;
-            HObject ho_SelectedRegions, ho_RegionErosion, ho_Rectangle;
-            HObject ho_Contours, ho_Cross;
-            #endregion
-            // 声明控制变量 
-            #region
-            HTuple hv_Width = null, hv_Height = null;
-            HTuple hv_Row = null, hv_Column = null;
-            HTuple hv_Row2 = null, hv_Column2 = null;
-            HTuple hv_target_center_X = null, hv_target_center_Y = null;
-            #endregion
-            //初始化图像变量
-            #region
-            // Initialize local and output iconic variables 
-            HOperatorSet.GenEmptyObj(out ho_src_image);
-            HOperatorSet.GenEmptyObj(out ho_Circle_mask_S);
-            HOperatorSet.GenEmptyObj(out ho_Circle_mask_L);
-            HOperatorSet.GenEmptyObj(out ho_ImageReduced);
-            HOperatorSet.GenEmptyObj(out ho_target_ring_mask);
-            HOperatorSet.GenEmptyObj(out ho_target_ring);
-            HOperatorSet.GenEmptyObj(out ho_target_ring_scale);
-            HOperatorSet.GenEmptyObj(out ho_Regions);
-            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_SelectedRegions);
-            HOperatorSet.GenEmptyObj(out ho_RegionErosion);
-            HOperatorSet.GenEmptyObj(out ho_Rectangle);
-            HOperatorSet.GenEmptyObj(out ho_Contours);
-            HOperatorSet.GenEmptyObj(out ho_Cross);
-            #endregion
-            //**2020-6-18
-            //识别点胶的环形区域
-            //读取图片
-            ho_src_image.Dispose();
-            Bitmap2HObject.Bitmap2HObj(bmp, out ho_src_image);
-            //获取图片尺寸
-            HOperatorSet.GetImageSize(ho_src_image, out hv_Width, out hv_Height);
-            //显示图片
-            HOperatorSet.SetPart(Window, 0, 0, hv_Height - 1, hv_Width - 1);
-            HOperatorSet.DispObj(ho_src_image, Window);
-
-
-            //**将点胶区域target_ring粗略划分出来
-            //创建圆并取得圆环状Region
-            ho_Circle_mask_S.Dispose();
-            HOperatorSet.GenCircle(out ho_Circle_mask_S, hv_circle_center_x, hv_circle_center_y,
-                hv_circle_radius);
-            ho_Circle_mask_L.Dispose();
-            HOperatorSet.GenCircle(out ho_Circle_mask_L, hv_circle_center_x, hv_circle_center_y,
-                hv_circle_radius + hv_offset);
-            ho_ImageReduced.Dispose();
-            HOperatorSet.ReduceDomain(ho_src_image, ho_Circle_mask_S, out ho_ImageReduced
-                );
-            ho_target_ring_mask.Dispose();
-            HOperatorSet.Difference(ho_ImageReduced, ho_Circle_mask_L, out ho_target_ring_mask
-                );
-            ho_target_ring.Dispose();
-            HOperatorSet.ReduceDomain(ho_ImageReduced, ho_target_ring_mask, out ho_target_ring
-                );
-            ho_Circle_mask_S.Dispose();
-            ho_ImageReduced.Dispose();
-            ho_target_ring_mask.Dispose();
-            ho_Circle_mask_L.Dispose();
-            //**精确定位点胶区域
-            //增强对比度
-            ho_target_ring_scale.Dispose();
-            HOperatorSet.ScaleImageMax(ho_target_ring, out ho_target_ring_scale);
-            //阈值划分
-            ho_Regions.Dispose();
-            HOperatorSet.Threshold(ho_target_ring_scale, out ho_Regions, hv_threshold_gray_min,
-                hv_threshold_gray_max);
-            //腐蚀，去除“毛边”
-            ho_RegionErosion.Dispose();
-            HOperatorSet.ErosionCircle(ho_Regions, out ho_RegionErosion, ero);
-            //联通区域
-            ho_ConnectedRegions.Dispose();
-            HOperatorSet.Connection(ho_RegionErosion, out ho_ConnectedRegions);
-
-            //选出面积最大的Region
-            ho_SelectedRegions.Dispose();
-            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions, "area",
-                "and", _areaMin, _areaMax);
-
-            //求region的最小外接矩形
-            HOperatorSet.SmallestRectangle1(ho_SelectedRegions, out hv_Row, out hv_Column,
-                 out hv_Row2, out hv_Column2);
-            //创建矩形region并取得XLD轮廓，用于显示
-            ho_Rectangle.Dispose();
-            HOperatorSet.GenRectangle1(out ho_Rectangle, hv_Row, hv_Column, hv_Row2, hv_Column2);
-            ho_Contours.Dispose();
-            HOperatorSet.GenContourRegionXld(ho_Rectangle, out ho_Contours, "border");
-
-            hv_target_center_X = hv_Column + ((hv_Column2 - hv_Column) / 2);
-            hv_target_center_Y = hv_Row + ((hv_Row2 - hv_Row) / 2);
-
-            ho_Cross.Dispose();
-            HOperatorSet.GenCrossContourXld(out ho_Cross, hv_target_center_Y, hv_target_center_X,
-                180, 0.785398);
-            HOperatorSet.SetLineWidth(Window, 2);
-            HOperatorSet.SetColor(Window, "green");
-            HOperatorSet.DispObj(ho_Cross, Window);
-            HOperatorSet.DispObj(ho_Contours, Window);
-
-
-
-            //释放图像变量
-            #region
-            ho_src_image.Dispose();
-
-
-
-
-            ho_target_ring.Dispose();
-            ho_target_ring_scale.Dispose();
-            ho_Regions.Dispose();
-            ho_ConnectedRegions.Dispose();
-            ho_SelectedRegions.Dispose();
-            ho_RegionErosion.Dispose();
-            ho_Rectangle.Dispose();
-            ho_Contours.Dispose();
-            ho_Cross.Dispose();
-            #endregion
-            double[] offset = new double[2];
-            offset[0] = ((hv_target_center_X[0] - ( hv_Width[0] / 2)) * 0.0096);
-            offset[1] = -1 * ((hv_target_center_Y[0] - (hv_Height[0] / 2)) * 0.0096);
-
-            HOperatorSet.DispText(Window, "X方向偏差：" + System.Math.Round(offset[0], 4) + " mm",
-                 "window", 12, 7, "black", new HTuple(), new HTuple());
-            HOperatorSet.DispText(Window, "Y方向偏差：" + System.Math.Round(offset[1], 4) + " mm",
-                "window", 30, 7, "black", new HTuple(), new HTuple());
-
-            return offset;
-        }
+        /// <summary>
+        /// 显示图像
+        /// </summary>
         public static void ShowIMg(Bitmap bmp, HWindow window)
         {
             try
@@ -225,116 +94,236 @@ namespace desay
                 HOperatorSet.GetImageSize(image, out width, out height);
                 HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
                 HOperatorSet.DispObj(image, window);
-               
+
             }
             catch
             {
-                
+
             }
         }
+
         /// <summary>
         /// 圆心模板匹配
         /// </summary>
-        /// <param name="window"></param>
-        /// <param name="image"></param>
-        /// <param name="ROIFileName"></param>
-        /// <param name="ModelFileName"></param>
-        /// <returns></returns>
-        public static double[] CenterMatch(Bitmap bmp,  HWindow window)
+        public static double[] CenterMatch(Bitmap bmp, HWindow window)
         {
             try
             {
-                HObject image ,img_old;
-                HOperatorSet.GenEmptyObj(out image);
-                HOperatorSet.GenEmptyObj(out img_old);
-                img_old.Dispose();
-                Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
+                LastCenterLocateBMP = bmp;
+                double[] data = new double[] { -100, -100 };
 
-                HTuple htuple;
-                HOperatorSet.CountChannels(img_old, out htuple);
-                image.Dispose();
-                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
-                else image = img_old.Clone();
+                #region 变量
+                // Local iconic variables  
+                HObject ho_Image, ho_ROI_0, ho_TMP_Region;
+                HObject ho_ImageReduced, ho_R, ho_G, ho_B, ho_ImageMean;
+                HObject ho_Regions, ho_ConnectedRegions, ho_SelectedRegions1;
+                HObject ho_Contours = null, ho_Contour = null, ho_ContCircle;
+                HObject ho_Cross, ho_SelectedContours = null;
+                // Local control variables 
+                HTuple htuple, hv_Number = null, hv_Row = new HTuple();
+                HTuple hv_Column = new HTuple(), hv_Radius = new HTuple();
+                HTuple hv_StartPhi = new HTuple(), hv_EndPhi = new HTuple();
+                HTuple hv_PointOrder = new HTuple();
+                #endregion
 
-                HTuple width, height;
-                HOperatorSet.GetImageSize(image, out width, out height);
-                HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
-                HOperatorSet.DispObj(image, window);
-                HOperatorSet.SetLineWidth(window, 3);
-                HOperatorSet.SetColor(window, "red");
-                double[] data = TempalteMatch.action(window, image, AppConfig.VisonPath + "\\CenterLocROI.hobj", AppConfig.VisonPath + "\\CenterModle.shm");
-                if (data[0] == -100 || data[1] == -100)
+                #region 变量初始化
+                HOperatorSet.GenEmptyObj(out ho_Image);
+                HOperatorSet.GenEmptyObj(out ho_ROI_0);
+                HOperatorSet.GenEmptyObj(out ho_TMP_Region);
+                HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+                HOperatorSet.GenEmptyObj(out ho_R);
+                HOperatorSet.GenEmptyObj(out ho_G);
+                HOperatorSet.GenEmptyObj(out ho_B);
+                HOperatorSet.GenEmptyObj(out ho_ImageMean);
+                HOperatorSet.GenEmptyObj(out ho_Regions);
+                HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
+                HOperatorSet.GenEmptyObj(out ho_SelectedRegions1);
+                HOperatorSet.GenEmptyObj(out ho_Contours);
+                HOperatorSet.GenEmptyObj(out ho_SelectedContours);
+                HOperatorSet.GenEmptyObj(out ho_Contour);
+                HOperatorSet.GenEmptyObj(out ho_ContCircle);
+                HOperatorSet.GenEmptyObj(out ho_Cross);
+                #endregion                
+
+                #region 获取圆心坐标
+                ho_Image.Dispose();
+                //bmp转HObiect
+                Bitmap2HObject.Bitmap2HObj(bmp, out ho_Image);
+                //转灰度图                
+                HOperatorSet.CountChannels(ho_Image, out htuple);
+
+                if (htuple == 3)
                 {
-                    HOperatorSet.DispText(window, "识别失败",
-                             "window", 12, 7, "black", new HTuple(), new HTuple());
-                    try
-                    {
-
-                        SetString(window, "NG", "red", 100);
-                    }
-                    catch { }
-                    return data;
+                    ho_R.Dispose();
+                    ho_G.Dispose();
+                    ho_B.Dispose();
+                    HOperatorSet.Decompose3(ho_Image, out ho_R, out ho_G, out ho_B);
                 }
                 else
                 {
-                    CenterLoc[0] = data[0];
-                    CenterLoc[1] = data[1];
-                    HObject ho_Cross = null;
-
-                    HOperatorSet.DispText(window, "X像素：" + System.Math.Round(data[0], 4) + "  Y像素："+ System.Math.Round(data[1], 4) + " pixel",
-                        "window", 10, 7, "black", new HTuple(), new HTuple());
-
-                    HOperatorSet.GenEmptyObj(out ho_Cross);
-                    ho_Cross.Dispose();
-                    HOperatorSet.GenCrossContourXld(out ho_Cross, data[1], data[0],
-                        180, 0.785398);
-
-                    //data[0] = (data[0] - width / 2) * 0.0096;
-                    //data[1] = -1 * ((data[1] - height / 2) * 0.0096);
-                    
-                    data[0] = (data[0] - width / 2) * Config.Instance.CameraPixelMM_X;
-                    data[1] = 1 * ((data[1] - height / 2) * Config.Instance.CameraPixelMM_Y) ;
-
-                    HOperatorSet.DispObj(ho_Cross, window);
-
-                    HOperatorSet.DispText(window, "X方向偏差：" + System.Math.Round(data[0], 4) + " mm",
-                         "window", 30, 7, "black", new HTuple(), new HTuple());
-                    HOperatorSet.DispText(window, "Y方向偏差：" + System.Math.Round(data[1], 4) + " mm",
-                        "window", 50, 7, "black", new HTuple(), new HTuple());
-                    Marking.CenterLocateTestSucceed = true;
-                    SetString(window, "OK", "green", 100);
-                    return data;
+                    ho_B.Dispose();
+                    ho_B = ho_Image.Clone();
                 }
-            }
-            catch
-            {
+
+                HTuple width = null, height = null;
+                HOperatorSet.GetImageSize(ho_B, out width, out height);
+
                 try
                 {
-
-                    SetString(window, "NG", "red", 100);
+                    ho_ROI_0.Dispose();
+                    HOperatorSet.ReadRegion(out ho_ROI_0, AppConfig.VisionLocateROI);
+                    ho_TMP_Region.Dispose();
+                    HOperatorSet.ReadRegion(out ho_TMP_Region, AppConfig.VisionLocateROI_Out);
+                    {
+                        HObject ExpTmpOutVar_0;
+                        HOperatorSet.SymmDifference(ho_ROI_0, ho_TMP_Region, out ExpTmpOutVar_0);
+                        ho_ROI_0.Dispose();
+                        ho_ROI_0 = ExpTmpOutVar_0;
+                    }
                 }
-                catch { }
-                Marking.CenterLocateTestSucceed = false;
-                return null;
-            } 
+                catch
+                {
+                    HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                    HOperatorSet.DispObj(ho_Image, window);
+                    HOperatorSet.DispText(window, "圆心定位失败,ROI文件不存在！", "window", 12, 7, "black", new HTuple(), new HTuple());
+                    ho_Image.Dispose();
+                    ho_ROI_0.Dispose();
+                    ho_TMP_Region.Dispose();
+                    ho_ImageReduced.Dispose();
+                    ho_R.Dispose();
+                    ho_G.Dispose();
+                    ho_B.Dispose();
+                    ho_ImageMean.Dispose();
+                    ho_Regions.Dispose();
+                    ho_ConnectedRegions.Dispose();
+                    ho_SelectedRegions1.Dispose();
+                    ho_Contours.Dispose();
+                    ho_SelectedContours.Dispose();
+                    ho_Contour.Dispose();
+                    ho_ContCircle.Dispose();
+                    ho_Cross.Dispose();
+                    return data;
+                }
+
+                ho_ImageReduced.Dispose();
+                HOperatorSet.ReduceDomain(ho_B, ho_ROI_0, out ho_ImageReduced);
+                ho_ImageMean.Dispose();
+                HOperatorSet.MeanImage(ho_ImageReduced, out ho_ImageMean, 10, 10);
+                ho_Regions.Dispose();
+                HOperatorSet.Threshold(ho_ImageMean, out ho_Regions, threshold_min, threshold_max);
+                ho_ConnectedRegions.Dispose();
+                HOperatorSet.Connection(ho_Regions, out ho_ConnectedRegions);
+                ho_SelectedRegions1.Dispose();
+                HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions1, "area", "and", areaMin, areaMax);
+                HOperatorSet.CountObj(ho_SelectedRegions1, out hv_Number);
+                if ((int)(new HTuple(hv_Number.TupleEqual(1))) != 0)
+                {
+                    ho_Contours.Dispose();
+                    HOperatorSet.GenContourRegionXld(ho_SelectedRegions1, out ho_Contours, "border_holes");
+                    ho_SelectedContours.Dispose();
+                    HOperatorSet.SelectContoursXld(ho_Contours, out ho_SelectedContours, "contour_length", 1000, 20000, -0.5, 0.5);
+                    ho_Contour.Dispose();
+                    HOperatorSet.SelectObj(ho_SelectedContours, out ho_Contour, 2);
+                    HOperatorSet.FitCircleContourXld(ho_Contour, "algebraic", -1, 0, 0, 3, 2, out hv_Row,
+                        out hv_Column, out hv_Radius, out hv_StartPhi, out hv_EndPhi, out hv_PointOrder);
+                    ho_ContCircle.Dispose();
+                    HOperatorSet.GenCircleContourXld(out ho_ContCircle, hv_Row, hv_Column, hv_Radius, 0, 6.28318, "positive", 1);
+
+                    data[0] = hv_Column;
+                    data[1] = hv_Row;
+                }
+                else
+                {
+                    HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                    HOperatorSet.DispObj(ho_Image, window);
+                    HOperatorSet.DispText(window, "圆心定位失败，阈值设置不正确！", "window", 12, 7, "black", new HTuple(), new HTuple());
+                    ho_Image.Dispose();
+                    ho_ROI_0.Dispose();
+                    ho_TMP_Region.Dispose();
+                    ho_ImageReduced.Dispose();
+                    ho_R.Dispose();
+                    ho_G.Dispose();
+                    ho_B.Dispose();
+                    ho_ImageMean.Dispose();
+                    ho_Regions.Dispose();
+                    ho_ConnectedRegions.Dispose();
+                    ho_SelectedRegions1.Dispose();
+                    ho_Contours.Dispose();
+                    ho_SelectedContours.Dispose();
+                    ho_Contour.Dispose();
+                    ho_ContCircle.Dispose();
+                    ho_Cross.Dispose();
+                    return data;
+                }
+
+                #endregion
+
+                #region 显示图像
+
+                CenterLoc[0] = data[0];
+                CenterLoc[1] = data[1];
+                data[0] = (data[0] - width / 2) * Config.Instance.CameraPixelMM_X;
+                data[1] = (data[1] - height / 2) * Config.Instance.CameraPixelMM_Y;
+                //边缘
+                HOperatorSet.SetDraw(window, "margin");
+                HOperatorSet.SetLineWidth(window, 3);
+                HOperatorSet.SetColor(window, "red");
+                HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
+                HOperatorSet.DispObj(ho_Image, window);
+                HOperatorSet.DispObj(ho_ContCircle, window);
+                //中心
+                HOperatorSet.SetColor(window, "green");
+                HOperatorSet.GenEmptyObj(out ho_Cross);
+                ho_Cross.Dispose();
+                HOperatorSet.GenCrossContourXld(out ho_Cross, CenterLoc[1], CenterLoc[0],
+                    180, 0.785398);
+                HOperatorSet.DispObj(ho_Cross, window);
+                //文字
+                HOperatorSet.DispText(window, "X像素：" + System.Math.Round(CenterLoc[0], 3) + " pixel" + "    Y像素：" + System.Math.Round(CenterLoc[1], 3) + " pixel",
+                                     "window", 10, 7, "black", new HTuple(), new HTuple());
+                HOperatorSet.DispText(window, "X方向偏差：" + System.Math.Round(data[0], 4) + " mm",
+                     "window", 30, 7, "black", new HTuple(), new HTuple());
+                HOperatorSet.DispText(window, "Y方向偏差：" + System.Math.Round(data[1], 4) + " mm",
+                    "window", 50, 7, "black", new HTuple(), new HTuple());
+
+                ho_Image.Dispose();
+                ho_ROI_0.Dispose();
+                ho_TMP_Region.Dispose();
+                ho_ImageReduced.Dispose();
+                ho_R.Dispose();
+                ho_G.Dispose();
+                ho_B.Dispose();
+                ho_ImageMean.Dispose();
+                ho_Regions.Dispose();
+                ho_ConnectedRegions.Dispose();
+                ho_SelectedRegions1.Dispose();
+                ho_Contours.Dispose();
+                ho_SelectedContours.Dispose();
+                ho_Contour.Dispose();
+                ho_ContCircle.Dispose();
+                ho_Cross.Dispose();
+
+                return data;
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                HOperatorSet.DispText(window, "圆心定位失败！" + ex.Message, "window", 12, 7, "black", new HTuple(), new HTuple());
+                log.Debug("圆心定位异常！" + ex.Message + ex.StackTrace);
+                return new double[] { -100, -100 };
+            }
         }
 
-        public static void RectangleMatch(Bitmap bmp, HWindow window,bool ok,double a,double b)
+        public static void RectangleMatch(Bitmap bmp, HWindow window, bool ok, double a, double b)
         {
             try
             {
-                HObject image, img_old;
+                HObject image;
                 HOperatorSet.GenEmptyObj(out image);
-                HOperatorSet.GenEmptyObj(out img_old);
-                img_old.Dispose();
-                Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
-
-                HTuple htuple;
-                HOperatorSet.CountChannels(img_old, out htuple);
                 image.Dispose();
-                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
-                else image = img_old.Clone();
-
+                Bitmap2HObject.Bitmap2HObj(bmp, out image);
                 HTuple width, height;
                 HOperatorSet.GetImageSize(image, out width, out height);
                 HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
@@ -362,7 +351,6 @@ namespace desay
                 HOperatorSet.SetColor(window, "red");
                 HOperatorSet.SetLineWidth(window, 1);
                 HOperatorSet.SetDraw(window, "margin");
-
                 HOperatorSet.GenRectangle2(out region, row, column, phi, Length1, Length2);
                 HOperatorSet.DispObj(region, window);
             }
@@ -375,38 +363,38 @@ namespace desay
                 catch { }
                 Marking.CenterLocateTestSucceed = false;
             }
-         }
+        }
 
         public static void CircularMatch(Bitmap bmp, HWindow window, bool ok)
         {
             try
             {
-                HObject image, img_old;
-                HOperatorSet.GenEmptyObj(out image);
+                HObject img_old;               
                 HOperatorSet.GenEmptyObj(out img_old);
                 img_old.Dispose();
                 Bitmap2HObject.Bitmap2HObj(bmp, out img_old);
-
-                HTuple htuple;
-                HOperatorSet.CountChannels(img_old, out htuple);
-                image.Dispose();
-                if (htuple == 3) HOperatorSet.Rgb1ToGray(img_old, out image);
-                else image = img_old.Clone();
-
                 HTuple width, height;
-                HOperatorSet.GetImageSize(image, out width, out height);
+                HOperatorSet.GetImageSize(img_old, out width, out height);
                 HOperatorSet.SetPart(window, 0, 0, height - 1, width - 1);
-                HOperatorSet.DispObj(image, window);
+                HOperatorSet.DispObj(img_old, window);
                 HOperatorSet.SetLineWidth(window, 3);
                 HOperatorSet.SetColor(window, "red");
                 if (ok)
                 {
-                    //LastCenterLocateBMP = bmp;
-
                     HOperatorSet.DispText(window, "圆心X方向偏差：" + System.Math.Round(Position.Instance.PCB2CCDOffset.X / 96, 4) + " mm",
                      "window", 30, 7, "black", new HTuple(), new HTuple());
                     HOperatorSet.DispText(window, "圆心Y方向偏差：" + System.Math.Round(Position.Instance.PCB2CCDOffset.Y / 96, 4) + " mm",
                         "window", 60, 7, "black", new HTuple(), new HTuple());
+                    double[] CenterLocation = new double[2];
+                    CenterLocation[0] = (Position.Instance.PCB2CCDOffset.X / 96) + (width / 2);
+                    CenterLocation[1] = (Position.Instance.PCB2CCDOffset.Y / 96) + (height / 2);
+                    //中心
+                    HOperatorSet.SetColor(window, "green");
+                    HObject ho_Cross = null;
+                    HOperatorSet.GenEmptyObj(out ho_Cross);
+                    ho_Cross.Dispose();
+                    HOperatorSet.GenCrossContourXld(out ho_Cross, CenterLocation[1], CenterLocation[0], 180, 0.785398);
+                    HOperatorSet.DispObj(ho_Cross, window);
                     Marking.CenterLocateTestSucceed = true;
                     SetString(window, "OK", "green", 100);
                 }
@@ -436,8 +424,8 @@ namespace desay
             HOperatorSet.WriteString(window, str);
             set_display_font(window, 15, "mono", "true", "false");
         }
-        public static void set_display_font(HTuple hv_WindowHandle, HTuple hv_Size, HTuple hv_Font,
-    HTuple hv_Bold, HTuple hv_Slant)
+
+        public static void set_display_font(HTuple hv_WindowHandle, HTuple hv_Size, HTuple hv_Font, HTuple hv_Bold, HTuple hv_Slant)
         {
 
 
@@ -560,22 +548,32 @@ namespace desay
 
             return;
         }
+
         public static void TestBmp(Bitmap bmp, HWindow hWindow, bool save)
         {
             try
             {
-
                 LastCenterLocateBMP = bmp;
-                //double[] Res = action(bmp, hWindow);
-                CenterMatch(bmp, hWindow);
-                //Position.Instance.PCB2CCDOffset.X = Res[0];
-                //Position.Instance.PCB2CCDOffset.Y = Res[1];
+                double[] Res = CenterMatch(bmp, hWindow);
+                if (Res[0] == -100 || Res[1] == -100)
+                {
+                    Marking.CenterLocateTestSucceed = false;
+                }
+                else
+                {
+                    Marking.CenterLocateTestSucceed = true;
+                    Position.Instance.PCB2CCDOffset.X = Res[0];
+                    Position.Instance.PCB2CCDOffset.Y = Res[1];
+                }
                 if (save)
                 {
                     SaveImage.Save(hWindow);
                 }
             }
-            catch { }
+            catch
+            {
+                Marking.CenterLocateTestSucceed = false;
+            }
         }
     }
 }

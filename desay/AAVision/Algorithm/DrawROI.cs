@@ -25,7 +25,7 @@ namespace desay
             HOperatorSet.DrawCircle(window, out row, out column, out radius);
             HOperatorSet.GenCircle(out circle, row, column, radius);
             HOperatorSet.DispObj(circle, window);
-            HOperatorSet.WriteRegion(circle, AppConfig.VisonPath + "\\RegionROI.hobj");
+            HOperatorSet.WriteRegion(circle, AppConfig.VisonPath + "\\CenterLocROI.hobj");
         }
         public void DrawRectangleROI(HWindow window, string fileName)
         {

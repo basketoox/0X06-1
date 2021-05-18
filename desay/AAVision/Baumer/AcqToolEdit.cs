@@ -35,27 +35,27 @@ namespace desay
         }
 
         private string _CamSN;
-       
+
 
         public AcqToolEdit()
         {
             InitializeComponent();
-            tabpage = new TabPage[] { this.tab_set};
+            tabpage = new TabPage[] { this.tab_set };
             offsetOri = new double[] { 0, 0 };
-         
+
         }
 
         public void AcqToolEdit_Load(object sender, EventArgs e)
         {
-            
+
             UpdataControl(false);
-            
+
             if (_Subject != null)
             {
                 this.CB_CamsList.Enabled = !_Subject.IsOpen;
                 _Subject.Ran += _Subject_Ran;
-                
-                var camlist  = BaumerCameraSystem.listCamera.Select((c) => c.pDevice.SerialNumber).ToList();
+
+                var camlist = BaumerCameraSystem.listCamera.Select((c) => c.pDevice.SerialNumber).ToList();
                 CB_CamsList.DataSource = camlist;
                 this.CB_CamsList.SelectedIndex = BaumerCameraSystem.listCamera.FindIndex((c) => c.pDevice.SerialNumber == _Subject.SerialNumber);
             }
@@ -106,7 +106,7 @@ namespace desay
                 VI = new VisionImage(ImageType.Rgb32);
                 VI.ReadFile(AppConfig.DryRunPic);
             }
-            
+
         }
 
 
@@ -176,8 +176,8 @@ namespace desay
                                     offsetOri[0] = Image_Processing.pmResults[0].CalibratedPosition.X - 1759.58;
                                     offsetOri[1] = Image_Processing.pmResults[0].CalibratedPosition.Y - 1411.70;
                                     //457 414 初始图片模板原点和IC中心的大小
-                                    ICCenter_X = Image_Processing.pmResults[0].CalibratedPosition.X-457;//457
-                                    ICCenter_Y = Image_Processing.pmResults[0].CalibratedPosition.Y-414;//414
+                                    ICCenter_X = Image_Processing.pmResults[0].CalibratedPosition.X - 457;//457
+                                    ICCenter_Y = Image_Processing.pmResults[0].CalibratedPosition.Y - 414;//414
                                     offset_x = ICCenter_X - VI.Width / 2;
                                     offset_y = ICCenter_Y - VI.Height / 2;
                                     double[] offset_x_pix = Position.Instance.Pos_X;
@@ -204,29 +204,38 @@ namespace desay
                         }
                         else
                         {
-                            //CenterLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                            switch (Config.Instance.CurrentProductType)
+                            {
+                                case "FreeTech":
+                                    FindCircularCenter.ProcessImage(VI);
+                                    if (FindCircularCenter.vaCircularEdgeReport.CircleFound)
+                                    {
+                                        double[] data = new double[2];
+                                        data[0] = FindCircularCenter.vaCircularEdgeReport.Center.X;
+                                        data[1] = FindCircularCenter.vaCircularEdgeReport.Center.Y;
+                                        Position.Instance.PCB2CCDOffset.X = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
+                                        Position.Instance.PCB2CCDOffset.Y = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
+                                        Marking.CenterLocateTestSucceed = true;
+                                    }
+                                    else
+                                    {
+                                        Marking.CenterLocateTestSucceed = false;
+                                    }
+                                    if (frmAAVision.acq.SaveImage)
+                                    {
+                                        SaveImage.Save(frmAAVision.acq.hWindowControl1.HalconWindow);
+                                    }
+                                    CenterLocate.CircularMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, FindCircularCenter.vaCircularEdgeReport.CircleFound);
+                                    break;
 
-                            FindCircularCenter.ProcessImage(VI);
-                            if (FindCircularCenter.vaCircularEdgeReport.CircleFound)
-                            {
-                                double[] data = new double[2];
-                                data[0] = FindCircularCenter.vaCircularEdgeReport.Center.X;
-                                data[1] = FindCircularCenter.vaCircularEdgeReport.Center.Y;
-                                Position.Instance.PCB2CCDOffset.X = (data[0] - VI.Width / 2) * Config.Instance.CameraPixelMM_X;
-                                Position.Instance.PCB2CCDOffset.Y = (data[1] - VI.Height / 2) * Config.Instance.CameraPixelMM_Y;
-                                Marking.CenterLocateTestSucceed = true;
+                                case "31AA":
+                                    CenterLocate.TestBmp(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                                    break;
+
+                                default:
+                                    break;
                             }
-                            else
-                            {
-                                Marking.CenterLocateTestSucceed = false;
-                            }
-                            if (frmAAVision.acq.SaveImage)
-                            {
-                                SaveImage.Save(frmAAVision.acq.hWindowControl1.HalconWindow);
-                            }
-                            CenterLocate.CircularMatch(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, FindCircularCenter.vaCircularEdgeReport.CircleFound);
                         }
-                        
                     }
                     catch (Exception ex)
                     {
@@ -260,22 +269,33 @@ namespace desay
                             }
                             else
                             {
-                                //GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
-                                double[] distance;
-                                LastVI = new VisionImage(ImageType.Rgb32);
-                                LastVI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
-                                bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
-                                GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}", out distance);
-                                if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.insideDistance)
+                                switch (Config.Instance.CurrentProductType)
                                 {
-                                    Marking.GlueCheckResult = true;
+                                    case "FreeTech":
+                                        double[] distance;
+                                        LastVI = new VisionImage(ImageType.Rgb32);
+                                        LastVI.ReadFile($"{ @"./ImageTemp/temp.jpg"}");
+                                        bmp.Save($"{ @"./ImageTemp/temp.jpg"}");
+                                        GlueCheck_c.ProcessImage(LastVI, $"{ @"./ImageTemp/temp.jpg"}", out distance);
+                                        if (distance[0] <= Position.Instance.OutsideDistance && distance[1] <= Position.Instance.insideDistance)
+                                        {
+                                            Marking.GlueCheckResult = true;
+                                        }
+                                        else
+                                        {
+                                            Marking.GlueCheckResult = false;
+                                        }
+                                        GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueCheckResult, distance);
+                                        LastVI.Dispose();
+                                        break;
+
+                                    case "31AA":
+                                        GlueCheck.TestBmp(CenterLocate.LastCenterLocateBMP, bmp, frmAAVision.acq.hWindowControl1.HalconWindow, frmAAVision.acq.SaveImage);
+                                        break;
+
+                                    default:
+                                        break;
                                 }
-                                else
-                                {
-                                    Marking.GlueCheckResult = false;
-                                }
-                                GlueCheck.GlueCheck_C(bmp, frmAAVision.acq.hWindowControl1.HalconWindow, Marking.GlueCheckResult, distance);
-                                LastVI.Dispose();
                             }
                             Marking.GlueCheckTestSucceed = true;
                         }
@@ -285,7 +305,7 @@ namespace desay
                         }
                         VI.Dispose();
                     }
-                    else if(Marking.DryRun)
+                    else if (Marking.DryRun)
                     {
                         Marking.GlueCheckTest = false;
                         Marking.GlueCheckResult = false;
@@ -311,9 +331,9 @@ namespace desay
         {
             if (status)
             {
-               
+
                 int Index = CB_CamsList.SelectedIndex;
-                if (Index>=0)
+                if (Index >= 0)
                 {
                     _CamSN = CB_CamsList.Items[Index].ToString();
                     CB_CamsList.Text = CB_CamsList.Items[Index].ToString();
@@ -321,16 +341,16 @@ namespace desay
             }
             else
             {
-                
-                if (BaumerCameraSystem.listCamera!=null&&BaumerCameraSystem.listCamera.Count>0)
+
+                if (BaumerCameraSystem.listCamera != null && BaumerCameraSystem.listCamera.Count > 0)
                 {
                     for (int i = 0; i < BaumerCameraSystem.listCamera.Count; i++)
                     {
                         //CB_CamsList.Items.Add(BaumerCameraSystem.listCamera[i].strSN);
                     }
-                    
+
                 }
-              
+
             }
 
         }
