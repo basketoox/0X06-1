@@ -816,7 +816,7 @@ namespace desay.Flow
                                     Marking.WbGetResultFlg = true;
                                     step = 370;
                                 }
-                                else if(false)   //(!Marking.WhiteLightResult)  //屏蔽二次点亮
+                                else if(!Marking.WhiteLightResult)  //二次点亮
                                 {
                                     if (!Marking.WbCheckAgainFlg && wbCheckCount < 1)
                                     {

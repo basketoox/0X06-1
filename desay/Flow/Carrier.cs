@@ -247,7 +247,7 @@ namespace desay.Flow
                                 if (IoPoints.TDI0.Value && ((IoPoints.IDI28.Value && IoPoints.IDI29.Value && IoPoints.IDI30.Value && IoPoints.IDI31.Value) || Marking.DoorShield)
                                         && (IoPoints.IDI15.Value || Marking.CurtainShield) || Marking.DryRun)
                                 {
-                                    Marking.CarrierCallInFinish = false;                   //20201019   清除入料状态    zw
+                                    Marking.CarrierCallInFinish = false;
                                     if (Marking.HaveLensShield || IoPoints.IDI19.Value)    
                                     {
                                         log.Debug("启动信号");
@@ -276,6 +276,10 @@ namespace desay.Flow
                                 {
                                     //Thread.Sleep(CarrierPressCylinder.Delay.MoveTime);
                                     //log.Debug("开夹气缸到位并复位");
+                                    CarrierClampCylinder.Reset();
+                                    Thread.Sleep(500);
+                                    CarrierClampCylinder.Set();
+                                    Thread.Sleep(500);
                                     CarrierClampCylinder.Reset();
                                     step = 104;
                                 }
